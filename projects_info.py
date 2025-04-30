@@ -7,7 +7,7 @@ import pandas as pd
 import disciplines
 
 
-def generate_projects_df(
+def random_projects_df(
     num_projects: int,
     min_desired_num_groups: int = 2,
     max_desired_num_groups: int = 4,
@@ -19,6 +19,10 @@ def generate_projects_df(
     max_tolerable_group_size_deficit: int = 3,
     min_tolerable_group_size_surplus: int = 1,
     max_tolerable_group_size_surplus: int = 3,
+    min_pen_num_groups: int = 1,
+    max_pen_num_groups: int = 3,
+    min_pen_group_size: int = 1,
+    max_pen_group_size: int = 3,
 ) -> pd.DataFrame:
     """Randomly generate a dataframe describing requirements of projects."""
 
@@ -58,6 +62,14 @@ def generate_projects_df(
         )
         for ideal_group_size in ideal_group_sizes
     ]
+    pen_num_groups = [
+        rd.randint(min_pen_num_groups, max_pen_num_groups)
+        for _ in names_projects
+    ]
+    pen_group_size = [
+        rd.randint(min_pen_group_size, max_pen_group_size)
+        for _ in names_projects
+    ]
 
     data_projects = {
         "name": names_projects,
@@ -66,10 +78,8 @@ def generate_projects_df(
         "ideal_group_size": ideal_group_sizes,
         "min_group_size": min_group_sizes,
         "max_group_size": max_group_sizes,
+        "pen_groups": pen_num_groups,
+        "pen_size": pen_group_size,
     }
 
     return pd.DataFrame(data_projects)
-
-
-# test_df = generate_projects_df(10)
-# print(test_df)

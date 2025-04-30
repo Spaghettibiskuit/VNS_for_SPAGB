@@ -1,3 +1,5 @@
+"""Randomly generate a dataframe with relevant information on offered projects"""
+
 import itertools
 import random as rd
 
@@ -163,7 +165,7 @@ def random_project_preferences(
     return students_project_preferences
 
 
-def create_random_students_df(
+def random_students_df(
     num_projects: int,
     num_students: int,
     num_partner_preferences: int = 3,
@@ -190,14 +192,3 @@ def create_random_students_df(
         "project_prefs": desired_projects,
     }
     return pd.DataFrame(data_students)
-
-
-# print(
-#     create_random_students_df(
-#         num_projects=5,
-#         num_students=40,
-#         percentage_reciprocity=1,
-#         perc_proj_pref_overlap=1,
-#         num_partner_preferences=1,
-#     )
-# )
