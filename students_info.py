@@ -142,7 +142,12 @@ def random_project_preferences(
                             * sums_preferences[project_id]
                             / num_already_decided
                         )
-                        + ((1 - perc_proj_pref_overlap) * rd.uniform(0, 3))
+                        + (
+                            (1 - perc_proj_pref_overlap)
+                            * rd.uniform(
+                                min_project_preference, max_project_preference
+                            )
+                        )
                     )
                     if project_id in sums_preferences
                     else round(

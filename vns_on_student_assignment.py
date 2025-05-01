@@ -81,7 +81,7 @@ class VarNeighborhoodSearch:
                     if not student.assigned
                 ]
                 if (
-                    project.num_groups < project.max_num_groups
+                    project.num_groups < project.offered_num_groups
                     and len(unassigned_students) >= project.ideal_group_size
                 ):
                     now_assigned_students = unassigned_students[
@@ -140,15 +140,15 @@ class VarNeighborhoodSearch:
             for group in project.groups:
                 print("\n")
                 for student in group.students:
-                    print(student.name)
+                    print(student.name, student.student_id)
         print("\nThese students were not assigned:")
         for student in self.unassigned:
-            print(student.name)
+            print(student.name, student.student_id)
 
 
 if __name__ == "__main__":
     vns_run = VarNeighborhoodSearch(
-        random_students_df(num_projects=3, num_students=20),
+        random_students_df(num_projects=3, num_students=30),
         random_projects_df(num_projects=3),
         reward_bilateral=2,
         penalty_non_assignment=3,
