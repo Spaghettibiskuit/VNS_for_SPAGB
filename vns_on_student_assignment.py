@@ -1,11 +1,13 @@
 """Main file of VNS implementation for a student assignment problem."""
 
+import pickle
+from pathlib import Path
+
 import pandas as pd
 
+from problem_data import generate_throwaway_instance
 from project import Project
-from projects_info import random_projects_df
 from student import Student
-from students_info import random_students_df
 
 
 class VarNeighborhoodSearch:
@@ -13,13 +15,11 @@ class VarNeighborhoodSearch:
 
     def __init__(
         self,
-        students_info: pd.DataFrame,
-        projects_info: pd.DataFrame,
+        problem_data: tuple[pd.DataFrame],
         reward_bilateral: int,
         penalty_non_assignment: int,
     ):
-        self.students_info = students_info
-        self.projects_info = projects_info
+        self.projects_info, self.students_info = problem_data
         self.reward_bilateral = reward_bilateral
         self.penalty_non_assignment = penalty_non_assignment
         self.projects: list[Project] = []
@@ -70,9 +70,9 @@ class VarNeighborhoodSearch:
 
     def _initial_solution(self):
         project_waitlists = self._build_initial_projects_waitlists()
-        students_unassigned = len(self.students)
+        num_students_unassigned = len(self.students)
         any_group_added = True
-        while students_unassigned > 0 and any_group_added:
+        while num_students_unassigned > 0 and any_group_added:
             any_group_added = False
             for project in self.projects:
                 unassigned_students = [
@@ -90,7 +90,7 @@ class VarNeighborhoodSearch:
                     project.add_initial_group_ideal_size(now_assigned_students)
                     for student in now_assigned_students:
                         student.assigned = True
-                    students_unassigned -= project.ideal_group_size
+                    num_students_unassigned -= project.ideal_group_size
                     any_group_added = True
 
         self.unassigned = [
@@ -98,11 +98,11 @@ class VarNeighborhoodSearch:
         ]
 
     def _build_initial_projects_waitlists(self) -> dict[list[Student]]:
-        min_pref_val, max_pref_val = self._min_max_pref_val()
-        target_val = max_pref_val
         projects_waitlists = {
             proj_id: [] for proj_id in range(len(self.projects))
         }
+        min_pref_val, max_pref_val = self._min_max_pref_val()
+        target_val = max_pref_val
         while target_val >= min_pref_val:
             for student in self.students:
                 for proj_id, pref_val in enumerate(student.projects_prefs):
@@ -117,13 +117,12 @@ class VarNeighborhoodSearch:
         max_val = -float("inf")
         for student in self.students:
             for pref_val in student.projects_prefs:
-                if pref_val < min_val:
-                    min_val = pref_val
-                if pref_val > max_val:
-                    max_val = pref_val
+                min_val = min(min_val, pref_val)
+                max_val = max(max_val, pref_val)
         return tuple((min_val, max_val))
 
     def report_input_data(self):
+        """Print the data frames that constitute the problem data."""
         print(self.projects_info)
         print(self.students_info)
 
@@ -147,9 +146,20 @@ class VarNeighborhoodSearch:
 
 
 if __name__ == "__main__":
+    solve_specific_instance = True
+    if solve_specific_instance:
+        folder = Path("instances")
+        filename = "generic_3_20.pkl"
+        instance_path = folder / filename
+        with instance_path.open("rb") as f:
+            problem_instance = pickle.load(f)
+    else:
+        problem_instance = generate_throwaway_instance(
+            num_projects=3, num_students=30
+        )
+
     vns_run = VarNeighborhoodSearch(
-        random_students_df(num_projects=3, num_students=30),
-        random_projects_df(num_projects=3),
+        problem_instance,
         reward_bilateral=2,
         penalty_non_assignment=3,
     )

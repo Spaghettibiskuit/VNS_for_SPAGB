@@ -100,7 +100,7 @@ def random_partner_preferences(
 
 
 def _create_prefs_dict(
-    desired_partners: list[int], project_preferences_so_far: list[list[int]]
+    desired_partners: list[int], project_preferences_so_far: list[tuple[int]]
 ) -> dict[int]:
     sums_preferences = {"num_with_preferences": 0}
     num_students_with_preferences = len(project_preferences_so_far)
@@ -119,11 +119,11 @@ def _create_prefs_dict(
 
 
 def random_project_preferences(
-    students_desired_partners,
-    num_projects,
-    perc_proj_pref_overlap,
-    min_project_preference,
-    max_project_preference,
+    students_desired_partners: list[list[int]],
+    num_projects: int,
+    perc_proj_pref_overlap: float,
+    min_project_preference: int,
+    max_project_preference: int,
 ) -> list[tuple[int]]:
     """Project preference values based on chance and preferences made by desired partners."""
     students_project_preferences: list[tuple[int]] = []
@@ -131,9 +131,7 @@ def random_project_preferences(
         sums_preferences = _create_prefs_dict(
             student_desired_partners, students_project_preferences
         )
-        if (
-            num_already_decided := sums_preferences["num_with_preferences"]
-        ) > 0:
+        if num_already_decided := sums_preferences["num_with_preferences"]:
             student_project_preferences = tuple(
                 (
                     round(
@@ -180,8 +178,8 @@ def random_students_df(
     max_project_preference: int = 3,
 ) -> pd.DataFrame:
     """Return relevant information on students."""
-    students_names = random_unique_names(num_students)
-    desired_partners = random_partner_preferences(
+    students_names: list[str] = random_unique_names(num_students)
+    desired_partners: list[list[int]] = random_partner_preferences(
         num_students, percentage_reciprocity, num_partner_preferences
     )
     desired_projects = random_project_preferences(
