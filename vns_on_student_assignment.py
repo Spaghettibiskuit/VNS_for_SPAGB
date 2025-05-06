@@ -1,13 +1,18 @@
 """Main file of VNS implementation for a student assignment problem."""
 
+import copy
 import pickle
+import random as rd
 from pathlib import Path
 
 import pandas as pd
 
 from problem_data import generate_throwaway_instance
 from project import Project
+from project_group import ProjectGroup
 from student import Student
+
+rd.seed(100)
 
 
 class VarNeighborhoodSearch:
@@ -25,10 +30,338 @@ class VarNeighborhoodSearch:
         self.projects: list[Project] = []
         self.students: list[Student] = []
         self.unassigned: list[Student] = []
+        self.in_reassignment: list[Student] = []
+        self.objective_value = 0
+        self.before_shake: VarNeighborhoodSearch | None = None
 
         self._initialize_projects()
         self._initialize_students()
+        self.num_students = len(self.students)
         self._initial_solution()
+        self._calculate_current_objective_value()
+
+    def run_basic_vns_first_improv(self, iteration_limit: int):
+        min_neighborhood = 1
+        max_neigborhood = 5
+        unassigned_bias = 3
+        current_neighborhood = min_neighborhood
+        current_iteration = 0
+        while current_iteration < iteration_limit:
+            self.before_shake = copy.deepcopy(self)
+            self._shake(current_neighborhood, unassigned_bias)
+            current_iteration += 1
+
+    def _shake(self, neighborhood: int, unassigned_bias: float | int):
+
+        shake_departures = self._shake_departures(
+            neighborhood, unassigned_bias
+        )
+        for shake_departure in shake_departures:
+            departure_deltas = 0
+            arrival_deltas = 0
+            departure_deltas += self._calculate_leaving_delta(shake_departure)
+            shake_arrival = self._shake_arrival(
+                neighborhood, shake_departure, unassigned_bias
+            )
+            arrival_deltas += self._calculate_arrival_delta(shake_arrival)
+            self._move_student(shake_departure, shake_arrival)
+            print(f"Departure {departure_deltas} Arrival {arrival_deltas}.")
+            self.objective_value += departure_deltas + arrival_deltas
+
+    def _move_student(
+        self,
+        shake_departure: (
+            tuple[bool, Student] | tuple[Project, ProjectGroup, Student]
+        ),
+        shake_arrival: (
+            tuple[str, Student] | tuple[Project, ProjectGroup, Student]
+        ),
+    ) -> None:
+        if shake_departure[-1] is not shake_arrival[-1]:
+            raise ValueError("Not one student to be moved!")
+        student_was_unassigned = isinstance(shake_departure[0], bool)
+        student_will_be_unassigned = isinstance(shake_arrival[0], str)
+        if student_was_unassigned and student_will_be_unassigned:
+            return
+        moving_student = shake_departure[-1]
+        print(f"{moving_student.name} {moving_student.student_id} is moving!")
+        if student_was_unassigned and not student_will_be_unassigned:
+            self.unassigned.remove(moving_student)
+            arrival_group = shake_arrival[-2]
+            arrival_group.accept_student(moving_student)
+            return
+        if not student_was_unassigned and student_will_be_unassigned:
+            departure_group = shake_departure[-2]
+            departure_group.release_student(moving_student)
+            self.unassigned.append(moving_student)
+            return
+        departure_group = shake_departure[-2]
+        arrival_group = shake_arrival[-2]
+        departure_group.release_student(moving_student)
+        arrival_group.accept_student(moving_student)
+
+    def _calculate_arrival_delta(
+        self,
+        shake_arrival: (
+            tuple[str, Student] | tuple[Project, ProjectGroup, Student]
+        ),
+    ) -> int:
+        if isinstance(shake_arrival[0], str):
+            return -self.penalty_non_assignment
+        arrival_project, arrival_group, arriving_student = shake_arrival
+        preference_gain = arriving_student.projects_prefs[
+            arrival_project.project_id
+        ]
+        bilateral_reward_gain = 0
+        print(arriving_student.fav_partners)
+        for student in arrival_group.students:
+            print(student.name, student.student_id)
+            print(student.fav_partners)
+            if (
+                student.student_id in arriving_student.fav_partners
+                and arriving_student.student_id in student.fav_partners
+            ):
+                print("It's a match!")
+                bilateral_reward_gain += self.reward_bilateral
+        # bilateral_reward_gain = sum(
+        #     self.reward_bilateral
+        #     for student in arrival_group.students
+        #     if student.student_id in arriving_student.fav_partners
+        #     and arriving_student.student_id in student.fav_partners
+        # )
+        print("bilateral reward gain:", bilateral_reward_gain)
+        # Establishment of a new group not yet implemented.
+        if arrival_group.size < arrival_project.ideal_group_size:
+            delta_group_size = arrival_project.pen_size
+        else:
+            delta_group_size = -arrival_project.pen_size
+        return preference_gain + bilateral_reward_gain + delta_group_size
+
+    def _shake_arrival(
+        self,
+        neighborhood: int,
+        shake_departure: (
+            tuple[Project, ProjectGroup, Student] | tuple[True, Student]
+        ),
+        unassigned_bias: int,
+    ) -> tuple[Project, ProjectGroup, Student] | tuple[str, Student]:
+        if neighborhood == 1:
+            if (
+                isinstance(shake_departure[0], bool)
+                and shake_departure[0] is True
+            ):
+                student = shake_departure[1]
+                candidate_projects = [
+                    project
+                    for project in self.projects
+                    if any(
+                        group.size < project.max_group_size
+                        for group in project.groups
+                    )
+                ]
+                if not candidate_projects:
+                    return tuple(("keep unassigned", student))
+                chosen_project: Project = rd.choice(candidate_projects)
+                candidate_groups = [
+                    group
+                    for group in chosen_project.groups
+                    if group.size < chosen_project.max_group_size
+                ]
+                chosen_group: ProjectGroup = rd.choice(candidate_groups)
+                return tuple((chosen_project, chosen_group, student))
+            if (
+                rd.random()
+                < len(self.unassigned) / self.num_students / unassigned_bias
+            ):
+                return tuple(("unassign", student))
+            project, current_group, student = shake_departure
+            candidate_groups = [
+                group
+                for group in project.groups
+                if group is not current_group
+                and group.size < project.max_group_size
+            ]
+            if not candidate_groups:
+                return tuple(("unassign", student))
+            chosen_group = rd.choice(candidate_groups)
+            return tuple((project, chosen_group, student))
+        return "something"
+
+    def _calculate_leaving_delta(
+        self,
+        shake_departure: (
+            tuple[Project, ProjectGroup, Student] | tuple[True, Student]
+        ),
+    ) -> int:
+        if isinstance(shake_departure[0], bool) and shake_departure[0] is True:
+            return self.penalty_non_assignment
+        project, group, student = shake_departure
+        preference_loss = student.projects_prefs[project.project_id]
+        bilateral_reward_loss = sum(
+            self.reward_bilateral
+            for bilateral_preference in group.bilateral_preferences
+            if student.student_id in bilateral_preference
+        )
+        # currently no mechanism for deleting groups.
+        # if project.num_groups > project.offered_num_groups and group.size == 1:
+        #     reduced_penalty_num_groups = project.pen_groups
+        # else:
+        #     reduced_penalty_num_groups = 0
+        if group.size > project.ideal_group_size:
+            delta_group_size = project.pen_size
+        else:
+            delta_group_size = -project.pen_size
+        return (
+            -preference_loss
+            - bilateral_reward_loss
+            # + reduced_penalty_num_groups
+            + delta_group_size
+        )
+
+    def _shake_departures(
+        self, neighborhood: int, unassigned_bias: float | int
+    ) -> list[tuple[bool, Student] | tuple[Project, ProjectGroup, Student]]:
+        match neighborhood:
+            case 1:
+                unassigned_student_chosen = False
+                if (
+                    num_unassigned := len(self.unassigned)
+                ) >= neighborhood and (
+                    rd.random()
+                    > num_unassigned / self.num_students / unassigned_bias
+                ):
+                    unassigned_student_chosen = True
+                    student_to_move = rd.choice(self.unassigned)
+                    print(
+                        "Unassigned student chosen:",
+                        student_to_move.name,
+                        student_to_move.student_id,
+                    )
+                    return [
+                        tuple(
+                            (
+                                unassigned_student_chosen,
+                                student_to_move,
+                            )
+                        )
+                    ]
+
+                candidate_projects = [
+                    project
+                    for project in self.projects
+                    if any(
+                        group.size - project.min_group_size >= neighborhood
+                        for group in project.groups
+                    )
+                ]
+                if not candidate_projects:
+                    raise ValueError("No student can be moved!")
+                chosen_project: Project = rd.choice(candidate_projects)
+                candidate_groups = [
+                    group
+                    for group in chosen_project.groups
+                    if (group.size - neighborhood)
+                    >= chosen_project.min_group_size
+                ]
+                chosen_group = rd.choice(candidate_groups)
+                student_to_move = rd.choice(chosen_group.students)
+                print(
+                    f"{chosen_project.name} {chosen_project.groups.index(chosen_group)}"
+                    f"{student_to_move.name} {student_to_move.student_id}"
+                )
+                return [
+                    tuple(
+                        (
+                            chosen_project,
+                            chosen_group,
+                            student_to_move,
+                        )
+                    )
+                ]
+
+            case _:
+                raise ValueError(
+                    f"Invalid neigborhood indicator ({neighborhood})"
+                )
+
+    def _calculate_current_objective_value(self):
+        self.objective_value = (
+            self._sum_preferences()
+            + self._sum_join_rewards()
+            - self._sum_no_assignment_penalties()
+            - self._sum_group_surplus_penalties()
+            - self._sum_group_size_penalties()
+        )
+
+    def _sum_preferences(self):
+        sum_preferences = 0
+        for project in self.projects:
+            print("These are the preference values for", project.name)
+            for project_group in project.groups:
+                for student in project_group.students:
+                    sum_preferences += student.projects_prefs[
+                        project.project_id
+                    ]
+                    print(
+                        f"For {student.name} {student.student_id}: {student.projects_prefs[project.project_id]}"
+                    )
+        print("The sum for all projects:", sum_preferences)
+        return sum_preferences
+
+    def _sum_join_rewards(self):
+        sum_join_rewards = 0
+        print("The join reward is:", self.reward_bilateral)
+        for project in self.projects:
+            print(f"The the matches per group for {project.name}:")
+            for project_group in project.groups:
+                sum_join_rewards += (
+                    self.reward_bilateral * project_group.num_bilateral_pairs
+                )
+                print(project_group.bilateral_preferences)
+                print(project_group.num_bilateral_pairs)
+        print("The sum of join rewards is:", sum_join_rewards)
+        return sum_join_rewards
+
+    def _sum_no_assignment_penalties(self):
+        print(
+            len(self.unassigned),
+            "students were not assigned. The penalty is:",
+            self.penalty_non_assignment,
+        )
+        return len(self.unassigned) * self.penalty_non_assignment
+
+    def _sum_group_surplus_penalties(self):
+        sum_penalties = 0
+        for project in self.projects:
+            sum_penalties_before = sum_penalties
+            sum_penalties += (
+                max(0, project.num_groups - project.offered_num_groups)
+                * project.pen_groups
+            )
+            print(
+                f"The penalty per surplus group for {project.name} is {project.pen_groups}."
+                f"\nThe collected penalty is {sum_penalties - sum_penalties_before}"
+            )
+        print(
+            "The total sum of group number surplus penalties is:",
+            sum_penalties,
+        )
+        return sum_penalties
+
+    def _sum_group_size_penalties(self):
+        sum_penalties = 0
+        for project in self.projects:
+            sum_penalties_before = sum_penalties
+            for project_group in project.groups:
+                sum_penalties += abs(
+                    project_group.size - project.ideal_group_size
+                )
+            print(
+                f"The group size penalty for {project.name} was {project.pen_size}."
+                f"\nThe collected penalty is {sum_penalties - sum_penalties_before}"
+            )
+        print("The total sum of group size penalties is:", sum_penalties)
+        return sum_penalties
 
     def _initialize_projects(self):
         for row in self.projects_info.itertuples():
@@ -143,13 +476,14 @@ class VarNeighborhoodSearch:
         print("\nThese students were not assigned:")
         for student in self.unassigned:
             print(student.name, student.student_id)
+        print(f"The objective value is {self.objective_value}")
 
 
 if __name__ == "__main__":
     solve_specific_instance = True
     if solve_specific_instance:
         folder = Path("instances")
-        filename = "generic_3_20.pkl"
+        filename = "generic_3_30.pkl"
         instance_path = folder / filename
         with instance_path.open("rb") as f:
             problem_instance = pickle.load(f)
@@ -166,3 +500,8 @@ if __name__ == "__main__":
     vns_run.report_input_data()
     vns_run.report_num_projects_and_students()
     vns_run.report_current_solution()
+    vns_run.run_basic_vns_first_improv(30)
+    vns_run.report_current_solution()
+    vns_run._calculate_current_objective_value()
+    print(vns_run.objective_value)
+    print(vns_run.unassigned)
