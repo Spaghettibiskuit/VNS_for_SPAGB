@@ -1,0 +1,71 @@
+# print(
+#     create_random_students_df(
+#         num_projects=5,
+#         num_students=40,
+#         percentage_reciprocity=1,
+#         perc_proj_pref_overlap=1,
+#         num_partner_preferences=1,
+#     )
+# )
+
+# test_df = generate_projects_df(10)
+# print(test_df)
+
+# for student in self.students:
+#     student_assigned = False
+#     projects_prefs = student.projects_prefs
+#     unique_positive_descending = sorted(
+#         set(projects_prefs).difference(
+#             set(
+#                 0,
+#             )
+#         ),
+#         reverse=True,
+#     )
+
+#     for pref_value in unique_positive_descending:
+#         for proj_id, proj_pref in enumerate(projects_prefs):
+#             if proj_pref == pref_value:
+#                 project = self.projects[proj_id]
+#                 if (
+#                     not project.reached_capacity_limit()
+#                     and project.penalty_initial_assignment()
+#                     < pref_value
+#                 ):
+#                     project.initial_assignment(student)
+#                     student_assigned = True
+#                     break
+#         if student_assigned:
+#             break
+
+#     if not student_assigned:
+#         self.unassigned.append(student)
+
+
+# if (
+#     not unassigned_student_chosen
+#     and rd.random()
+#     > num_unassigned / self.num_students * unassigned_bias
+# ):
+#     self.unassigned.append(student_to_move)
+# else:
+#     candidate_projects = []
+#     for project in self.projects:
+#         for group in project.groups:
+#             if (
+#                 group.size + neighborhood
+#                 <= project.max_group_size
+#             ):
+#                 candidate_projects.append(project)
+#                 break
+#     chosen_project: Project = rd.choice(candidate_projects)
+#     candidate_groups = [
+#         group
+#         for group in chosen_project.groups
+#         if (group.size + neighborhood)
+#         <= chosen_project.max_group_size
+#     ]
+
+
+# if rd.random() < len(self.unassigned) / self.num_students / unassigned_bias:
+#     return "unassign"
