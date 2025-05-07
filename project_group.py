@@ -16,7 +16,6 @@ class ProjectGroup:
         self.size = len(self.students)
         self._populate_bilateral_preferences_set()
 
-    # Currently entirely recalculated with every change. Potential for optimization.
     def _populate_bilateral_preferences_set(self):
         self.bilateral_preferences = set()
         preference_dict = {

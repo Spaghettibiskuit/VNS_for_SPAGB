@@ -22,14 +22,3 @@ with instance_path.open("rb") as f:
 
 print(created_instance[0])
 print(created_instance[1])
-
-# presumably_equal = problem_data.generate_throwaway_instance(
-#     num_projects=3, num_students=20
-# )
-
-# print(
-#     (
-#         created_instance[0].equals(presumably_equal[0])
-#         and created_instance[1].equals(presumably_equal[1])
-#     )
-# )

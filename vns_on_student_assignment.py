@@ -168,11 +168,13 @@ class VarNeighborhoodSearch:
                 ]
                 chosen_group: ProjectGroup = rd.choice(candidate_groups)
                 return tuple((chosen_project, chosen_group, student))
+
             if (
                 rd.random()
                 < len(self.unassigned) / self.num_students / unassigned_bias
             ):
                 return tuple(("unassign", student))
+
             project, current_group, student = shake_departure
             candidate_groups = [
                 group
@@ -184,6 +186,7 @@ class VarNeighborhoodSearch:
                 return tuple(("unassign", student))
             chosen_group = rd.choice(candidate_groups)
             return tuple((project, chosen_group, student))
+
         return "something"
 
     def _calculate_leaving_delta(
