@@ -28,7 +28,6 @@ class Project:
         self.pen_groups = pen_groups
         self.pen_size = pen_size
         self.groups: list[ProjectGroup] = []
-        self.num_groups = 0
 
     def add_initial_group_ideal_size(self, unassigned_students):
         """Adds a group of unassigned students for initial solution."""
@@ -36,4 +35,7 @@ class Project:
             self.project_id, self.name, unassigned_students
         )
         self.groups.append(new_group)
-        self.num_groups += 1
+
+    def num_groups(self) -> int:
+        """Return how many groups are currently in the project."""
+        return len(self.groups)

@@ -13,7 +13,6 @@ class ProjectGroup:
         self.project_name = project_name
         self.students = students
         self.bilateral_preferences = set()
-        self.size = len(self.students)
         self._populate_bilateral_preferences_set()
 
     def _populate_bilateral_preferences_set(self):
@@ -39,14 +38,12 @@ class ProjectGroup:
         if arriving_student in self.students:
             raise ValueError("Arriving student already in group!")
         self.students.append(arriving_student)
-        self.size += 1
         self._update_bilateral_preferences_set_arrival(arriving_student)
 
     def release_student(self, departing_student: Student):
         if departing_student not in self.students:
             raise ValueError("Departing student not in group!")
         self.students.remove(departing_student)
-        self.size -= 1
         self._update_bilateral_preferences_set_departure(
             departing_student.student_id
         )
@@ -71,9 +68,13 @@ class ProjectGroup:
 
         for student in arriving_student_favs_present:
             if arriving_student.student_id in student.fav_partners:
-                bilateral_pref = tuple(
+                bilateral_pref = (
                     (student.student_id, arriving_student.student_id)
                     if student.student_id < arriving_student.student_id
                     else (arriving_student.student_id, student.student_id)
                 )
                 self.bilateral_preferences.add(bilateral_pref)
+
+    def size(self) -> int:
+        """Return how many students are currently in the group."""
+        return len(self.students)

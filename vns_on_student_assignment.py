@@ -21,21 +21,22 @@ class VarNeighborhoodSearch:
 
     def __init__(
         self,
-        problem_data: tuple[pd.DataFrame],
+        problem_data: tuple[pd.DataFrame, pd.DataFrame],
         reward_bilateral: int,
         penalty_non_assignment: int,
     ):
         self.projects_info, self.students_info = problem_data
         self.reward_bilateral = reward_bilateral
         self.penalty_non_assignment = penalty_non_assignment
-        self.projects: list[Project] = []
-        self.students: list[Student] = []
+        self.projects = tuple(
+            (Project(*row) for row in self.projects_info.itertuples())
+        )
+        self.students = tuple(
+            (Student(*row) for row in self.students_info.itertuples())
+        )
         self.unassigned: list[Student] = []
         self.objective_value = 0
         self.before_shake = {}
-
-        self._initialize_projects()
-        self._initialize_students()
         self.num_students = len(self.students)
         self._initial_solution()
         self._calculate_current_objective_value()
@@ -133,7 +134,7 @@ class VarNeighborhoodSearch:
             and arriving_student.student_id in student.fav_partners
         )
         # Establishment of a new group not yet implemented.
-        if arrival_group.size < arrival_project.ideal_group_size:
+        if arrival_group.size() < arrival_project.ideal_group_size:
             delta_group_size = arrival_project.pen_size
         else:
             delta_group_size = -arrival_project.pen_size
@@ -154,38 +155,39 @@ class VarNeighborhoodSearch:
                     project
                     for project in self.projects
                     if any(
-                        group.size < project.max_group_size
+                        group.size() < project.max_group_size
                         for group in project.groups
                     )
                 ]
                 if not candidate_projects:
-                    return tuple(("keep unassigned", student))
+                    return ("keep unassigned", student)
                 chosen_project: Project = rd.choice(candidate_projects)
                 candidate_groups = [
                     group
                     for group in chosen_project.groups
-                    if group.size < chosen_project.max_group_size
+                    if group.size() < chosen_project.max_group_size
                 ]
                 chosen_group: ProjectGroup = rd.choice(candidate_groups)
-                return tuple((chosen_project, chosen_group, student))
+                return (chosen_project, chosen_group, student)
 
+            # problematic that it hinges on someone else being unassigned.
             if (
                 rd.random()
                 < len(self.unassigned) / self.num_students / unassigned_bias
             ):
-                return tuple(("unassign", student))
+                return ("unassign", student)
 
             project, current_group, student = shake_departure
             candidate_groups = [
                 group
                 for group in project.groups
                 if group is not current_group
-                and group.size < project.max_group_size
+                and group.size() < project.max_group_size
             ]
             if not candidate_groups:
-                return tuple(("unassign", student))
+                return ("unassign", student)
             chosen_group = rd.choice(candidate_groups)
-            return tuple((project, chosen_group, student))
+            return (project, chosen_group, student)
 
         return "something"
 
@@ -205,11 +207,11 @@ class VarNeighborhoodSearch:
             if student.student_id in bilateral_preference
         )
         # currently no mechanism for deleting groups.
-        # if project.num_groups > project.offered_num_groups and group.size == 1:
+        # if project.num_groups() > project.offered_num_groups and group.size() == 1:
         #     reduced_penalty_num_groups = project.pen_groups
         # else:
         #     reduced_penalty_num_groups = 0
-        if group.size > project.ideal_group_size:
+        if group.size() > project.ideal_group_size:
             delta_group_size = project.pen_size
         else:
             delta_group_size = -project.pen_size
@@ -232,14 +234,12 @@ class VarNeighborhoodSearch:
                     rd.random()
                     > num_unassigned / self.num_students / unassigned_bias
                 ):
+                    student_to_move: Student = rd.choice(self.unassigned)
                     unassigned_student_chosen = True
-                    student_to_move = rd.choice(self.unassigned)
                     return [
-                        tuple(
-                            (
-                                unassigned_student_chosen,
-                                student_to_move,
-                            )
+                        (
+                            unassigned_student_chosen,
+                            student_to_move,
                         )
                     ]
 
@@ -247,7 +247,7 @@ class VarNeighborhoodSearch:
                     project
                     for project in self.projects
                     if any(
-                        group.size - project.min_group_size >= neighborhood
+                        group.size() - project.min_group_size >= neighborhood
                         for group in project.groups
                     )
                 ]
@@ -257,18 +257,16 @@ class VarNeighborhoodSearch:
                 candidate_groups = [
                     group
                     for group in chosen_project.groups
-                    if (group.size - neighborhood)
-                    >= chosen_project.min_group_size
+                    if group.size() - chosen_project.min_group_size
+                    >= neighborhood
                 ]
                 chosen_group = rd.choice(candidate_groups)
                 student_to_move = rd.choice(chosen_group.students)
                 return [
-                    tuple(
-                        (
-                            chosen_project,
-                            chosen_group,
-                            student_to_move,
-                        )
+                    (
+                        chosen_project,
+                        chosen_group,
+                        student_to_move,
                     )
                 ]
 
@@ -306,55 +304,17 @@ class VarNeighborhoodSearch:
 
     def _sum_group_surplus_penalties(self):
         return sum(
-            max(0, project.num_groups - project.offered_num_groups)
+            max(0, project.num_groups() - project.offered_num_groups)
             * project.pen_groups
             for project in self.projects
         )
 
     def _sum_group_size_penalties(self):
         return sum(
-            abs(group.size - project.ideal_group_size) * project.pen_size
+            abs(group.size() - project.ideal_group_size) * project.pen_size
             for project in self.projects
             for group in project.groups
         )
-
-    def _initialize_projects(self):
-        for row in self.projects_info.itertuples():
-            (
-                project_id,
-                name,
-                offered_num_groups,
-                max_num_groups,
-                ideal_group_size,
-                min_group_size,
-                max_group_size,
-                pen_groups,
-                pen_size,
-            ) = row
-            self.projects.append(
-                Project(
-                    project_id,
-                    name,
-                    offered_num_groups,
-                    max_num_groups,
-                    ideal_group_size,
-                    min_group_size,
-                    max_group_size,
-                    pen_groups,
-                    pen_size,
-                )
-            )
-
-        self.projects = tuple(self.projects)
-
-    def _initialize_students(self):
-        for row in self.students_info.itertuples():
-            student_id, name, fav_partners, projects_prefs = row
-            self.students.append(
-                Student(student_id, name, fav_partners, projects_prefs)
-            )
-
-        self.students = tuple(self.students)
 
     def _initial_solution(self):
         project_waitlists = self._build_initial_projects_waitlists()
@@ -369,10 +329,10 @@ class VarNeighborhoodSearch:
                     if not student.assigned
                 ]
                 if (
-                    project.num_groups < project.offered_num_groups
+                    project.num_groups() < project.offered_num_groups
                     and len(unassigned_students) >= project.ideal_group_size
                 ):
-                    now_assigned_students: list[Student] = unassigned_students[
+                    now_assigned_students = unassigned_students[
                         : project.ideal_group_size
                     ]
                     project.add_initial_group_ideal_size(now_assigned_students)
@@ -385,7 +345,7 @@ class VarNeighborhoodSearch:
             student for student in self.students if not student.assigned
         ]
 
-    def _build_initial_projects_waitlists(self) -> dict[list[Student]]:
+    def _build_initial_projects_waitlists(self) -> dict[int, list[Student]]:
         projects_waitlists = {
             proj_id: [] for proj_id in range(len(self.projects))
         }
@@ -401,13 +361,12 @@ class VarNeighborhoodSearch:
         return projects_waitlists
 
     def _min_max_pref_val(self):
-        min_val = float("inf")
-        max_val = -float("inf")
-        for student in self.students:
-            for pref_val in student.projects_prefs:
-                min_val = min(min_val, pref_val)
-                max_val = max(max_val, pref_val)
-        return tuple((min_val, max_val))
+        all_prefs = [
+            pref_val
+            for student in self.students
+            for pref_val in student.projects_prefs
+        ]
+        return min(all_prefs), max(all_prefs)
 
     def report_input_data(self):
         """Print the data frames that constitute the problem data."""
