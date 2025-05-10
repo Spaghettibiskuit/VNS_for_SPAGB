@@ -78,3 +78,11 @@ class ProjectGroup:
     def size(self) -> int:
         """Return how many students are currently in the group."""
         return len(self.students)
+
+    def remaining_students(self, departures: list[Student]) -> list[Student]:
+        return [
+            student for student in self.students if student not in departures
+        ]
+
+    def remaining_size(self, departures: list[Student]) -> int:
+        return len(self.remaining_students(departures))
