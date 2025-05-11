@@ -41,8 +41,6 @@ class ProjectGroup:
         self._update_bilateral_preferences_set_arrival(arriving_student)
 
     def release_student(self, departing_student: Student):
-        if departing_student not in self.students:
-            raise ValueError("Departing student not in group!")
         self.students.remove(departing_student)
         self._update_bilateral_preferences_set_departure(
             departing_student.student_id

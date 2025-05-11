@@ -88,3 +88,60 @@
         # )
 
         # print(f"Departure {departure_deltas} Arrival {arrival_deltas}.")
+
+        
+        # for key, value in projects_waitlists.items():
+        #     print("\nProject ID:", key)
+        #     for student in value:
+        #         print(
+        #             student.name,
+        #             student.student_id,
+        #             student.projects_prefs[key],
+        #         )
+
+        # return projects_waitlists
+
+        #     min_pref_val, max_pref_val = self._min_max_pref_val()
+        #     target_val = max_pref_val
+        #     while target_val >= min_pref_val:
+        #         for student in self.students:
+        #             for proj_id, pref_val in enumerate(student.projects_prefs):
+        #                 if pref_val == target_val:
+        #                     projects_waitlists[proj_id].append(student)
+        #         target_val -= 1
+
+        #     return projects_waitlists
+
+        # def _min_max_pref_val(self):
+        #     all_prefs = [
+        #         pref_val
+        #         for student in self.students
+        #         for pref_val in student.projects_prefs
+        #     ]
+        #     return min(all_prefs), max(all_prefs)
+
+
+        # print("\nThe unassigned students are:")
+        # for student in self.unassigned:
+        #     print(student.name, student.student_id)
+
+        # print("\nThe students selected for departure are:", departing_students)
+
+        # unassigned_remaining: list[Student] = []
+        # for student in self.unassigned:
+        #     if student not in departing_students:
+        #         unassigned_remaining.append(student)
+        # print("\nThe students unassigned students still available are:")
+        # for student in unassigned_remaining:
+        #     print(student.name, student.student_id)
+        
+        # print(
+        #     student_to_move.name,
+        #     student_to_move.student_id,
+        #     "was chosen!",
+        # )
+        
+        # print(
+        #     "The departures after adding the chosen student are:",
+        #     departures,
+        # )

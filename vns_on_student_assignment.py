@@ -37,6 +37,7 @@ class VarNeighborhoodSearch:
         self.unassigned: list[Student] = []
         self.objective_value = 0
         self.previous_state = {}
+        self.neigborhood_visit_counter = {}
         self.num_students = len(self.students)
         self._initial_solution()
         self._calculate_current_objective_value()
@@ -50,36 +51,52 @@ class VarNeighborhoodSearch:
         if not 0 <= unassignment_prob <= 1:
             raise ValueError("A probability must be between 0 and 1.")
         min_neighborhood = 1
-        max_neigborhood = 2
+        max_neigborhood = 4
+        self.neigborhood_visit_counter = {
+            neighborhood: 0
+            for neighborhood in range(min_neighborhood, max_neigborhood + 1)
+        }
         current_iteration = 0
         while current_iteration < iteration_limit:
             current_neighborhood = min_neighborhood
             while current_neighborhood <= max_neigborhood:
+                current_iteration += 1
+                if current_iteration > iteration_limit:
+                    break
                 self._save_state()
 
                 match current_neighborhood:
                     case 1:
                         num_to_move = 1
-                        self._shake(
-                            num_to_move,
-                            assignment_bias,
-                            unassignment_prob,
-                        )
+                        across_projects = False
+
                     case 2:
                         num_to_move = 2
-                        self._shake(
-                            num_to_move,
-                            assignment_bias,
-                            unassignment_prob,
-                        )
+                        across_projects = False
+
+                    case 3:
+                        num_to_move = 1
+                        across_projects = True
+
+                    case 4:
+                        num_to_move = 2
+                        across_projects = True
+                self.neigborhood_visit_counter[current_neighborhood] += 1
+                self._shake(
+                    num_to_move,
+                    across_projects,
+                    assignment_bias,
+                    unassignment_prob,
+                )
 
                 if (
-                    self.previous_state["objective_value"]
-                    > self.objective_value
+                    self.objective_value
+                    > self.previous_state["objective_value"]
                 ):
+                    current_neighborhood = min_neighborhood
+                else:
                     self._recreate_state()
-                current_neighborhood += 1
-            current_iteration += 1
+                    current_neighborhood += 1
 
     def _save_state(self):
         self.previous_state["projects"] = copy.deepcopy(self.projects)
@@ -96,6 +113,7 @@ class VarNeighborhoodSearch:
     def _shake(
         self,
         num_to_move: int,
+        across_projects: bool,
         assignment_bias: float | int,
         unassignment_prob: float,
     ):
@@ -106,7 +124,7 @@ class VarNeighborhoodSearch:
         for shake_departure in shake_departures:
             departure_deltas += self._calculate_leaving_delta(shake_departure)
             shake_arrival = self._shake_arrival(
-                shake_departure, unassignment_prob
+                shake_departure, across_projects, unassignment_prob
             )
             arrival_deltas += self._calculate_arrival_delta(shake_arrival)
             self._move_student(shake_departure, shake_arrival)
@@ -123,7 +141,7 @@ class VarNeighborhoodSearch:
         ),
     ) -> None:
         if shake_departure[-1] is not shake_arrival[-1]:
-            raise ValueError("No clarity which Student should be moved!")
+            raise ValueError("No clarity which student should be moved!")
         student_was_unassigned = isinstance(shake_departure[0], bool)
         student_will_be_unassigned = isinstance(shake_arrival[0], str)
         if student_was_unassigned and student_will_be_unassigned:
@@ -178,6 +196,7 @@ class VarNeighborhoodSearch:
         shake_departure: (
             tuple[Project, ProjectGroup, Student] | tuple[True, Student]
         ),
+        across_projects: bool,
         unassignment_prob: float,
     ) -> tuple[Project, ProjectGroup, Student] | tuple[str, Student]:
         if isinstance(shake_departure[0], bool):
@@ -205,17 +224,37 @@ class VarNeighborhoodSearch:
             student = shake_departure[-1]
             return ("unassign", student)
 
-        project, current_group, student = shake_departure
+        current_project, current_group, student = shake_departure
+
+        if not across_projects:
+            chosen_project = current_project
+        else:
+            candidate_projects = [
+                project
+                for project in self.projects
+                if any(
+                    group.size() < project.max_group_size
+                    for group in project.groups
+                )
+                and project is not current_project
+            ]
+
+            if not candidate_projects:
+                return ("unassign", student)
+
+            chosen_project = rd.choice(candidate_projects)
+
         candidate_groups = [
             group
-            for group in project.groups
+            for group in chosen_project.groups
             if group is not current_group
-            and group.size() < project.max_group_size
+            and group.size() < chosen_project.max_group_size
         ]
+
         if not candidate_groups:
             return ("unassign", student)
         chosen_group = rd.choice(candidate_groups)
-        return (project, chosen_group, student)
+        return (chosen_project, chosen_group, student)
 
     def _calculate_leaving_delta(
         self,
@@ -261,20 +300,6 @@ class VarNeighborhoodSearch:
                 if student not in departing_students
             ]
 
-            # print("\nThe unassigned students are:")
-            # for student in self.unassigned:
-            #     print(student.name, student.student_id)
-
-            # print("\nThe students selected for departure are:", departing_students)
-
-            # unassigned_remaining: list[Student] = []
-            # for student in self.unassigned:
-            #     if student not in departing_students:
-            #         unassigned_remaining.append(student)
-            # print("\nThe students unassigned students still available are:")
-            # for student in unassigned_remaining:
-            #     print(student.name, student.student_id)
-
             if (num_unassigned_remaining := len(unassigned_remaining)) and (
                 rd.random()
                 > num_unassigned_remaining
@@ -282,11 +307,6 @@ class VarNeighborhoodSearch:
                 / assignment_bias
             ):
                 student_to_move: Student = rd.choice(unassigned_remaining)
-                # print(
-                #     student_to_move.name,
-                #     student_to_move.student_id,
-                #     "was chosen!",
-                # )
                 departing_students.append(student_to_move)
                 unassigned_student_was_chosen = True
                 departures_specs.append(
@@ -295,10 +315,6 @@ class VarNeighborhoodSearch:
                         student_to_move,
                     )
                 )
-                # print(
-                #     "The departures after adding the chosen student are:",
-                #     departures,
-                # )
                 continue
 
             candidate_projects = [
@@ -404,27 +420,14 @@ class VarNeighborhoodSearch:
         ]
 
     def _build_initial_projects_waitlists(self) -> dict[int, list[Student]]:
-        projects_waitlists = {
-            proj_id: [] for proj_id in range(len(self.projects))
+        return {
+            (proj_id := project.project_id): sorted(
+                self.students,
+                key=lambda student: student.projects_prefs[proj_id],
+                reverse=True,
+            )
+            for project in self.projects
         }
-        min_pref_val, max_pref_val = self._min_max_pref_val()
-        target_val = max_pref_val
-        while target_val >= min_pref_val:
-            for student in self.students:
-                for proj_id, pref_val in enumerate(student.projects_prefs):
-                    if pref_val == target_val:
-                        projects_waitlists[proj_id].append(student)
-            target_val -= 1
-
-        return projects_waitlists
-
-    def _min_max_pref_val(self):
-        all_prefs = [
-            pref_val
-            for student in self.students
-            for pref_val in student.projects_prefs
-        ]
-        return min(all_prefs), max(all_prefs)
 
     def report_input_data(self):
         """Print the data frames that constitute the problem data."""
@@ -473,8 +476,10 @@ if __name__ == "__main__":
     vns_run.report_input_data()
     vns_run.report_num_projects_and_students()
     vns_run.report_current_solution()
-    vns_run.run_basic_vns_first_improv(300, 3, 0.05)
+    vns_run.run_basic_vns_first_improv(10000, 3, 0.05)
     vns_run.report_current_solution()
     vns_run._calculate_current_objective_value()
     print(vns_run.objective_value)
     print(vns_run.unassigned)
+    for neigborhood, num_visits in vns_run.neigborhood_visit_counter.items():
+        print(f"{neigborhood}: {num_visits}")
