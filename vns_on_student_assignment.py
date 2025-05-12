@@ -40,7 +40,7 @@ class VarNeighborhoodSearch:
         self.neigborhood_visit_counter = {}
         self.num_students = len(self.students)
         self._initial_solution()
-        self._calculate_current_objective_value()
+        self.calculate_current_objective_value()
 
     def run_basic_vns_first_improv(
         self,
@@ -57,46 +57,46 @@ class VarNeighborhoodSearch:
             for neighborhood in range(min_neighborhood, max_neigborhood + 1)
         }
         current_iteration = 0
+        current_neighborhood = min_neighborhood
+
         while current_iteration < iteration_limit:
-            current_neighborhood = min_neighborhood
-            while current_neighborhood <= max_neigborhood:
-                current_iteration += 1
-                if current_iteration > iteration_limit:
-                    break
-                self._save_state()
+            current_iteration += 1
+            self._save_state()
 
-                match current_neighborhood:
-                    case 1:
-                        num_to_move = 1
-                        across_projects = False
+            match current_neighborhood:
+                case 1:
+                    num_to_move = 1
+                    across_projects = False
 
-                    case 2:
-                        num_to_move = 2
-                        across_projects = False
+                case 2:
+                    num_to_move = 2
+                    across_projects = False
 
-                    case 3:
-                        num_to_move = 1
-                        across_projects = True
+                case 3:
+                    num_to_move = 1
+                    across_projects = True
 
-                    case 4:
-                        num_to_move = 2
-                        across_projects = True
-                self.neigborhood_visit_counter[current_neighborhood] += 1
-                self._shake(
-                    num_to_move,
-                    across_projects,
-                    assignment_bias,
-                    unassignment_prob,
-                )
+                case 4:
+                    num_to_move = 2
+                    across_projects = True
 
-                if (
-                    self.objective_value
-                    > self.previous_state["objective_value"]
-                ):
-                    current_neighborhood = min_neighborhood
-                else:
-                    self._recreate_state()
-                    current_neighborhood += 1
+            self.neigborhood_visit_counter[current_neighborhood] += 1
+            self._shake(
+                num_to_move,
+                across_projects,
+                assignment_bias,
+                unassignment_prob,
+            )
+
+            if self.objective_value > self.previous_state["objective_value"]:
+                current_neighborhood = min_neighborhood
+                continue
+
+            self._recreate_state()
+            if current_neighborhood == max_neigborhood:
+                current_neighborhood = min_neighborhood
+            else:
+                current_neighborhood += 1
 
     def _save_state(self):
         self.previous_state["projects"] = copy.deepcopy(self.projects)
@@ -133,36 +133,36 @@ class VarNeighborhoodSearch:
 
     def _move_student(
         self,
-        shake_departure: (
+        departure_point: (
             tuple[bool, Student] | tuple[Project, ProjectGroup, Student]
         ),
-        shake_arrival: (
+        arrival_point: (
             tuple[str, Student] | tuple[Project, ProjectGroup, Student]
         ),
     ) -> None:
-        if shake_departure[-1] is not shake_arrival[-1]:
+        if departure_point[-1] is not arrival_point[-1]:
             raise ValueError("No clarity which student should be moved!")
-        student_was_unassigned = isinstance(shake_departure[0], bool)
-        student_will_be_unassigned = isinstance(shake_arrival[0], str)
+        student_was_unassigned = isinstance(departure_point[0], bool)
+        student_will_be_unassigned = isinstance(arrival_point[0], str)
         if student_was_unassigned and student_will_be_unassigned:
             return
-        moving_student = shake_departure[-1]
+        moving_student = departure_point[-1]
         # print(f"{moving_student.name} {moving_student.student_id} is moving!")
         if student_was_unassigned and not student_will_be_unassigned:
             # print(
             #     f"{moving_student.name} {moving_student.student_id} is moving!"
             # )
             self.unassigned.remove(moving_student)
-            arrival_group = shake_arrival[-2]
+            arrival_group = arrival_point[-2]
             arrival_group.accept_student(moving_student)
             return
         if not student_was_unassigned and student_will_be_unassigned:
-            departure_group = shake_departure[-2]
+            departure_group = departure_point[-2]
             departure_group.release_student(moving_student)
             self.unassigned.append(moving_student)
             return
-        departure_group = shake_departure[-2]
-        arrival_group = shake_arrival[-2]
+        departure_group = departure_point[-2]
+        arrival_group = arrival_point[-2]
         departure_group.release_student(moving_student)
         arrival_group.accept_student(moving_student)
 
@@ -232,11 +232,11 @@ class VarNeighborhoodSearch:
             candidate_projects = [
                 project
                 for project in self.projects
-                if any(
+                if project is not current_project
+                and any(
                     group.size() < project.max_group_size
                     for group in project.groups
                 )
-                and project is not current_project
             ]
 
             if not candidate_projects:
@@ -349,7 +349,7 @@ class VarNeighborhoodSearch:
             )
         return departures_specs
 
-    def _calculate_current_objective_value(self):
+    def calculate_current_objective_value(self):
         self.objective_value = (
             self._sum_preferences()
             + self._sum_join_rewards()
@@ -367,6 +367,9 @@ class VarNeighborhoodSearch:
         )
 
     def _sum_join_rewards(self):
+        for project in self.projects:
+            for group in project.groups:
+                group.populate_bilateral_preferences_set()
         return sum(
             self.reward_bilateral * len(group.bilateral_preferences)
             for project in self.projects
@@ -476,9 +479,9 @@ if __name__ == "__main__":
     vns_run.report_input_data()
     vns_run.report_num_projects_and_students()
     vns_run.report_current_solution()
-    vns_run.run_basic_vns_first_improv(10000, 3, 0.05)
+    vns_run.run_basic_vns_first_improv(1000, 3, 0.05)
     vns_run.report_current_solution()
-    vns_run._calculate_current_objective_value()
+    vns_run.calculate_current_objective_value()
     print(vns_run.objective_value)
     print(vns_run.unassigned)
     for neigborhood, num_visits in vns_run.neigborhood_visit_counter.items():

@@ -13,9 +13,9 @@ class ProjectGroup:
         self.project_name = project_name
         self.students = students
         self.bilateral_preferences = set()
-        self._populate_bilateral_preferences_set()
+        self.populate_bilateral_preferences_set()
 
-    def _populate_bilateral_preferences_set(self):
+    def populate_bilateral_preferences_set(self):
         self.bilateral_preferences = set()
         preference_dict = {
             student.student_id: student.fav_partners
