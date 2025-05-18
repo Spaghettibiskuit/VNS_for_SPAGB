@@ -1,6 +1,7 @@
 """Main file of VNS implementation for a student assignment problem."""
 
 import copy
+import itertools as it
 import pickle
 import random as rd
 from pathlib import Path
@@ -28,21 +29,17 @@ class VarNeighborhoodSearch:
         self.projects_info, self.students_info = problem_data
         self.reward_bilateral = reward_bilateral
         self.penalty_non_assignment = penalty_non_assignment
-        self.projects = tuple(
-            (Project(*row) for row in self.projects_info.itertuples())
-        )
-        self.students = tuple(
-            (Student(*row) for row in self.students_info.itertuples())
-        )
+        self.projects = tuple((Project(*row) for row in self.projects_info.itertuples()))
+        self.students = tuple((Student(*row) for row in self.students_info.itertuples()))
         self.unassigned: list[Student] = []
         self.objective_value = 0
-        self.previous_state = {}
+        self.before_shake = {}
         self.neigborhood_visit_counter = {}
         self.num_students = len(self.students)
         self._initial_solution()
         self.calculate_current_objective_value()
 
-    def run_basic_vns_first_improv(
+    def run_gen_vns_best_improvement(
         self,
         iteration_limit: int,
         assignment_bias: float | int,
@@ -53,15 +50,14 @@ class VarNeighborhoodSearch:
         min_neighborhood = 1
         max_neigborhood = 4
         self.neigborhood_visit_counter = {
-            neighborhood: 0
-            for neighborhood in range(min_neighborhood, max_neigborhood + 1)
+            neighborhood: 0 for neighborhood in range(min_neighborhood, max_neigborhood + 1)
         }
         current_iteration = 0
         current_neighborhood = min_neighborhood
 
         while current_iteration < iteration_limit:
             current_iteration += 1
-            self._save_state()
+            self._save_state(self.before_shake)
 
             match current_neighborhood:
                 case 1:
@@ -88,27 +84,27 @@ class VarNeighborhoodSearch:
                 unassignment_prob,
             )
 
-            if self.objective_value > self.previous_state["objective_value"]:
+            self._var_neigborhood_descent(num_to_move, across_projects)
+
+            if self.objective_value > self.before_shake["objective_value"]:
                 current_neighborhood = min_neighborhood
                 continue
 
-            self._recreate_state()
+            self._recreate_state(self.before_shake)
             if current_neighborhood == max_neigborhood:
                 current_neighborhood = min_neighborhood
             else:
                 current_neighborhood += 1
 
-    def _save_state(self):
-        self.previous_state["projects"] = copy.deepcopy(self.projects)
-        self.previous_state["unassigned"] = copy.deepcopy(self.unassigned)
-        self.previous_state["objective_value"] = copy.deepcopy(
-            self.objective_value
-        )
+    def _save_state(self, state_dict):
+        state_dict["projects"] = copy.deepcopy(self.projects)
+        state_dict["unassigned"] = copy.deepcopy(self.unassigned)
+        state_dict["objective_value"] = copy.deepcopy(self.objective_value)
 
-    def _recreate_state(self):
-        self.projects = self.previous_state["projects"]
-        self.unassigned = self.previous_state["unassigned"]
-        self.objective_value = self.previous_state["objective_value"]
+    def _recreate_state(self, state_dict):
+        self.projects = state_dict["projects"]
+        self.unassigned = state_dict["unassigned"]
+        self.objective_value = state_dict["objective_value"]
 
     def _shake(
         self,
@@ -123,35 +119,323 @@ class VarNeighborhoodSearch:
         arrival_deltas = 0
         for shake_departure in shake_departures:
             departure_deltas += self._calculate_leaving_delta(shake_departure)
-            shake_arrival = self._shake_arrival(
-                shake_departure, across_projects, unassignment_prob
-            )
+            shake_arrival = self._shake_arrival(shake_departure, across_projects, unassignment_prob)
             arrival_deltas += self._calculate_arrival_delta(shake_arrival)
             self._move_student(shake_departure, shake_arrival)
 
         self.objective_value += departure_deltas + arrival_deltas
 
+    def _var_neigborhood_descent(self, max_to_move: int, across_projects: bool):
+        print("Entering variable neigborhood descent!")
+
+        min_to_move = 1
+        cumulative_delta = 0
+        destinations, current_locations = self._prerequisites_vnd()
+
+        # Debugging purposes
+        counter = 0
+
+        num_to_move = min_to_move
+        while num_to_move <= max_to_move and counter < 100:
+            counter += 1
+            best_moves_local, delta = self._local_search_best_improvement(
+                destinations, current_locations, across_projects, num_to_move
+            )
+            # print(f"The best moves are: {best_moves_local}")
+            if delta > 0:
+
+                # Debugging
+                print(f"\ndelta = {delta}")
+                print(num_to_move)
+
+                cumulative_delta += delta
+                for best_move_local in best_moves_local:
+                    # print(f"\nThe best move is {best_move_local}")
+                    departure, arrival = best_move_local
+                    if departure[-1] is not arrival[-1]:
+                        raise ValueError("No clarity which student to be moved.")
+
+                    # debugging
+                    if departure[0] is not self.unassigned:
+                        departure: tuple[Project, ProjectGroup, Student]
+                        dep_project, dep_group, dep_student = departure
+                        print(
+                            f"{dep_student.name} {dep_student.student_id} comes from {dep_project.name} group {dep_project.groups.index(dep_group)}"
+                        )
+                        print("These are in the departure group before the move:")
+                        for stud in dep_group.students:
+                            print(stud.name, stud.student_id)
+
+                    self._move_student(departure, arrival)
+
+                    if arrival[0] is not self.unassigned:
+                        arrival: tuple[Project, ProjectGroup, Student]
+                        project, group, student = arrival
+                        current_locations[self.students.index(student)] = (
+                            project,
+                            group,
+                        )
+
+                        print(
+                            f"{student.name} {student.student_id} moves to {project.name} group {project.groups.index(group)}"
+                        )
+                        print("These are in the arrival group after the move:")
+                        for stud in group.students:
+                            print(stud.name, stud.student_id)
+
+                    else:
+                        student = arrival[-1]
+                        current_locations[self.students.index(student)] = self.unassigned
+
+                        print(f"{student.name} {student.student_id} is now unassigned")
+
+                num_to_move = min_to_move
+
+            else:
+                num_to_move += 1
+
+        self.objective_value += cumulative_delta
+        print("The objective value was adjusted!!!!!!!!!!!!")
+        print(self.objective_value)
+        self.calculate_current_objective_value
+        print(self.objective_value)
+
+    def _local_search_best_improvement(
+        self,
+        destinations: tuple[tuple[Project, ProjectGroup] | list[Student]],
+        current_locations: dict[int : tuple[Project, ProjectGroup] | list[Student]],
+        across_projects: bool,
+        num_to_move: int,
+    ) -> tuple[
+        tuple[
+            tuple[
+                tuple[Project, ProjectGroup, Student] | tuple[list[Student], Student],
+                tuple[Project, ProjectGroup, Student] | tuple[list[Student], Student],
+            ]
+        ],
+        int,
+    ]:
+        # print("Entering local search!")
+
+        best_move_combination: (
+            tuple[
+                tuple[
+                    tuple[Project, ProjectGroup, Student] | tuple[list[Student], Student],
+                    tuple[Project, ProjectGroup, Student] | tuple[list[Student], Student],
+                ]
+            ]
+            | None
+        ) = None
+        best_delta: int = 0
+        combinations_student_ids = tuple(it.combinations(range(self.num_students), num_to_move))
+        cartestian_product_destinations = tuple(it.product(destinations, repeat=num_to_move))
+        for combination_ids in combinations_student_ids:
+            if not self._all_in_combination_can_leave(combination_ids, current_locations):
+                continue
+
+            # debugginh
+            # print("Starting to filter that everybody should move!")
+            # for dest_combo in cartestian_product_destinations:
+            #     for i in range(num_to_move):
+            #         if dest_combo[i] is not self.unassigned:
+            #             print("This is the destination:")
+            #             print(dest_combo[i])
+            #             print("This is the current location:")
+            #             print(current_locations[combination_ids[i]])
+            #             print("These are the unassigned students:")
+            #             print(self.unassigned)
+            #             test = current_locations[combination_ids[i]][1]
+            #             print("This is where the project group should be:")
+            #             print(test)
+
+            # Everybody should move
+            valid_destination_combinations = tuple(
+                filter(
+                    lambda destinations_for_combination, combination_ids=combination_ids: all(
+                        (
+                            current_locations[combination_ids[i]][1] is not destinations_for_combination[i][1]
+                            if (current_locations[combination_ids[i]] is not self.unassigned)
+                            and (destinations_for_combination[i] is not self.unassigned)
+                            # This filters out from unassigned to unassigned
+                            else current_locations[combination_ids[i]] is not destinations_for_combination[i]
+                        )
+                        for i in range(num_to_move)
+                    ),
+                    cartestian_product_destinations,
+                )
+            )
+            # print("Finished filtering that everybody should move!")
+            if not across_projects:
+                # Everybody should stay in their project or be unassigned
+                valid_destination_combinations = tuple(
+                    filter(
+                        lambda destinations_for_combination, combination_ids=combination_ids: all(
+                            (
+                                (current_locations[combination_ids[i]][0] is destinations_for_combination[i][0])
+                                or (destinations_for_combination[i] is self.unassigned)
+                                if (current_locations[combination_ids[i]] is not self.unassigned)
+                                and (destinations_for_combination[i] is not self.unassigned)
+                                else True
+                            )
+                            for i in range(num_to_move)
+                        ),
+                        valid_destination_combinations,
+                    )
+                )
+
+            corresponding_departures = tuple(
+                (
+                    (
+                        (
+                            *student_location,
+                            self.students[student_id],
+                        )
+                        if (student_location := current_locations[student_id]) is not self.unassigned
+                        else (self.unassigned, self.students[student_id])
+                    )
+                    for student_id in combination_ids
+                )
+            )
+
+            moving_students = tuple(
+                (corresponding_departure[-1] for corresponding_departure in corresponding_departures)
+            )
+
+            best_arrival_combination, delta = self._find_best_moves_combination(
+                valid_destination_combinations,
+                corresponding_departures,
+                moving_students,
+            )
+
+            # print(f"The best arrival for the current combination is: {best_arrival_combination}")
+
+            if delta > best_delta:
+                # print(f"\nThe best arrival combination is: {best_arrival_combination}")
+                # print(f"\nThe corresponding departures are: {corresponding_departures}")
+                # print(f"The delta is: {delta}")
+                best_delta = delta
+                # best_move_combination = (
+                #     corresponding_departures,
+                #     best_arrival_combination,
+                # )
+                best_move_combination = tuple(
+                    (corresponding_departures[i], best_arrival_combination[i]) for i in range(num_to_move)
+                )
+
+        return best_move_combination, best_delta
+
+    def _all_in_combination_can_leave(
+        self,
+        combination_ids: tuple[int],
+        current_locations_all_students: dict[int : tuple[Project, ProjectGroup] | list[Student]],
+    ):
+        current_locations_comb = [current_locations_all_students[student_id] for student_id in combination_ids]
+        for current_location in current_locations_comb:
+            if current_location is not self.unassigned:
+                num_occurences = current_locations_comb.count(current_location)
+                current_location: tuple[Project, ProjectGroup]
+                project, group = current_location
+                if group.size() - num_occurences < project.min_group_size:
+                    return False
+        return True
+
+    def _find_best_moves_combination(
+        self,
+        destination_combinations: tuple[tuple[tuple[Project, ProjectGroup] | list[Student]]],
+        corresponding_departures: tuple[tuple[Project, ProjectGroup, Student] | tuple[list[Student], Student]],
+        moving_students: tuple[Student],
+    ) -> tuple[
+        tuple[tuple[Project, ProjectGroup, Student] | tuple[list[Student], Student]],
+        int,
+    ]:
+        best_arrival_combination: (
+            tuple[tuple[Project, ProjectGroup, Student] | tuple[list[Student], Student]] | None
+        ) = None
+
+        leaving_delta_combination = sum(
+            self._calculate_leaving_delta(departure) for departure in corresponding_departures
+        )
+
+        best_arrival_delta_combination: int = -10e6
+
+        for destination_combination in destination_combinations:
+            arrival_delta_combination = 0
+            invalid_destination = False
+            reversal_moves = []
+            for i, destination in enumerate(destination_combination):
+                if destination is not self.unassigned:
+                    destination: tuple[Project, ProjectGroup]
+                    project, group = destination
+                    if group.size() == project.max_group_size:
+                        invalid_destination = True
+                        break
+                    student: Student = moving_students[i]
+                    arrival = (project, group, student)
+                else:
+                    arrival = (self.unassigned, moving_students[i])
+                arrival_delta_combination += self._calculate_arrival_delta(arrival)
+
+                self._move_student(corresponding_departures[i], arrival)
+                reversal_moves.append((arrival, corresponding_departures[i]))
+
+            if invalid_destination:
+                for move in reversal_moves:
+                    self._move_student(*move)
+                continue
+
+            if arrival_delta_combination > best_arrival_delta_combination:
+                best_arrival_delta_combination = arrival_delta_combination
+                best_arrival_combination = tuple(
+                    (
+                        (*destination, moving_students[i])
+                        if destination is not self.unassigned
+                        else (self.unassigned, moving_students[i])
+                    )
+                    for i, destination in enumerate(destination_combination)
+                )
+            for move in reversal_moves:
+                self._move_student(*move)
+
+        delta = leaving_delta_combination + best_arrival_delta_combination
+
+        return best_arrival_combination, delta
+
+    def _prerequisites_vnd(
+        self,
+    ) -> tuple[
+        tuple[tuple[Project, ProjectGroup] | list[Student]],
+        dict[int : tuple[Project, ProjectGroup] | list[Student]],
+    ]:
+        destinations = tuple((project, group) for project in self.projects for group in project.groups) + (
+            self.unassigned,
+        )
+
+        current_locations = {
+            student.student_id: (project, group)
+            for project in self.projects
+            for group in project.groups
+            for student in group.students
+        }
+
+        for student in self.unassigned:
+            current_locations[student.student_id] = self.unassigned
+
+        return (destinations, current_locations)
+
     def _move_student(
         self,
-        departure_point: (
-            tuple[bool, Student] | tuple[Project, ProjectGroup, Student]
-        ),
-        arrival_point: (
-            tuple[str, Student] | tuple[Project, ProjectGroup, Student]
-        ),
+        departure_point: tuple[list[Student], Student] | tuple[Project, ProjectGroup, Student],
+        arrival_point: tuple[list[Student], Student] | tuple[Project, ProjectGroup, Student],
     ) -> None:
         if departure_point[-1] is not arrival_point[-1]:
             raise ValueError("No clarity which student should be moved!")
-        student_was_unassigned = isinstance(departure_point[0], bool)
-        student_will_be_unassigned = isinstance(arrival_point[0], str)
+        student_was_unassigned = departure_point[0] is self.unassigned
+        student_will_be_unassigned = arrival_point[0] is self.unassigned
         if student_was_unassigned and student_will_be_unassigned:
             return
         moving_student = departure_point[-1]
-        # print(f"{moving_student.name} {moving_student.student_id} is moving!")
+
         if student_was_unassigned and not student_will_be_unassigned:
-            # print(
-            #     f"{moving_student.name} {moving_student.student_id} is moving!"
-            # )
             self.unassigned.remove(moving_student)
             arrival_group = arrival_point[-2]
             arrival_group.accept_student(moving_student)
@@ -168,16 +452,12 @@ class VarNeighborhoodSearch:
 
     def _calculate_arrival_delta(
         self,
-        shake_arrival: (
-            tuple[str, Student] | tuple[Project, ProjectGroup, Student]
-        ),
+        shake_arrival: tuple[list[Student], Student] | tuple[Project, ProjectGroup, Student],
     ) -> int:
-        if isinstance(shake_arrival[0], str):
+        if shake_arrival[0] is self.unassigned:
             return -self.penalty_non_assignment
         arrival_project, arrival_group, arriving_student = shake_arrival
-        preference_gain = arriving_student.projects_prefs[
-            arrival_project.project_id
-        ]
+        preference_gain = arriving_student.projects_prefs[arrival_project.project_id]
         bilateral_reward_gain = sum(
             self.reward_bilateral
             for student in arrival_group.students
@@ -193,36 +473,29 @@ class VarNeighborhoodSearch:
 
     def _shake_arrival(
         self,
-        shake_departure: (
-            tuple[Project, ProjectGroup, Student] | tuple[True, Student]
-        ),
+        shake_departure: tuple[Project, ProjectGroup, Student] | tuple[list[Student], Student],
         across_projects: bool,
         unassignment_prob: float,
-    ) -> tuple[Project, ProjectGroup, Student] | tuple[str, Student]:
-        if isinstance(shake_departure[0], bool):
+    ) -> tuple[Project, ProjectGroup, Student] | tuple[list[Student], Student]:
+        if shake_departure[0] is self.unassigned:
             student = shake_departure[1]
             candidate_projects = [
                 project
                 for project in self.projects
-                if any(
-                    group.size() < project.max_group_size
-                    for group in project.groups
-                )
+                if any(group.size() < project.max_group_size for group in project.groups)
             ]
             if not candidate_projects:
-                return ("keep unassigned", student)
+                return (self.unassigned, student)
             chosen_project: Project = rd.choice(candidate_projects)
             candidate_groups = [
-                group
-                for group in chosen_project.groups
-                if group.size() < chosen_project.max_group_size
+                group for group in chosen_project.groups if group.size() < chosen_project.max_group_size
             ]
             chosen_group: ProjectGroup = rd.choice(candidate_groups)
             return (chosen_project, chosen_group, student)
 
         if rd.random() < unassignment_prob:
             student = shake_departure[-1]
-            return ("unassign", student)
+            return (self.unassigned, student)
 
         current_project, current_group, student = shake_departure
 
@@ -233,38 +506,32 @@ class VarNeighborhoodSearch:
                 project
                 for project in self.projects
                 if project is not current_project
-                and any(
-                    group.size() < project.max_group_size
-                    for group in project.groups
-                )
+                and any(group.size() < project.max_group_size for group in project.groups)
             ]
 
             if not candidate_projects:
-                return ("unassign", student)
+                return (self.unassigned, student)
 
             chosen_project = rd.choice(candidate_projects)
 
         candidate_groups = [
             group
             for group in chosen_project.groups
-            if group is not current_group
-            and group.size() < chosen_project.max_group_size
+            if group is not current_group and group.size() < chosen_project.max_group_size
         ]
 
         if not candidate_groups:
-            return ("unassign", student)
+            return (self.unassigned, student)
         chosen_group = rd.choice(candidate_groups)
         return (chosen_project, chosen_group, student)
 
     def _calculate_leaving_delta(
         self,
-        shake_departure: (
-            tuple[Project, ProjectGroup, Student] | tuple[True, Student]
-        ),
+        departure_point: tuple[Project, ProjectGroup, Student] | tuple[list[Student], Student],
     ) -> int:
-        if isinstance(shake_departure[0], bool):
+        if departure_point[0] is self.unassigned:
             return self.penalty_non_assignment
-        project, group, student = shake_departure
+        project, group, student = departure_point
         preference_loss = student.projects_prefs[project.project_id]
         bilateral_reward_loss = sum(
             self.reward_bilateral
@@ -289,29 +556,20 @@ class VarNeighborhoodSearch:
 
     def _shake_departures(
         self, num_to_move: int, assignment_bias: float | int
-    ) -> list[tuple[bool, Student] | tuple[Project, ProjectGroup, Student]]:
+    ) -> list[tuple[list[Student], Student] | tuple[Project, ProjectGroup, Student]]:
         departures_specs = []
         departing_students: list[Student] = []
         for _ in range(num_to_move):
-            unassigned_student_was_chosen = False
-            unassigned_remaining = [
-                student
-                for student in self.unassigned
-                if student not in departing_students
-            ]
+            unassigned_remaining = [student for student in self.unassigned if student not in departing_students]
 
             if (num_unassigned_remaining := len(unassigned_remaining)) and (
-                rd.random()
-                > num_unassigned_remaining
-                / self.num_students
-                / assignment_bias
+                rd.random() < num_unassigned_remaining / self.num_students * assignment_bias
             ):
                 student_to_move: Student = rd.choice(unassigned_remaining)
                 departing_students.append(student_to_move)
-                unassigned_student_was_chosen = True
                 departures_specs.append(
                     (
-                        unassigned_student_was_chosen,
+                        self.unassigned,
                         student_to_move,
                     )
                 )
@@ -320,11 +578,7 @@ class VarNeighborhoodSearch:
             candidate_projects = [
                 project
                 for project in self.projects
-                if any(
-                    group.remaining_size(departing_students)
-                    > project.min_group_size
-                    for group in project.groups
-                )
+                if any(group.remaining_size(departing_students) > project.min_group_size for group in project.groups)
             ]
             if not candidate_projects:
                 raise ValueError("No student can be moved!")
@@ -332,13 +586,10 @@ class VarNeighborhoodSearch:
             candidate_groups = [
                 group
                 for group in chosen_project.groups
-                if group.remaining_size(departing_students)
-                > chosen_project.min_group_size
+                if group.remaining_size(departing_students) > chosen_project.min_group_size
             ]
             chosen_group = rd.choice(candidate_groups)
-            student_to_move = rd.choice(
-                chosen_group.remaining_students(departing_students)
-            )
+            student_to_move = rd.choice(chosen_group.remaining_students(departing_students))
             departing_students.append(student_to_move)
             departures_specs.append(
                 (
@@ -381,9 +632,7 @@ class VarNeighborhoodSearch:
 
     def _sum_group_surplus_penalties(self):
         return sum(
-            max(0, project.num_groups() - project.offered_num_groups)
-            * project.pen_groups
-            for project in self.projects
+            max(0, project.num_groups() - project.offered_num_groups) * project.pen_groups for project in self.projects
         )
 
     def _sum_group_size_penalties(self):
@@ -400,27 +649,22 @@ class VarNeighborhoodSearch:
         while num_students_unassigned > 0 and any_group_added:
             any_group_added = False
             for project in self.projects:
+                # I currently do not update the student.unassigned parameter at later points.
                 unassigned_students = [
-                    student
-                    for student in project_waitlists[project.project_id]
-                    if not student.assigned
+                    student for student in project_waitlists[project.project_id] if not student.assigned
                 ]
                 if (
                     project.num_groups() < project.offered_num_groups
                     and len(unassigned_students) >= project.ideal_group_size
                 ):
-                    now_assigned_students = unassigned_students[
-                        : project.ideal_group_size
-                    ]
+                    now_assigned_students = unassigned_students[: project.ideal_group_size]
                     project.add_initial_group_ideal_size(now_assigned_students)
                     for student in now_assigned_students:
                         student.assigned = True
                     num_students_unassigned -= project.ideal_group_size
                     any_group_added = True
 
-        self.unassigned = [
-            student for student in self.students if not student.assigned
-        ]
+        self.unassigned = [student for student in self.students if not student.assigned]
 
     def _build_initial_projects_waitlists(self) -> dict[int, list[Student]]:
         return {
@@ -440,9 +684,7 @@ class VarNeighborhoodSearch:
 
     def report_num_projects_and_students(self):
         """Return number of projects."""
-        print(
-            f"Number of Projects: {len(self.projects)}\nNumber of Students: {len(self.students)}"
-        )
+        print(f"Number of Projects: {len(self.projects)}\nNumber of Students: {len(self.students)}")
 
     def report_current_solution(self):
         """Currently reports who is in which group."""
@@ -467,9 +709,7 @@ if __name__ == "__main__":
         with instance_path.open("rb") as f:
             problem_instance = pickle.load(f)
     else:
-        problem_instance = generate_throwaway_instance(
-            num_projects=3, num_students=30
-        )
+        problem_instance = generate_throwaway_instance(num_projects=3, num_students=30)
 
     vns_run = VarNeighborhoodSearch(
         problem_instance,
@@ -479,10 +719,13 @@ if __name__ == "__main__":
     vns_run.report_input_data()
     vns_run.report_num_projects_and_students()
     vns_run.report_current_solution()
-    vns_run.run_basic_vns_first_improv(1000, 3, 0.05)
+    vns_run.run_gen_vns_best_improvement(3, 10, 0.05)
     vns_run.report_current_solution()
     vns_run.calculate_current_objective_value()
     print(vns_run.objective_value)
     print(vns_run.unassigned)
     for neigborhood, num_visits in vns_run.neigborhood_visit_counter.items():
         print(f"{neigborhood}: {num_visits}")
+
+
+# parameters with vnd introduction:  50, 10, 0.05 1000, 10, 0.05
