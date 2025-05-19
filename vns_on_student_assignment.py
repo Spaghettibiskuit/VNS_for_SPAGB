@@ -84,13 +84,14 @@ class VarNeighborhoodSearch:
                 unassignment_prob,
             )
 
-            self._var_neigborhood_descent(num_to_move, across_projects)
+            # self._var_neigborhood_descent(num_to_move, across_projects)
 
             if self.objective_value > self.before_shake["objective_value"]:
                 current_neighborhood = min_neighborhood
                 continue
 
             self._recreate_state(self.before_shake)
+            print("The state was recreated!")
             if current_neighborhood == max_neigborhood:
                 current_neighborhood = min_neighborhood
             else:
@@ -99,11 +100,13 @@ class VarNeighborhoodSearch:
     def _save_state(self, state_dict):
         state_dict["projects"] = copy.deepcopy(self.projects)
         state_dict["unassigned"] = copy.deepcopy(self.unassigned)
+        state_dict["students"] = copy.deepcopy(self.students)
         state_dict["objective_value"] = copy.deepcopy(self.objective_value)
 
     def _recreate_state(self, state_dict):
         self.projects = state_dict["projects"]
         self.unassigned = state_dict["unassigned"]
+        self.students = state_dict["students"]
         self.objective_value = state_dict["objective_value"]
 
     def _shake(
@@ -126,7 +129,7 @@ class VarNeighborhoodSearch:
         self.objective_value += departure_deltas + arrival_deltas
 
     def _var_neigborhood_descent(self, max_to_move: int, across_projects: bool):
-        print("Entering variable neigborhood descent!")
+        print(f"Entering variable neigborhood descent! The max to move is {max_to_move}")
 
         min_to_move = 1
         cumulative_delta = 0
@@ -137,6 +140,7 @@ class VarNeighborhoodSearch:
 
         num_to_move = min_to_move
         while num_to_move <= max_to_move and counter < 100:
+            # print("The num to move is:", num_to_move)
             counter += 1
             best_moves_local, delta = self._local_search_best_improvement(
                 destinations, current_locations, across_projects, num_to_move
@@ -144,9 +148,9 @@ class VarNeighborhoodSearch:
             # print(f"The best moves are: {best_moves_local}")
             if delta > 0:
 
-                # Debugging
-                print(f"\ndelta = {delta}")
-                print(num_to_move)
+                # # Debugging
+                # print(f"\ndelta = {delta}")
+                # print(num_to_move)
 
                 cumulative_delta += delta
                 for best_move_local in best_moves_local:
@@ -155,16 +159,16 @@ class VarNeighborhoodSearch:
                     if departure[-1] is not arrival[-1]:
                         raise ValueError("No clarity which student to be moved.")
 
-                    # debugging
-                    if departure[0] is not self.unassigned:
-                        departure: tuple[Project, ProjectGroup, Student]
-                        dep_project, dep_group, dep_student = departure
-                        print(
-                            f"{dep_student.name} {dep_student.student_id} comes from {dep_project.name} group {dep_project.groups.index(dep_group)}"
-                        )
-                        print("These are in the departure group before the move:")
-                        for stud in dep_group.students:
-                            print(stud.name, stud.student_id)
+                    # # debugging
+                    # if departure[0] is not self.unassigned:
+                    #     departure: tuple[Project, ProjectGroup, Student]
+                    #     dep_project, dep_group, dep_student = departure
+                    #     print(
+                    #         f"{dep_student.name} {dep_student.student_id} comes from {dep_project.name} group {dep_project.groups.index(dep_group)}"
+                    #     )
+                    #     print("These are in the departure group before the move:")
+                    #     for stud in dep_group.students:
+                    #         print(stud.name, stud.student_id)
 
                     self._move_student(departure, arrival)
 
@@ -176,18 +180,20 @@ class VarNeighborhoodSearch:
                             group,
                         )
 
-                        print(
-                            f"{student.name} {student.student_id} moves to {project.name} group {project.groups.index(group)}"
-                        )
-                        print("These are in the arrival group after the move:")
-                        for stud in group.students:
-                            print(stud.name, stud.student_id)
+                        # #Debugging
+                        # print(
+                        #     f"{student.name} {student.student_id} moves to {project.name} group {project.groups.index(group)}"
+                        # )
+                        # print("These are in the arrival group after the move:")
+                        # for stud in group.students:
+                        #     print(stud.name, stud.student_id)
 
                     else:
                         student = arrival[-1]
                         current_locations[self.students.index(student)] = self.unassigned
 
-                        print(f"{student.name} {student.student_id} is now unassigned")
+                        # # Debugging
+                        # print(f"{student.name} {student.student_id} is now unassigned")
 
                 num_to_move = min_to_move
 
@@ -374,6 +380,28 @@ class VarNeighborhoodSearch:
                 else:
                     arrival = (self.unassigned, moving_students[i])
                 arrival_delta_combination += self._calculate_arrival_delta(arrival)
+
+                # # Debugging
+                # print(f"These are the corresponding departures: {corresponding_departures}")
+                # print(f"This is the corresponding departure: {corresponding_departures[i]}")
+                # print(f"This is the arrival: {arrival}")
+                # if corresponding_departures[i][0] is not self.unassigned:
+                #     studs_proj, studs_group, stud = corresponding_departures[i]
+                #     studs_proj: Project
+                #     studs_group: ProjectGroup
+                #     stud: Student
+                #     print(
+                #         f"\n{stud} {stud.name} {stud.student_id} is moving from project {self.projects.index(studs_proj)} group {studs_proj.groups.index(studs_group)}"
+                #     )
+                #     print("These students are in the departing group:")
+                #     for student in studs_group.students:
+                #         print(student.name, student.student_id, student)
+                #     print("These are the students in the group where something goes wrong:")
+                #     for student in self.projects[0].groups[0].students:
+                #         print(student.name, student.student_id, student)
+
+                # else:
+                #     print("Student was unassigned!")
 
                 self._move_student(corresponding_departures[i], arrival)
                 reversal_moves.append((arrival, corresponding_departures[i]))
@@ -719,7 +747,7 @@ if __name__ == "__main__":
     vns_run.report_input_data()
     vns_run.report_num_projects_and_students()
     vns_run.report_current_solution()
-    vns_run.run_gen_vns_best_improvement(3, 10, 0.05)
+    vns_run.run_gen_vns_best_improvement(1000, 10, 0.05)
     vns_run.report_current_solution()
     vns_run.calculate_current_objective_value()
     print(vns_run.objective_value)
