@@ -49,7 +49,7 @@ class VarNeighborhoodSearch:
         if not 0 <= unassignment_prob <= 1:
             raise ValueError("A probability must be between 0 and 1.")
         min_neighborhood = 1
-        max_neigborhood = 6
+        max_neigborhood = 8
         self.neigborhood_visit_counter = {
             neighborhood: 0 for neighborhood in range(min_neighborhood, max_neigborhood + 1)
         }
@@ -57,8 +57,8 @@ class VarNeighborhoodSearch:
         current_neighborhood = min_neighborhood
 
         while current_iteration < iteration_limit:
+
             current_iteration += 1
-            # self._save_state(self.before_shake)
 
             match current_neighborhood:
                 case 1:
@@ -85,10 +85,18 @@ class VarNeighborhoodSearch:
                     num_to_move = 3
                     across_projects = True
 
+                case 7:
+                    num_to_move = 4
+                    across_projects = True
+
+                case 8:
+                    num_to_move = 5
+                    across_projects = True
+
             self.neigborhood_visit_counter[current_neighborhood] += 1
 
-            # debugging
-            print("\n The current neighborhood is:", current_neighborhood)
+            print(f"\nIteration {current_iteration}/{iteration_limit}")
+            print("\nThe current neighborhood is:", current_neighborhood)
 
             self._shake(
                 num_to_move,
@@ -109,8 +117,8 @@ class VarNeighborhoodSearch:
                 - self._sum_group_size_penalties()
             )
 
-            print("The objective value after variable neighborhood descent is:", curr_obj_val)
-            print("The stated current objective value vnd is:", self.objective_value)
+            print("The objective value after VND is:", curr_obj_val)
+            print("The stated current objective value after VND is:", self.objective_value)
 
             if self.objective_value > self.best_objective_value:
                 self.best_objective_value = self.objective_value
@@ -147,16 +155,14 @@ class VarNeighborhoodSearch:
 
         self.objective_value += departure_deltas + arrival_deltas
 
-    def _var_neigborhood_descent(self, max_to_move: int, across_projects: bool):
-        min_to_move = 1
-        # cumulative_delta = 0
+    def _var_neigborhood_descent(self, max_to_move: int, across_projects: bool, min_to_move: int = 1):
         destinations, current_locations = self._prerequisites_vnd()
 
         num_to_move = min_to_move
         while num_to_move <= max_to_move:
 
-            if max_to_move == 3 and across_projects is False:
-                print("\nThe num of students to move is:", num_to_move)
+            # if max_to_move == 3 and across_projects is False:
+            #     print("\nThe num of students to move is:", num_to_move)
 
             best_moves_local, delta = self._local_search_best_improvement(
                 destinations, current_locations, across_projects, num_to_move
@@ -175,33 +181,19 @@ class VarNeighborhoodSearch:
                     if arrival[0] is not self.unassigned:
                         arrival: tuple[Project, ProjectGroup, Student]
                         project, group, student = arrival
-                        current_locations[self.students.index(student)] = (
+                        current_locations[student.student_id] = (
                             project,
                             group,
                         )
 
                     else:
                         student = arrival[-1]
-                        current_locations[self.students.index(student)] = self.unassigned
+                        current_locations[student.student_id] = self.unassigned
 
                 num_to_move = min_to_move
 
             else:
                 num_to_move += 1
-
-            if max_to_move == 3 and across_projects is False:
-                print("The delta found by local search:", delta)
-                curr_obj_val_in_vnd = (
-                    self._sum_preferences()
-                    + self._sum_join_rewards()
-                    - self._sum_no_assignment_penalties()
-                    - self._sum_group_surplus_penalties()
-                    - self._sum_group_size_penalties()
-                )
-                print("The actual current objective value is:", curr_obj_val_in_vnd)
-                print("The stated current objective value is:", self.objective_value)
-
-        # self.objective_value += cumulative_delta
 
     def _local_search_best_improvement(
         self,
@@ -218,20 +210,12 @@ class VarNeighborhoodSearch:
         ],
         int,
     ]:
-        # print("Entering local search!")
+        best_move_combination = None
+        best_delta = -10e6
 
-        best_move_combination: (
-            tuple[
-                tuple[
-                    tuple[Project, ProjectGroup, Student] | tuple[list[Student], Student],
-                    tuple[Project, ProjectGroup, Student] | tuple[list[Student], Student],
-                ]
-            ]
-            | None
-        ) = None
-        best_delta: int = 0
         combinations_student_ids = tuple(it.combinations(range(self.num_students), num_to_move))
         cartestian_product_destinations = tuple(it.product(destinations, repeat=num_to_move))
+
         for combination_ids in combinations_student_ids:
             if not self._all_in_combination_can_leave(combination_ids, current_locations):
                 continue
@@ -260,7 +244,6 @@ class VarNeighborhoodSearch:
                         lambda destinations_for_combination, combination_ids=combination_ids: all(
                             (
                                 (current_locations[combination_ids[i]][0] is destinations_for_combination[i][0])
-                                or (destinations_for_combination[i] is self.unassigned)
                                 if (current_locations[combination_ids[i]] is not self.unassigned)
                                 and (destinations_for_combination[i] is not self.unassigned)
                                 else True
@@ -302,25 +285,6 @@ class VarNeighborhoodSearch:
                     (corresponding_departures[i], best_arrival_combination[i]) for i in range(num_to_move)
                 )
 
-                if num_to_move == 3 and delta == 2:
-                    print("\n")
-                    for i in range(num_to_move):
-                        dep_project, dep_group, dep_student = corresponding_departures[i]
-                        dep_project: Project
-                        dep_group: ProjectGroup
-                        dep_student: Student
-                        arr_project, arr_group, arr_student = best_arrival_combination[i]
-                        arr_project: Project
-                        arr_group: ProjectGroup
-                        arr_student: Student
-                        if dep_student is not arr_student:
-                            print("\nTHERE IS A MIX UP")
-                        print(
-                            f"\n{arr_student.name} {arr_student.student_id} moved from {dep_project.name} group "
-                            f"{dep_project.groups.index(dep_group)}to {arr_project.name} group "
-                            f"{arr_project.groups.index(arr_group)}."
-                        )
-
         return best_move_combination, best_delta
 
     def _all_in_combination_can_leave(
@@ -347,15 +311,8 @@ class VarNeighborhoodSearch:
         tuple[tuple[Project, ProjectGroup, Student] | tuple[list[Student], Student]],
         int,
     ]:
-        best_arrival_combination: (
-            tuple[tuple[Project, ProjectGroup, Student] | tuple[list[Student], Student]] | None
-        ) = None
-
-        # leaving_delta_combination = sum(
-        #     self._calculate_leaving_delta(departure) for departure in corresponding_departures
-        # )
-
-        best_delta_combination: int = -10e6
+        best_arrival_combination = 0
+        best_delta_combination = -10e6
 
         for destination_combination in destination_combinations:
             delta_combination = 0
@@ -363,15 +320,8 @@ class VarNeighborhoodSearch:
             reversal_moves = []
             for i, destination in enumerate(destination_combination):
                 departure_point = corresponding_departures[i]
-                if departure_point[0] is not self.unassigned:
-                    departure_project, departure_group, student = departure_point
-                    departure_project: Project
-                    departure_group: ProjectGroup
-                    student: Student
-                    if departure_group.size() == departure_project.min_group_size:
-                        raise ValueError("Filtering so that everybody in combination can leave did not work!")
-                else:
-                    student = departure_point[-1]
+
+                student = departure_point[-1]
 
                 if student is not moving_students[i]:
                     raise ValueError("There is a mix up of students!")
@@ -386,7 +336,7 @@ class VarNeighborhoodSearch:
                         break
                     arrival = (project, group, student)
                 else:
-                    arrival = (self.unassigned, moving_students[i])
+                    arrival = (self.unassigned, student)
                 delta_combination += self._calculate_arrival_delta(arrival)
                 self._move_student(departure_point, arrival)
                 reversal_moves.append((arrival, departure_point))
@@ -489,7 +439,7 @@ class VarNeighborhoodSearch:
         unassignment_prob: float,
     ) -> tuple[Project, ProjectGroup, Student] | tuple[list[Student], Student]:
         if shake_departure[0] is self.unassigned:
-            student = shake_departure[1]
+            student = shake_departure[-1]
             candidate_projects = [
                 project
                 for project in self.projects
@@ -501,7 +451,7 @@ class VarNeighborhoodSearch:
             candidate_groups = [
                 group for group in chosen_project.groups if group.size() < chosen_project.max_group_size
             ]
-            chosen_group: ProjectGroup = rd.choice(candidate_groups)
+            chosen_group = rd.choice(candidate_groups)
             return (chosen_project, chosen_group, student)
 
         if rd.random() < unassignment_prob:
@@ -730,7 +680,7 @@ if __name__ == "__main__":
     vns_run.report_input_data()
     vns_run.report_num_projects_and_students()
     vns_run.report_current_solution()
-    vns_run.run_gen_vns_best_improvement(40, 10, 0.05)
+    vns_run.run_gen_vns_best_improvement(18, 10, 0.05)
     vns_run.report_current_solution()
     vns_run.calculate_current_objective_value()
     print("The objective after complete recalculation:", vns_run.objective_value)
@@ -740,3 +690,4 @@ if __name__ == "__main__":
 
 
 # parameters with vnd introduction:  50, 10, 0.05 1000, 10, 0.05  Fehler mit vnd:  16, 10, 0.05 3869
+# Improve at last: 40, 10, 0.05 neighborhood 6
