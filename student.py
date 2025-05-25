@@ -15,4 +15,6 @@ class Student:
         self.name = name
         self.fav_partners = fav_partners
         self.projects_prefs = projects_prefs
-        self.assigned = False
+
+    def preference_value(self, project):
+        return self.projects_prefs[project.project_id]

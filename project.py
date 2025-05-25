@@ -15,8 +15,8 @@ class Project:
         ideal_group_size: int,
         min_group_size: int,
         max_group_size: int,
-        pen_groups: int,
-        pen_size: int,
+        penalty_extra_group: int,
+        penalty_deviation_from_ideal_group_size: int,
     ):
         self.project_id = project_id
         self.name = name
@@ -25,15 +25,13 @@ class Project:
         self.ideal_group_size = ideal_group_size
         self.min_group_size = min_group_size
         self.max_group_size = max_group_size
-        self.pen_groups = pen_groups
-        self.pen_size = pen_size
+        self.penalty_extra_group = penalty_extra_group
+        self.penalty_deviation_from_ideal_group_size = penalty_deviation_from_ideal_group_size
         self.groups: list[ProjectGroup] = []
 
     def add_initial_group_ideal_size(self, unassigned_students):
         """Adds a group of unassigned students for initial solution."""
-        new_group = ProjectGroup(
-            self.project_id, self.name, unassigned_students
-        )
+        new_group = ProjectGroup(self.project_id, self.name, unassigned_students)
         self.groups.append(new_group)
 
     def num_groups(self) -> int:

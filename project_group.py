@@ -19,10 +19,10 @@ class ProjectGroup:
         for student_id, fav_partners in preference_dict.items():
             for fav_partner in fav_partners:
                 if fav_partner in preference_dict and student_id in preference_dict[fav_partner]:
-                    bilateral_pref = tuple(
+                    bilateral_preference = tuple(
                         (fav_partner, student_id) if fav_partner < student_id else (student_id, fav_partner)
                     )
-                    self.bilateral_preferences.add(bilateral_pref)
+                    self.bilateral_preferences.add(bilateral_preference)
 
     def accept_student(self, arriving_student: Student):
         if arriving_student in self.students:
@@ -48,12 +48,12 @@ class ProjectGroup:
 
         for student in arriving_student_favs_present:
             if arriving_student.student_id in student.fav_partners:
-                bilateral_pref = (
+                bilateral_preference = (
                     (student.student_id, arriving_student.student_id)
                     if student.student_id < arriving_student.student_id
                     else (arriving_student.student_id, student.student_id)
                 )
-                self.bilateral_preferences.add(bilateral_pref)
+                self.bilateral_preferences.add(bilateral_preference)
 
     def size(self) -> int:
         """Return how many students are currently in the group."""
