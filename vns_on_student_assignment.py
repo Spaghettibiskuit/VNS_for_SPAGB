@@ -13,7 +13,7 @@ from project_group import ProjectGroup
 from student import Student
 
 # rd.seed(100)
-# rd.seed(3869)
+rd.seed(3869)
 
 
 class VariableNeighborhoodSearch:
@@ -68,19 +68,19 @@ class VariableNeighborhoodSearch:
                     across_projects = False
 
                 case 3:
+                    num_to_move = 2
+                    across_projects = False
+
+                case 4:
                     num_to_move = 1
                     across_projects = True
 
-                case 4:
+                case 5:
                     num_to_move = 2
                     across_projects = True
 
-                case 5:
-                    num_to_move = 3
-                    across_projects = False
-
                 case 6:
-                    num_to_move = 3
+                    num_to_move = 2
                     across_projects = True
 
                 case 7:
@@ -96,14 +96,16 @@ class VariableNeighborhoodSearch:
             print(f"\nIteration {current_iteration}/{iteration_limit}")
             print("\nThe current neighborhood is:", current_neighborhood)
 
-            self._shake(
-                num_to_move,
-                across_projects,
-                assignment_bias,
-                unassignment_probability,
-            )
-
-            print("The objective value after the shake is:", self.objective_value)
+            if current_neighborhood in (3, 6):
+                self._found_or_dissolve_one_group()
+            else:
+                self._shake(
+                    num_to_move,
+                    across_projects,
+                    assignment_bias,
+                    unassignment_probability,
+                )
+                print("The objective value after the shake is:", self.objective_value)
 
             self._var_neigborhood_descent(num_to_move, across_projects)
 
@@ -132,6 +134,243 @@ class VariableNeighborhoodSearch:
                     current_neighborhood += 1
 
             self.move_reversals = []
+            for project in self.projects:
+                project.groups = [group for group in project.groups if group.students]
+
+    def _found_or_dissolve_one_group(self):
+        founding_options_moves_and_deltas = self._get_founding_options()
+        dissolution_options_moves_and_deltas = self._get_dissolution_options()
+
+        # max_delta_found_group = max(
+        #     founding_options_moves_and_deltas,
+        #     key=lambda founding_option_moves_and_delta: founding_option_moves_and_delta[-1],
+        # )[-1]
+
+        # max_delta_dissolve_group = max(
+        #     dissolution_options_moves_and_deltas,
+        #     key=lambda dissolution_option_moves_and_delta: dissolution_option_moves_and_delta[-1],
+        # )[-1]
+        # if max_delta_found_group > max_delta_dissolve_group:
+        #     delta = max_delta_found_group
+        #     max_delta_options_moves = [
+        #         founding_option_moves_and_delta[0]
+        #         for founding_option_moves_and_delta in founding_options_moves_and_deltas
+        #         if founding_option_moves_and_delta[-1] == delta
+        #     ]
+        # elif max_delta_found_group < max_delta_dissolve_group:
+        #     delta = max_delta_dissolve_group
+        #     max_delta_options_moves = [
+        #         dissolution_option_moves_and_delta[0]
+        #         for dissolution_option_moves_and_delta in dissolution_options_moves_and_deltas
+        #         if dissolution_option_moves_and_delta[-1] == delta
+        #     ]
+        # else:
+        all_options_moves_and_deltas = founding_options_moves_and_deltas + dissolution_options_moves_and_deltas
+        first_max_delta_option = max(
+            all_options_moves_and_deltas, key=lambda option_moves_and_delta: option_moves_and_delta[-1]
+        )
+
+        max_delta = first_max_delta_option[-1]
+        max_delta_options_moves = [
+            option_moves_and_delta[0]
+            for option_moves_and_delta in all_options_moves_and_deltas
+            if option_moves_and_delta[-1] == max_delta
+        ]
+        moves = rd.choice(max_delta_options_moves)
+        if (moves, max_delta) in founding_options_moves_and_deltas:
+            print("A group was founded in project:", moves[0][1][0].project_id)
+        for move in moves:
+            self._move_student(*move)
+            self.move_reversals.append(move[::-1])
+
+        self.objective_value += max_delta
+
+        curr_obj_val = (
+            self._sum_preferences()
+            + self._sum_join_rewards()
+            - self._sum_missing_assignment_penalties()
+            - self._sum_group_surplus_penalties()
+            - self._sum_group_size_penalties()
+        )
+
+        print("The objective value after group founding or dissolvement is:", curr_obj_val)
+        print("The stated current objective value after group founding or dissolvement is:", self.objective_value)
+
+    def _get_founding_options(
+        self,
+    ) -> list[
+        tuple[
+            list[
+                tuple[
+                    tuple[Project, ProjectGroup, Student] | tuple[list[Student], Student],
+                    tuple[Project, ProjectGroup, Student] | tuple[list[Student], Student],
+                ]
+            ],
+            int,
+        ]
+    ]:
+        projects_applicable_for_group_founding = [
+            project for project in self.projects if project.num_groups() < project.max_num_groups
+        ]
+
+        founding_options = []
+
+        for project in projects_applicable_for_group_founding:
+            new_group, founding_delta = project.get_new_empty_group_and_initial_delta()
+            moves_made = []
+            reversal_moves = []
+
+            while new_group.size() < project.max_group_size:
+                addition_options_departures = [
+                    (project, group, student)
+                    for project in self.projects
+                    for group in project.groups
+                    for student in group.students
+                    if group.size() > project.min_group_size and group is not new_group
+                ]
+                addition_options_departures += [
+                    (self.unassigned_students, student) for student in self.unassigned_students
+                ]
+                if not addition_options_departures:
+                    break
+                leaving_deltas_addition_options_departures = [
+                    self._calculate_leaving_delta(addition_option) for addition_option in addition_options_departures
+                ]
+                addition_options_arrivals = [
+                    (project, new_group, addition_option_departure[-1])
+                    for addition_option_departure in addition_options_departures
+                ]
+                arrival_deltas_addition_options_arrivals = [
+                    self._calculate_arrival_delta(addition_option_arrival)
+                    for addition_option_arrival in addition_options_arrivals
+                ]
+                addition_options_deltas = [
+                    leaving_delta + arrival_delta
+                    for leaving_delta, arrival_delta in zip(
+                        leaving_deltas_addition_options_departures, arrival_deltas_addition_options_arrivals
+                    )
+                ]
+                max_addition_delta = max(addition_options_deltas)
+                if max_addition_delta < 0 and new_group.size() >= project.min_group_size:
+                    break
+                max_addition_delta_indexes = [
+                    i
+                    for i, addition_delta in enumerate(addition_options_deltas)
+                    if addition_delta == max_addition_delta
+                ]
+                addition_index = rd.choice(max_addition_delta_indexes)
+                addition_move = (
+                    addition_options_departures[addition_index],
+                    addition_options_arrivals[addition_index],
+                )
+                self._move_student(*addition_move)
+                founding_delta += max_addition_delta
+                moves_made.append(addition_move)
+                reversal_moves.append(addition_move[::-1])
+
+            if new_group.size() >= project.min_group_size:
+                founding_options.append((moves_made, founding_delta))
+            for move in reversal_moves:
+                self._move_student(*move)
+
+        return founding_options
+
+    def _get_dissolution_options(self) -> list[
+        tuple[
+            list[
+                tuple[
+                    tuple[Project, ProjectGroup, Student] | tuple[list[Student], Student],
+                    tuple[Project, ProjectGroup, Student] | tuple[list[Student], Student],
+                ]
+            ],
+            int,
+        ]
+    ]:
+
+        dissolution_options = []
+
+        dissolution_candidates = [
+            (project, group) for project in self.projects for group in project.groups if group.students
+        ]
+
+        destinations_with_free_capacity = [
+            (project, group)
+            for project in self.projects
+            for group in project.groups
+            if group.students and group.size() < project.max_group_size
+        ]
+
+        for dissolution_candidate in dissolution_candidates:
+            project, group = dissolution_candidate
+            moves_made = []
+            reversal_moves = []
+            dissolution_delta = self._initial_dissolution_delta(project, group)
+            arrivals_with_deltas = [
+                ((*destination, student), self._calculate_arrival_delta((*destination, student)))
+                for destination in destinations_with_free_capacity
+                for student in group.students
+                if not all(x is y for x, y in zip(destination, dissolution_candidate))
+            ]
+            arrivals_with_deltas += [
+                ((self.unassigned_students, student), -self.penalty_student_not_assigned) for student in group.students
+            ]
+            while group.students:
+                max_delta = max(arrivals_with_deltas, key=lambda arrival_with_delta: arrival_with_delta[-1])[-1]
+                max_delta_arrivals = [
+                    arrival_with_delta[0]
+                    for arrival_with_delta in arrivals_with_deltas
+                    if arrival_with_delta[-1] == max_delta
+                ]
+                arrival = rd.choice(max_delta_arrivals)
+                student_in_move = arrival[-1]
+                move = ((*dissolution_candidate, student_in_move), arrival)
+                self._move_student(*move)
+                dissolution_delta += max_delta
+                moves_made.append(move)
+                reversal_moves.append(move[::-1])
+                if arrival[0] is self.unassigned_students:
+                    arrivals_with_deltas = [
+                        arrival_with_delta
+                        for arrival_with_delta in arrivals_with_deltas
+                        if arrival_with_delta[0][-1] is not student_in_move
+                    ]
+                    continue
+                project_student_moved_to, group_student_moved_to = arrival[0], arrival[1]
+                if group_student_moved_to.size() == project_student_moved_to.max_group_size:
+                    arrivals_with_deltas = [
+                        arrival_with_delta
+                        for arrival_with_delta in arrivals_with_deltas
+                        if (arrival_with_delta[0][-1] is not student_in_move)
+                        and (arrival_with_delta[0][1] is not group_student_moved_to)
+                    ]
+                    continue
+                arrivals_with_deltas = [
+                    arrival_with_delta
+                    for arrival_with_delta in arrivals_with_deltas
+                    if arrival_with_delta[0][-1] is not student_in_move
+                ]
+                arrivals_with_deltas = [
+                    (
+                        (arrival_with_delta[0], self._calculate_arrival_delta(arrival_with_delta[0]))
+                        if arrival_with_delta[0][1] is group_student_moved_to
+                        else arrival_with_delta
+                    )
+                    for arrival_with_delta in arrivals_with_deltas
+                ]
+
+            for move in reversal_moves:
+                self._move_student(*move)
+            dissolution_options.append((moves_made, dissolution_delta))
+
+        return dissolution_options
+
+    def _initial_dissolution_delta(self, project: Project, group: ProjectGroup) -> int:
+        preference_loss = sum(student.preference_value(project) for student in group.students)
+        bilateral_reward_loss = len(group.bilateral_preferences) * self.reward_bilateral_interest_collaboration
+        reward_one_less_group = (
+            project.penalty_extra_group if project.num_non_empty_groups() > project.offered_num_groups else 0
+        )
+        return -preference_loss - bilateral_reward_loss + reward_one_less_group
 
     def _shake(
         self,
@@ -350,9 +589,9 @@ class VariableNeighborhoodSearch:
         tuple[tuple[Project, ProjectGroup] | list[Student]],
         dict[int : tuple[Project, ProjectGroup] | list[Student]],
     ]:
-        destinations = tuple((project, group) for project in self.projects for group in project.groups) + (
-            self.unassigned_students,
-        )
+        destinations = tuple(
+            (project, group) for project in self.projects for group in project.groups if group.students
+        ) + (self.unassigned_students,)
 
         locations_students_by_id = {
             student.student_id: (project, group)
@@ -395,11 +634,11 @@ class VariableNeighborhoodSearch:
 
     def _calculate_arrival_delta(
         self,
-        shake_arrival: tuple[list[Student], Student] | tuple[Project, ProjectGroup, Student],
+        arrival_specifications: tuple[list[Student], Student] | tuple[Project, ProjectGroup, Student],
     ) -> int:
-        if shake_arrival[0] is self.unassigned_students:
+        if arrival_specifications[0] is self.unassigned_students:
             return -self.penalty_student_not_assigned
-        arrival_project, arrival_group, arriving_student = shake_arrival
+        arrival_project, arrival_group, arriving_student = arrival_specifications
         preference_gain = arriving_student.preference_value(arrival_project)
         bilateral_reward_gain = sum(
             self.reward_bilateral_interest_collaboration
@@ -584,7 +823,7 @@ class VariableNeighborhoodSearch:
 
     def _sum_group_surplus_penalties(self):
         return sum(
-            max(0, project.num_groups() - project.offered_num_groups) * project.penalty_extra_group
+            max(0, project.num_non_empty_groups() - project.offered_num_groups) * project.penalty_extra_group
             for project in self.projects
         )
 
@@ -593,6 +832,7 @@ class VariableNeighborhoodSearch:
             abs(group.size() - project.ideal_group_size) * project.penalty_deviation_from_ideal_group_size
             for project in self.projects
             for group in project.groups
+            if group.students
         )
 
     def _initial_solution(self):
@@ -670,7 +910,7 @@ if __name__ == "__main__":
     vns_run.report_input_data()
     vns_run.report_num_projects_and_students()
     vns_run.report_current_solution()
-    vns_run.run_general_vns_best_improvement(20, 4, 10, 0.05)
+    vns_run.run_general_vns_best_improvement(40, 6, 10, 0.05)
     vns_run.report_current_solution()
     vns_run.calculate_current_objective_value()
     print("The objective after complete recalculation:", vns_run.objective_value)

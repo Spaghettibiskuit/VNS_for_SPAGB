@@ -37,3 +37,16 @@ class Project:
     def num_groups(self) -> int:
         """Return how many groups are currently in the project."""
         return len(self.groups)
+
+    def get_new_empty_group_and_initial_delta(self) -> tuple[ProjectGroup, int]:
+        additional_group_delta = -self.penalty_extra_group if self.num_groups() >= self.offered_num_groups else 0
+        initial_group_size_delta = -self.penalty_deviation_from_ideal_group_size * self.ideal_group_size
+        new_empty_group = ProjectGroup(self.project_id, self.name, [])
+        self.groups.append(new_empty_group)
+        return (new_empty_group, additional_group_delta + initial_group_size_delta)
+
+    def non_empty_groups(self) -> list[ProjectGroup]:
+        return [group for group in self.groups if group.students]
+
+    def num_non_empty_groups(self) -> int:
+        return len(self.non_empty_groups())
