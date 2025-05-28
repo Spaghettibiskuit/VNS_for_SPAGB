@@ -30,7 +30,7 @@ class Project:
         self.groups: list[ProjectGroup] = []
 
     def add_initial_group_ideal_size(self, unassigned_students):
-        """Adds a group of unassigned students for initial solution."""
+        """Add a group of unassigned students for initial solution."""
         new_group = ProjectGroup(self.project_id, self.name, unassigned_students)
         self.groups.append(new_group)
 
