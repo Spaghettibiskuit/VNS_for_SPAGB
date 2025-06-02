@@ -13,7 +13,7 @@ from project_group import ProjectGroup
 from student import Student
 
 # rd.seed(100)
-rd.seed(3869)
+# rd.seed(3869)
 
 
 class VariableNeighborhoodSearch:
@@ -874,10 +874,10 @@ class VariableNeighborhoodSearch:
 
 
 if __name__ == "__main__":
-    solve_specific_instance = False
+    solve_specific_instance = True
     if solve_specific_instance:
         folder = Path("instances")
-        filename = "generic_3_30.pkl"
+        filename = "generic_5_50.pkl"
         instance_path = folder / filename
         with instance_path.open("rb") as f:
             problem_instance = pickle.load(f)
@@ -892,7 +892,7 @@ if __name__ == "__main__":
     vns_run.report_input_data()
     vns_run.report_num_projects_and_students()
     vns_run.report_current_solution()
-    vns_run.run_general_vns_best_improvement(21, 6, 10, 0.05)
+    vns_run.run_general_vns_best_improvement(40, 6, 10, 0.05)
     vns_run.report_current_solution()
     vns_run.calculate_current_objective_value()
     print("The objective after complete recalculation:", vns_run.objective_value)

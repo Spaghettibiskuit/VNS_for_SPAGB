@@ -8,28 +8,9 @@ import pandas as pd
 import common_names
 
 
-def indexes_to_names(
-    tuples_of_indexes: list[tuple[int, int, int]],
-) -> list[str]:
-    """Return list of full names specified by specific values in tuples."""
-    indicated_names = []
-    for tuple_of_indexes in tuples_of_indexes:
-        sex_indicator, index_first_name, index_last_name = tuple_of_indexes
-        if sex_indicator == 0:
-            first_name = common_names.GIRLS_NAMES[index_first_name]
-        else:
-            first_name = common_names.BOYS_NAMES[index_first_name]
-        last_name = common_names.LAST_NAMES[index_last_name]
-        indicated_names.append(f"{first_name} {last_name}")
-
-    return indicated_names
-
-
 def random_unique_names(num_students: int) -> list[str]:
     """Generate unique names combining girs and boys names with last names."""
-    if (num_first_names := len(common_names.GIRLS_NAMES)) != len(
-        common_names.BOYS_NAMES
-    ):
+    if (num_first_names := len(common_names.GIRLS_NAMES)) != len(common_names.BOYS_NAMES):
         raise ValueError("GIRLS_NAMES and BOYS_NAMES have different length.")
     num_sexes_considered = 2
     all_combos_indexes = list(
@@ -41,7 +22,14 @@ def random_unique_names(num_students: int) -> list[str]:
     )
     selected_combos_indexes = rd.sample(all_combos_indexes, num_students)
 
-    return indexes_to_names(selected_combos_indexes)
+    return [
+        (
+            f"{common_names.GIRLS_NAMES[index_first_name]} {common_names.LAST_NAMES[index_last_name]}"
+            if not male_indicator
+            else f"{common_names.BOYS_NAMES[index_first_name]} {common_names.LAST_NAMES[index_last_name]}"
+        )
+        for male_indicator, index_first_name, index_last_name in selected_combos_indexes
+    ]
 
 
 def random_partner_preferences(
@@ -51,7 +39,7 @@ def random_partner_preferences(
 ) -> list[list[int]]:
     """Generates a list of partner preferences which show a specified degree of reciprocity."""
     students_partner_preferences: list[list[int]] = []
-    chosen_by: dict[list[int]] = {}
+    chosen_by: dict[int : list[int]] = {}
     student_ids = set(range(num_students))
     for student_id in range(num_students):
         all_other_student_ids = student_ids.difference({student_id})
@@ -69,23 +57,13 @@ def random_partner_preferences(
                 student_partner_preferences = reciprocal_preferences
             else:
                 student_partner_preferences = []
-            num_missing_preferences = num_partner_preferences - len(
-                student_partner_preferences
-            )
+            num_missing_preferences = num_partner_preferences - len(student_partner_preferences)
             if num_missing_preferences > 0:
-                left_options = list(
-                    all_other_student_ids.difference(
-                        set(student_partner_preferences)
-                    )
-                )
-                student_partner_preferences += rd.sample(
-                    left_options, num_missing_preferences
-                )
+                left_options = list(all_other_student_ids.difference(set(student_partner_preferences)))
+                student_partner_preferences += rd.sample(left_options, num_missing_preferences)
 
         else:
-            student_partner_preferences = rd.sample(
-                list(all_other_student_ids), num_partner_preferences
-            )
+            student_partner_preferences = rd.sample(list(all_other_student_ids), num_partner_preferences)
 
         students_partner_preferences.append(student_partner_preferences)
 
@@ -99,23 +77,26 @@ def random_partner_preferences(
     return students_partner_preferences
 
 
-def _create_prefs_dict(
+# Hier gings los
+def _create_average_preferences_dict(
     desired_partners: list[int], project_preferences_so_far: list[tuple[int]]
-) -> dict[int]:
-    sums_preferences = {"num_with_preferences": 0}
+) -> dict[int | str : int]:
+    sums_preferences = {}
     num_students_with_preferences = len(project_preferences_so_far)
-    for desired_partner in desired_partners:
-        if desired_partner < num_students_with_preferences:
-            for project, preference in enumerate(
-                project_preferences_so_far[desired_partner]
-            ):
-                if project not in sums_preferences:
-                    sums_preferences[project] = preference
-                else:
-                    sums_preferences[project] += preference
-            sums_preferences["num_with_preferences"] += 1
+    desired_partners_with_preferences = [
+        desired_partner for desired_partner in desired_partners if desired_partner < num_students_with_preferences
+    ]
+    for desired_partner in desired_partners_with_preferences:
+        for project_id, preference in enumerate(project_preferences_so_far[desired_partner]):
+            if project_id not in sums_preferences:
+                sums_preferences[project_id] = preference
+            else:
+                sums_preferences[project_id] += preference
 
-    return sums_preferences
+    return {
+        project_id: sum_preferences / len(desired_partners_with_preferences)
+        for project_id, sum_preferences in sums_preferences.items()
+    }
 
 
 def random_project_preferences(
@@ -128,39 +109,27 @@ def random_project_preferences(
     """Project preference values based on chance and preferences made by desired partners."""
     students_project_preferences: list[tuple[int]] = []
     for student_desired_partners in students_desired_partners:
-        sums_preferences = _create_prefs_dict(
+        average_project_preferences_desired_partners = _create_average_preferences_dict(
             student_desired_partners, students_project_preferences
         )
-        if num_already_decided := sums_preferences["num_with_preferences"]:
+        if average_project_preferences_desired_partners:
             student_project_preferences = tuple(
                 (
                     round(
-                        (
-                            perc_proj_pref_overlap
-                            * sums_preferences[project_id]
-                            / num_already_decided
-                        )
+                        (perc_proj_pref_overlap * average_project_preferences_desired_partners[project_id])
                         + (
                             (1 - perc_proj_pref_overlap)
-                            * rd.uniform(
-                                min_project_preference, max_project_preference
-                            )
+                            * rd.uniform(min_project_preference - 0.5, max_project_preference + 0.5)
                         )
                     )
-                    if project_id in sums_preferences
-                    else round(
-                        rd.uniform(
-                            min_project_preference, max_project_preference
-                        )
-                    )
+                    if project_id in average_project_preferences_desired_partners
+                    else round(rd.uniform(min_project_preference - 0.5, max_project_preference + 0.5))
                 )
                 for project_id in range(num_projects)
             )
         else:
             student_project_preferences = tuple(
-                round(
-                    rd.uniform(min_project_preference, max_project_preference)
-                )
+                round(rd.uniform(min_project_preference - 0.5, max_project_preference + 0.5))
                 for _ in range(num_projects)
             )
         students_project_preferences.append(student_project_preferences)
