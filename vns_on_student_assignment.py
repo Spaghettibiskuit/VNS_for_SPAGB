@@ -12,7 +12,7 @@ from project import Project
 from project_group import ProjectGroup
 from student import Student
 
-# rd.seed(100)
+# rd.seed(3)
 # rd.seed(3869)
 
 
@@ -183,6 +183,15 @@ class VariableNeighborhoodSearch:
                 "is:",
                 self.objective_value,
             )
+        curr_obj_val = (
+            self._sum_preferences()
+            + self._sum_join_rewards()
+            - self._sum_missing_assignment_penalties()
+            - self._sum_group_surplus_penalties()
+            - self._sum_group_size_penalties()
+        )
+
+        print("The actual objective value is:", curr_obj_val)
 
     def _get_founding_options(
         self,
@@ -353,7 +362,10 @@ class VariableNeighborhoodSearch:
         reward_one_less_group = (
             project.penalty_extra_group if project.num_non_empty_groups() > project.offered_num_groups else 0
         )
-        return -preference_loss - bilateral_reward_loss + reward_one_less_group
+        reward_removal_group_not_ideal_size = (
+            abs(group.size() - project.ideal_group_size) * project.penalty_deviation_from_ideal_group_size
+        )
+        return -preference_loss - bilateral_reward_loss + reward_one_less_group + reward_removal_group_not_ideal_size
 
     def _shake(
         self,
@@ -874,10 +886,10 @@ class VariableNeighborhoodSearch:
 
 
 if __name__ == "__main__":
-    solve_specific_instance = True
+    solve_specific_instance = False
     if solve_specific_instance:
         folder = Path("instances")
-        filename = "generic_5_50.pkl"
+        filename = "generic_5_40.pkl"
         instance_path = folder / filename
         with instance_path.open("rb") as f:
             problem_instance = pickle.load(f)
