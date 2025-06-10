@@ -14,15 +14,15 @@ class ProjectGroup:
         self.populate_bilateral_preferences_set()
 
     def populate_bilateral_preferences_set(self):
-        self.bilateral_preferences = set()
         preference_dict = {student.student_id: student.fav_partners for student in self.students}
-        for student_id, fav_partners in preference_dict.items():
-            for fav_partner in fav_partners:
-                if fav_partner in preference_dict and student_id in preference_dict[fav_partner]:
-                    bilateral_preference = tuple(
-                        (fav_partner, student_id) if fav_partner < student_id else (student_id, fav_partner)
-                    )
-                    self.bilateral_preferences.add(bilateral_preference)
+        self.bilateral_preferences = {
+            (student_id, fav_partner)
+            for student_id, fav_partners in preference_dict.items()
+            for fav_partner in fav_partners
+            if fav_partner > student_id
+            and fav_partner in preference_dict
+            and student_id in preference_dict[fav_partner]
+        }
 
     def accept_student(self, arriving_student: Student):
         if arriving_student in self.students:

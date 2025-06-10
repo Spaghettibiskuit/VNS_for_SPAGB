@@ -12,15 +12,7 @@ def random_unique_names(num_students: int) -> list[str]:
     """Generate unique names combining girs and boys names with last names."""
     if (num_first_names := len(common_names.GIRLS_NAMES)) != len(common_names.BOYS_NAMES):
         raise ValueError("GIRLS_NAMES and BOYS_NAMES have different length.")
-    num_sexes_considered = 2
-    all_combos_indexes = list(
-        itertools.product(
-            range(num_sexes_considered),
-            range(num_first_names),
-            range(len(common_names.LAST_NAMES)),
-        )
-    )
-    selected_combos_indexes = rd.sample(all_combos_indexes, num_students)
+    num_genders_considered = 2
 
     return [
         (
@@ -28,7 +20,16 @@ def random_unique_names(num_students: int) -> list[str]:
             if not male_indicator
             else f"{common_names.BOYS_NAMES[index_first_name]} {common_names.LAST_NAMES[index_last_name]}"
         )
-        for male_indicator, index_first_name, index_last_name in selected_combos_indexes
+        for male_indicator, index_first_name, index_last_name in rd.sample(
+            list(
+                itertools.product(
+                    range(num_genders_considered),
+                    range(num_first_names),
+                    range(len(common_names.LAST_NAMES)),
+                )
+            ),
+            num_students,
+        )
     ]
 
 
@@ -53,15 +54,12 @@ def random_partner_preferences(
                 for other_students_id in applicable_for_reciprocity
                 if rd.random() <= percentage_reciprocity
             ]
-            if reciprocal_preferences:
-                student_partner_preferences = reciprocal_preferences
-            else:
-                student_partner_preferences = []
-            num_missing_preferences = num_partner_preferences - len(student_partner_preferences)
+            num_missing_preferences = num_partner_preferences - len(reciprocal_preferences)
             if num_missing_preferences > 0:
-                left_options = list(all_other_student_ids.difference(set(student_partner_preferences)))
-                student_partner_preferences += rd.sample(left_options, num_missing_preferences)
-
+                left_options = list(all_other_student_ids.difference(set(reciprocal_preferences)))
+                student_partner_preferences = reciprocal_preferences + rd.sample(left_options, num_missing_preferences)
+            else:
+                student_partner_preferences = reciprocal_preferences
         else:
             student_partner_preferences = rd.sample(list(all_other_student_ids), num_partner_preferences)
 
@@ -77,8 +75,7 @@ def random_partner_preferences(
     return students_partner_preferences
 
 
-# Hier gings los
-def _create_average_preferences_dict(
+def average_preferences(
     desired_partners: list[int], project_preferences_so_far: list[tuple[int]]
 ) -> dict[int | str : int]:
     sums_preferences = {}
@@ -100,25 +97,28 @@ def _create_average_preferences_dict(
 
 
 def random_project_preferences(
-    students_desired_partners: list[list[int]],
     num_projects: int,
-    perc_proj_pref_overlap: float,
+    students_desired_partners: list[list[int]],
+    percentage_project_preference_overlap: float,
     min_project_preference: int,
     max_project_preference: int,
 ) -> list[tuple[int]]:
     """Project preference values based on chance and preferences made by desired partners."""
     students_project_preferences: list[tuple[int]] = []
     for student_desired_partners in students_desired_partners:
-        average_project_preferences_desired_partners = _create_average_preferences_dict(
+        average_project_preferences_desired_partners = average_preferences(
             student_desired_partners, students_project_preferences
         )
         if average_project_preferences_desired_partners:
             student_project_preferences = tuple(
                 (
                     round(
-                        (perc_proj_pref_overlap * average_project_preferences_desired_partners[project_id])
+                        (
+                            percentage_project_preference_overlap
+                            * average_project_preferences_desired_partners[project_id]
+                        )
                         + (
-                            (1 - perc_proj_pref_overlap)
+                            (1 - percentage_project_preference_overlap)
                             * rd.uniform(min_project_preference - 0.5, max_project_preference + 0.5)
                         )
                     )
@@ -142,19 +142,17 @@ def random_students_df(
     num_students: int,
     num_partner_preferences: int = 3,
     percentage_reciprocity: float = 0.7,
-    perc_proj_pref_overlap: float = 0.7,
+    percentage_project_preference_overlap: float = 0.7,
     min_project_preference: int = 0,
     max_project_preference: int = 3,
 ) -> pd.DataFrame:
     """Return relevant information on students."""
-    students_names: list[str] = random_unique_names(num_students)
-    desired_partners: list[list[int]] = random_partner_preferences(
-        num_students, percentage_reciprocity, num_partner_preferences
-    )
+    students_names = random_unique_names(num_students)
+    desired_partners = random_partner_preferences(num_students, percentage_reciprocity, num_partner_preferences)
     desired_projects = random_project_preferences(
-        desired_partners,
         num_projects,
-        perc_proj_pref_overlap,
+        desired_partners,
+        percentage_project_preference_overlap,
         min_project_preference,
         max_project_preference,
     )

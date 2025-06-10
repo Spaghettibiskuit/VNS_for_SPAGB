@@ -33,7 +33,7 @@ def generate_projects_and_students_data(
     # specifications for student data
     num_partner_preferences: int = 3,
     percentage_reciprocity: float = 0.7,
-    perc_proj_pref_overlap: float = 0.7,
+    percentage_project_preference_overlap: float = 0.7,
     min_project_preference: int = 0,
     max_project_preference: int = 3,
 ) -> tuple[pd.DataFrame]:
@@ -62,7 +62,7 @@ def generate_projects_and_students_data(
                 num_students=num_students,
                 num_partner_preferences=num_partner_preferences,
                 percentage_reciprocity=percentage_reciprocity,
-                perc_proj_pref_overlap=perc_proj_pref_overlap,
+                percentage_project_preference_overlap=percentage_project_preference_overlap,
                 min_project_preference=min_project_preference,
                 max_project_preference=max_project_preference,
             ),
@@ -75,9 +75,7 @@ def generate_projects_and_students_data(
         return instance_tuple
 
 
-save_projects_and_students_instance = partial(
-    generate_projects_and_students_data, save_as_pickle=True
-)
+save_projects_and_students_instance = partial(generate_projects_and_students_data, save_as_pickle=True)
 
 generate_throwaway_instance = partial(
     generate_projects_and_students_data,

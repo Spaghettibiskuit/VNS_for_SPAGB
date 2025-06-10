@@ -8,8 +8,6 @@ folder = Path("instances")
 if not folder.exists():
     folder.mkdir()
 
-# H
-
 project_quantities = [3, 4, 5]
 student_quantities = [30, 40, 50]
 

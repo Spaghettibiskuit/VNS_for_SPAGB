@@ -4,7 +4,7 @@ import random as rd
 
 import pandas as pd
 
-import disciplines
+from disciplines import BUSINESS_DISCIPLINES
 
 
 def random_projects_df(
@@ -26,24 +26,13 @@ def random_projects_df(
 ) -> pd.DataFrame:
     """Randomly generate a dataframe describing requirements of projects."""
 
-    names_projects = rd.sample(
-        disciplines.BUSINESS_DISCIPLINES, k=num_projects
-    )
-    desired_nums_groups = [
-        rd.randint(min_desired_num_groups, max_desired_num_groups)
-        for _ in names_projects
-    ]
+    names_projects = rd.sample(BUSINESS_DISCIPLINES, k=num_projects)
+    desired_nums_groups = [rd.randint(min_desired_num_groups, max_desired_num_groups) for _ in names_projects]
     max_nums_groups = [
-        desired_num_groups
-        + rd.randint(
-            min_manageable_surplus_groups, max_manageable_surplus_groups
-        )
+        desired_num_groups + rd.randint(min_manageable_surplus_groups, max_manageable_surplus_groups)
         for desired_num_groups in desired_nums_groups
     ]
-    ideal_group_sizes = [
-        rd.randint(min_ideal_group_size, max_ideal_group_size)
-        for _ in names_projects
-    ]
+    ideal_group_sizes = [rd.randint(min_ideal_group_size, max_ideal_group_size) for _ in names_projects]
     min_group_sizes = [
         max(
             1,
@@ -56,20 +45,11 @@ def random_projects_df(
         for ideal_group_size in ideal_group_sizes
     ]
     max_group_sizes = [
-        ideal_group_size
-        + rd.randint(
-            min_tolerable_group_size_surplus, max_tolerable_group_size_surplus
-        )
+        ideal_group_size + rd.randint(min_tolerable_group_size_surplus, max_tolerable_group_size_surplus)
         for ideal_group_size in ideal_group_sizes
     ]
-    pen_num_groups = [
-        rd.randint(min_pen_num_groups, max_pen_num_groups)
-        for _ in names_projects
-    ]
-    pen_group_size = [
-        rd.randint(min_pen_group_size, max_pen_group_size)
-        for _ in names_projects
-    ]
+    pen_num_groups = [rd.randint(min_pen_num_groups, max_pen_num_groups) for _ in names_projects]
+    pen_group_size = [rd.randint(min_pen_group_size, max_pen_group_size) for _ in names_projects]
 
     data_projects = {
         "name": names_projects,
