@@ -14,7 +14,7 @@ from project import Project
 from project_group import ProjectGroup
 from student import Student
 
-# rd.seed(3)
+# rd.seed(0)
 # rd.seed(3869)
 
 
@@ -33,10 +33,9 @@ class VariableNeighborhoodSearch:
         self.projects = tuple((Project(*row) for row in self.projects_info.itertuples()))
         self.students = tuple((Student(*row) for row in self.students_info.itertuples()))
         self.unassigned_students: list[Student] = []
-        self.objective_value = 0
         self.neigborhood_visit_counter = {}
         self._initial_solution()
-        self.calculate_current_objective_value()
+        self.objective_value = self.current_objective_value()
         self.best_objective_value = self.objective_value
         self.move_reversals = []
 
@@ -47,6 +46,7 @@ class VariableNeighborhoodSearch:
         assignment_bias: float | int,
         unassignment_probability: float,
         min_neighborhood: int = 1,
+        testing: bool = False,
     ):
         if not 0 <= unassignment_probability <= 1:
             raise ValueError("A probability must be between 0 and 1.")
@@ -111,11 +111,17 @@ class VariableNeighborhoodSearch:
 
             self.neigborhood_visit_counter[current_neighborhood] += 1
 
-            print(f"\nIteration {current_iteration}/{iteration_limit}")
-            print("\nThe current neighborhood is:", current_neighborhood)
+            # print(f"\nIteration {current_iteration}/{iteration_limit}")
+            # print("\nThe current neighborhood is:", current_neighborhood)
 
             if found_or_dissolve_group:
                 self._found_or_dissolve_one_group()
+                if testing:
+                    error_report = self._check_solution()
+                    if error_report:
+                        error_report["iteration"] = current_iteration
+                        error_report["point"] = "founding or dissolution"
+                        return error_report
             if shake:
                 self._shake(
                     num_to_move,
@@ -123,20 +129,24 @@ class VariableNeighborhoodSearch:
                     assignment_bias,
                     unassignment_probability,
                 )
-                print("The objective value after the shake is:", self.objective_value)
+                if testing:
+                    error_report = self._check_solution()
+                    if error_report:
+                        error_report["iteration"] = current_iteration
+                        error_report["point"] = "shake"
+                        return error_report
+                # print("The objective value after the shake is:", self.objective_value)
 
             self._variable_neighborhood_descent(num_to_move, across_projects)
+            if testing:
+                error_report = self._check_solution()
+                if error_report:
+                    error_report["iteration"] = current_iteration
+                    error_report["point"] = "VND"
+                    return error_report
 
-            curr_obj_val = (
-                self._sum_preferences()
-                + self._sum_join_rewards()
-                - self._sum_missing_assignment_penalties()
-                - self._sum_group_surplus_penalties()
-                - self._sum_group_size_penalties()
-            )
-
-            print("The objective value after VND is:", curr_obj_val)
-            print("The stated current objective value after VND is:", self.objective_value)
+            # print("The stated current objective value after VND is:", self.objective_value)
+            # print("The objective value after VND is:", self.current_objective_value())
 
             if self.objective_value > self.best_objective_value:
                 self.best_objective_value = self.objective_value
@@ -155,6 +165,56 @@ class VariableNeighborhoodSearch:
             for project in self.projects:
                 project.groups = [group for group in project.groups if group.students]
 
+    def _check_solution(self):
+        errors_validity = self._check_validity()
+        error_objective_value = self._check_objective_value()
+        return errors_validity | error_objective_value
+
+    def _check_validity(self):
+        errors_validity = {}
+        groups_too_small = [
+            f"Group {project.groups.index(group)} in project {project.name} {project.project_id} "
+            f"has {group.size()} students. The minimum is {project.min_group_size}"
+            for project in self.projects
+            for group in project.groups
+            if group.students and group.size() < project.min_group_size
+        ]
+        if groups_too_small:
+            errors_validity["groups_too_small"] = groups_too_small
+        groups_too_big = [
+            f"Group {project.groups.index(group)} in project {project.name} {project.project_id} "
+            f"has {group.size()} students. The maximum is {project.max_group_size}"
+            for project in self.projects
+            for group in project.groups
+            if group.size() > project.max_group_size
+        ]
+        if groups_too_big:
+            errors_validity["groups_too_big"] = groups_too_big
+        projects_too_many_groups = [
+            f"{project.name} {project.project_id} has {project.num_non_empty_groups()} "
+            f"groups. Allowed are {project.max_num_groups}."
+            for project in self.projects
+            if project.num_non_empty_groups() > project.max_num_groups
+        ]
+        if projects_too_many_groups:
+            errors_validity["too_many_groups"] = projects_too_many_groups
+        students_anywhere = sorted(
+            [student for project in self.projects for group in project.groups for student in group.students]
+            + self.unassigned_students,
+            key=lambda student: student.student_id,
+        )
+        # students_anywhere[0] = Student(35, "Jerry", [1, 2, 3], (1, 2, 3))
+        if not all(a is b for a, b in zip(self.students, students_anywhere)):
+            errors_validity["inconsistency_students"] = True
+        return errors_validity
+
+    def _check_objective_value(self):
+        delta_induced_objective_value = self.objective_value
+        actual_objective_value = self.current_objective_value()
+        if delta_induced_objective_value != actual_objective_value:
+            return {"claimed_obj": delta_induced_objective_value, "actual_obj": actual_objective_value}
+        return {}
+
     def _found_or_dissolve_one_group(self):
         founding_options_moves_and_deltas = self._get_founding_options()
         dissolution_options_moves_and_deltas = self._get_dissolution_options()
@@ -171,29 +231,22 @@ class VariableNeighborhoodSearch:
             self.move_reversals.append(move[::-1])
 
         self.objective_value += max_delta
-        if (moves, max_delta) in founding_options_moves_and_deltas:
-            print(
-                "The objective value after a group was founded in project",
-                moves[0][1][0].project_id,
-                "is:",
-                self.objective_value,
-            )
-        if (moves, max_delta) in dissolution_options_moves_and_deltas:
-            print(
-                "The objective value after a group was dissolved in project",
-                moves[0][0][0].project_id,
-                "is:",
-                self.objective_value,
-            )
-        curr_obj_val = (
-            self._sum_preferences()
-            + self._sum_join_rewards()
-            - self._sum_missing_assignment_penalties()
-            - self._sum_group_surplus_penalties()
-            - self._sum_group_size_penalties()
-        )
+        # if (moves, max_delta) in founding_options_moves_and_deltas:
+        #     print(
+        #         "The stated objective value after a group was founded in project",
+        #         moves[0][1][0].project_id,
+        #         "is:",
+        #         self.objective_value,
+        #     )
+        # if (moves, max_delta) in dissolution_options_moves_and_deltas:
+        #     print(
+        #         "The stated objective value after a group was dissolved in project",
+        #         moves[0][0][0].project_id,
+        #         "is:",
+        #         self.objective_value,
+        #     )
 
-        print("The actual objective value is:", curr_obj_val)
+        # print("The objective value is:", self.current_objective_value())
 
     def _get_founding_options(
         self,
@@ -764,8 +817,8 @@ class VariableNeighborhoodSearch:
             )
         return departures_specifications
 
-    def calculate_current_objective_value(self):
-        self.objective_value = (
+    def current_objective_value(self):
+        return (
             self._sum_preferences()
             + self._sum_join_rewards()
             - self._sum_missing_assignment_penalties()
@@ -857,7 +910,7 @@ class VariableNeighborhoodSearch:
         print("\nThese students were not assigned:")
         for student in self.unassigned_students:
             print(student.name, student.student_id)
-        print(f"The objective value is {self.objective_value}")
+        print(f"The stated objective value: {self.objective_value}")
 
 
 if __name__ == "__main__":
@@ -869,7 +922,7 @@ if __name__ == "__main__":
         with instance_path.open("rb") as f:
             problem_instance = pickle.load(f)
     else:
-        problem_instance = generate_throwaway_instance(num_projects=3, num_students=30)
+        problem_instance = generate_throwaway_instance(num_projects=3, num_students=20)
 
     vns_run = VariableNeighborhoodSearch(
         problem_instance,
@@ -881,8 +934,7 @@ if __name__ == "__main__":
     vns_run.report_current_solution()
     vns_run.run_general_vns_best_improvement(40, 6, 10, 0.05)
     vns_run.report_current_solution()
-    vns_run.calculate_current_objective_value()
-    print("The objective after complete recalculation:", vns_run.objective_value)
+    print("The objective after complete recalculation:", vns_run.current_objective_value())
     print("The list of unassigned students:", vns_run.unassigned_students)
     for neigborhood, num_visits in vns_run.neigborhood_visit_counter.items():
         print(f"{neigborhood}: {num_visits}")
