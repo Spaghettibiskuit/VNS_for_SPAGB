@@ -1,7 +1,7 @@
 """Main file of VNS implementation for a student assignment problem."""
 
 import itertools as it
-import pickle
+import json
 import random as rd
 from collections import Counter
 from collections.abc import Iterator
@@ -23,11 +23,12 @@ class VariableNeighborhoodSearch:
 
     def __init__(
         self,
-        problem_data: tuple[pd.DataFrame, pd.DataFrame],
+        projects_info: pd.DataFrame,
+        students_info: pd.DataFrame,
         reward_bilateral_interest_collaboration: int,
         penalty_student_not_assigned: int,
     ):
-        self.projects_info, self.students_info = problem_data
+        self.projects_info, self.students_info = projects_info, students_info
         self.reward_bilateral_interest_collaboration = reward_bilateral_interest_collaboration
         self.penalty_student_not_assigned = penalty_student_not_assigned
         self.projects = tuple((Project(*row) for row in self.projects_info.itertuples()))
@@ -914,18 +915,25 @@ class VariableNeighborhoodSearch:
 
 
 if __name__ == "__main__":
-    solve_specific_instance = False
+    solve_specific_instance = True
     if solve_specific_instance:
-        folder = Path("instances")
-        filename = "generic_5_50.pkl"
-        instance_path = folder / filename
-        with instance_path.open("rb") as f:
-            problem_instance = pickle.load(f)
+        dimension = "3_30_instances"
+        folder_projects = Path("instances_projects")
+        filename_projects = "generic_3_30_projects_0.csv"
+        filepath_projects = folder_projects / dimension / filename_projects
+        folder_students = Path("instances_students")
+        filename_students = "generic_3_30_students_0.csv"
+        filepath_students = folder_students / dimension / filename_students
+        projects_df = pd.read_csv(filepath_projects)
+        students_df = pd.read_csv(filepath_students)
+        students_df["fav_partners"] = students_df["fav_partners"].apply(json.loads)
+        students_df["project_prefs"] = students_df["project_prefs"].apply(lambda x: tuple(json.loads(x)))
     else:
-        problem_instance = generate_throwaway_instance(num_projects=3, num_students=20)
+        projects_df, students_df = generate_throwaway_instance(num_projects=3, num_students=20)
 
     vns_run = VariableNeighborhoodSearch(
-        problem_instance,
+        projects_df,
+        students_df,
         reward_bilateral_interest_collaboration=2,
         penalty_student_not_assigned=3,
     )

@@ -1,0 +1,362 @@
+{
+    "generic_3_30_0": {
+        "best_obj": 81.0,
+        "obj_bound": 81.0
+    },
+    "generic_3_30_1": {
+        "best_obj": 92.0,
+        "obj_bound": 92.00000067972474
+    },
+    "generic_3_30_2": {
+        "best_obj": 86.0,
+        "obj_bound": 86.0
+    },
+    "generic_3_30_3": {
+        "best_obj": 98.0,
+        "obj_bound": 102.0
+    },
+    "generic_3_30_4": {
+        "best_obj": 101.0,
+        "obj_bound": 101.0
+    },
+    "generic_3_30_5": {
+        "best_obj": 96.0,
+        "obj_bound": 96.0
+    },
+    "generic_3_30_6": {
+        "best_obj": 98.0,
+        "obj_bound": 98.0
+    },
+    "generic_3_30_7": {
+        "best_obj": 71.0,
+        "obj_bound": 75.0
+    },
+    "generic_3_30_8": {
+        "best_obj": 101.0,
+        "obj_bound": 104.0
+    },
+    "generic_3_30_9": {
+        "best_obj": 81.0,
+        "obj_bound": 89.0
+    },
+    "generic_3_40_0": {
+        "best_obj": 118.0,
+        "obj_bound": 118.0
+    },
+    "generic_3_40_1": {
+        "best_obj": 112.0,
+        "obj_bound": 119.0
+    },
+    "generic_3_40_2": {
+        "best_obj": 116.0,
+        "obj_bound": 123.0
+    },
+    "generic_3_40_3": {
+        "best_obj": 114.0,
+        "obj_bound": 114.0
+    },
+    "generic_3_40_4": {
+        "best_obj": 123.0,
+        "obj_bound": 134.0
+    },
+    "generic_3_40_5": {
+        "best_obj": 122.0,
+        "obj_bound": 130.0
+    },
+    "generic_3_40_6": {
+        "best_obj": 102.0,
+        "obj_bound": 109.0
+    },
+    "generic_3_40_7": {
+        "best_obj": 105.0,
+        "obj_bound": 115.0
+    },
+    "generic_3_40_8": {
+        "best_obj": 121.0,
+        "obj_bound": 124.0
+    },
+    "generic_3_40_9": {
+        "best_obj": 113.0,
+        "obj_bound": 115.0
+    },
+    "generic_3_50_0": {
+        "best_obj": 160.0,
+        "obj_bound": 164.0
+    },
+    "generic_3_50_1": {
+        "best_obj": 154.0,
+        "obj_bound": 159.0
+    },
+    "generic_3_50_2": {
+        "best_obj": 139.0,
+        "obj_bound": 146.0
+    },
+    "generic_3_50_3": {
+        "best_obj": 123.0,
+        "obj_bound": 133.0
+    },
+    "generic_3_50_4": {
+        "best_obj": 88.0,
+        "obj_bound": 93.0
+    },
+    "generic_3_50_5": {
+        "best_obj": 147.0,
+        "obj_bound": 159.0
+    },
+    "generic_3_50_6": {
+        "best_obj": 133.0,
+        "obj_bound": 139.0
+    },
+    "generic_3_50_7": {
+        "best_obj": 154.0,
+        "obj_bound": 165.0
+    },
+    "generic_3_50_8": {
+        "best_obj": 136.0,
+        "obj_bound": 140.0
+    },
+    "generic_3_50_9": {
+        "best_obj": 131.0,
+        "obj_bound": 142.0
+    },
+    "generic_4_30_0": {
+        "best_obj": 89.0,
+        "obj_bound": 89.0
+    },
+    "generic_4_30_1": {
+        "best_obj": 96.0,
+        "obj_bound": 96.0
+    },
+    "generic_4_30_2": {
+        "best_obj": 102.0,
+        "obj_bound": 109.0
+    },
+    "generic_4_30_3": {
+        "best_obj": 104.0,
+        "obj_bound": 104.0
+    },
+    "generic_4_30_4": {
+        "best_obj": 111.0,
+        "obj_bound": 116.0
+    },
+    "generic_4_30_5": {
+        "best_obj": 89.0,
+        "obj_bound": 94.0
+    },
+    "generic_4_30_6": {
+        "best_obj": 114.0,
+        "obj_bound": 115.0
+    },
+    "generic_4_30_7": {
+        "best_obj": 95.0,
+        "obj_bound": 95.0
+    },
+    "generic_4_30_8": {
+        "best_obj": 87.0,
+        "obj_bound": 87.0
+    },
+    "generic_4_30_9": {
+        "best_obj": 96.0,
+        "obj_bound": 102.0
+    },
+    "generic_4_40_0": {
+        "best_obj": 129.0,
+        "obj_bound": 135.0
+    },
+    "generic_4_40_1": {
+        "best_obj": 118.0,
+        "obj_bound": 128.0
+    },
+    "generic_4_40_2": {
+        "best_obj": 123.0,
+        "obj_bound": 137.0
+    },
+    "generic_4_40_3": {
+        "best_obj": 116.0,
+        "obj_bound": 122.0
+    },
+    "generic_4_40_4": {
+        "best_obj": 116.0,
+        "obj_bound": 116.0
+    },
+    "generic_4_40_5": {
+        "best_obj": 118.0,
+        "obj_bound": 130.0
+    },
+    "generic_4_40_6": {
+        "best_obj": 121.0,
+        "obj_bound": 127.0
+    },
+    "generic_4_40_7": {
+        "best_obj": 126.0,
+        "obj_bound": 126.0
+    },
+    "generic_4_40_8": {
+        "best_obj": 135.0,
+        "obj_bound": 139.0
+    },
+    "generic_4_40_9": {
+        "best_obj": 133.0,
+        "obj_bound": 141.0
+    },
+    "generic_4_50_0": {
+        "best_obj": 159.0,
+        "obj_bound": 166.0
+    },
+    "generic_4_50_1": {
+        "best_obj": 148.0,
+        "obj_bound": 159.0
+    },
+    "generic_4_50_2": {
+        "best_obj": 160.0,
+        "obj_bound": 160.0
+    },
+    "generic_4_50_3": {
+        "best_obj": 150.0,
+        "obj_bound": 160.0
+    },
+    "generic_4_50_4": {
+        "best_obj": 170.0,
+        "obj_bound": 176.0
+    },
+    "generic_4_50_5": {
+        "best_obj": 153.0,
+        "obj_bound": 153.0
+    },
+    "generic_4_50_6": {
+        "best_obj": 158.0,
+        "obj_bound": 171.0
+    },
+    "generic_4_50_7": {
+        "best_obj": 156.0,
+        "obj_bound": 161.0
+    },
+    "generic_4_50_8": {
+        "best_obj": 160.0,
+        "obj_bound": 173.0
+    },
+    "generic_4_50_9": {
+        "best_obj": 145.0,
+        "obj_bound": 153.0
+    },
+    "generic_5_30_0": {
+        "best_obj": 97.0,
+        "obj_bound": 97.00000000000007
+    },
+    "generic_5_30_1": {
+        "best_obj": 94.0,
+        "obj_bound": 100.99999999999997
+    },
+    "generic_5_30_2": {
+        "best_obj": 102.0,
+        "obj_bound": 112.0
+    },
+    "generic_5_30_3": {
+        "best_obj": 110.0,
+        "obj_bound": 115.0
+    },
+    "generic_5_30_4": {
+        "best_obj": 103.0,
+        "obj_bound": 103.0
+    },
+    "generic_5_30_5": {
+        "best_obj": 100.0,
+        "obj_bound": 100.0
+    },
+    "generic_5_30_6": {
+        "best_obj": 87.0,
+        "obj_bound": 87.0
+    },
+    "generic_5_30_7": {
+        "best_obj": 94.0,
+        "obj_bound": 101.0
+    },
+    "generic_5_30_8": {
+        "best_obj": 103.0,
+        "obj_bound": 108.0
+    },
+    "generic_5_30_9": {
+        "best_obj": 93.0,
+        "obj_bound": 93.0
+    },
+    "generic_5_40_0": {
+        "best_obj": 138.0,
+        "obj_bound": 147.0
+    },
+    "generic_5_40_1": {
+        "best_obj": 137.0,
+        "obj_bound": 144.0
+    },
+    "generic_5_40_2": {
+        "best_obj": 135.0,
+        "obj_bound": 142.0
+    },
+    "generic_5_40_3": {
+        "best_obj": 135.0,
+        "obj_bound": 135.0
+    },
+    "generic_5_40_4": {
+        "best_obj": 128.0,
+        "obj_bound": 133.0
+    },
+    "generic_5_40_5": {
+        "best_obj": 132.0,
+        "obj_bound": 135.0
+    },
+    "generic_5_40_6": {
+        "best_obj": 138.0,
+        "obj_bound": 145.0
+    },
+    "generic_5_40_7": {
+        "best_obj": 133.0,
+        "obj_bound": 138.0
+    },
+    "generic_5_40_8": {
+        "best_obj": 130.0,
+        "obj_bound": 134.0
+    },
+    "generic_5_40_9": {
+        "best_obj": 113.0,
+        "obj_bound": 118.0
+    },
+    "generic_5_50_0": {
+        "best_obj": 170.0,
+        "obj_bound": 183.0
+    },
+    "generic_5_50_1": {
+        "best_obj": 151.0,
+        "obj_bound": 170.0
+    },
+    "generic_5_50_2": {
+        "best_obj": 170.0,
+        "obj_bound": 184.0
+    },
+    "generic_5_50_3": {
+        "best_obj": 169.0,
+        "obj_bound": 178.0
+    },
+    "generic_5_50_4": {
+        "best_obj": 167.0,
+        "obj_bound": 175.0
+    },
+    "generic_5_50_5": {
+        "best_obj": 162.0,
+        "obj_bound": 171.0
+    },
+    "generic_5_50_6": {
+        "best_obj": 152.0,
+        "obj_bound": 167.0
+    },
+    "generic_5_50_7": {
+        "best_obj": 147.0,
+        "obj_bound": 150.0
+    },
+    "generic_5_50_8": {
+        "best_obj": 170.0,
+        "obj_bound": 175.0
+    },
+    "generic_5_50_9": {
+        "best_obj": 130.0,
+        "obj_bound": 153.0
+    }
+}

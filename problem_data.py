@@ -1,6 +1,6 @@
 """Prevents crash because num_projects do not match by enforcing equality."""
 
-import pickle
+import json
 from functools import partial
 from pathlib import Path
 
@@ -13,8 +13,9 @@ from students_info import random_students_df
 def generate_projects_and_students_data(
     num_projects: int,
     num_students: int,
-    save_as_pickle: bool,
-    instance_path: Path | None,
+    save_as_csvs: bool,
+    filepath_projects: Path | None,
+    filepath_students: Path | None,
     # specifications for project data
     min_desired_num_groups: int = 2,
     max_desired_num_groups: int = 4,
@@ -36,7 +37,7 @@ def generate_projects_and_students_data(
     percentage_project_preference_overlap: float = 0.7,
     min_project_preference: int = 0,
     max_project_preference: int = 3,
-) -> tuple[pd.DataFrame]:
+) -> tuple[pd.DataFrame, pd.DataFrame]:
     """Return random projects and students data in one tuple."""
     instance_tuple = tuple(
         (
@@ -68,17 +69,21 @@ def generate_projects_and_students_data(
             ),
         )
     )
-    if save_as_pickle:
-        with instance_path.open("wb") as f:
-            pickle.dump(instance_tuple, f)
+    if save_as_csvs:
+        projects_info, students_info = instance_tuple
+        projects_info.to_csv(filepath_projects, index=False)
+        students_info["fav_partners"] = students_info["fav_partners"].apply(json.dumps)
+        students_info["project_prefs"] = students_info["project_prefs"].apply(json.dumps)
+        students_info.to_csv(filepath_students, index=False)
     else:
         return instance_tuple
 
 
-save_projects_and_students_instance = partial(generate_projects_and_students_data, save_as_pickle=True)
+save_projects_and_students_instance = partial(generate_projects_and_students_data, save_as_csvs=True)
 
 generate_throwaway_instance = partial(
     generate_projects_and_students_data,
-    save_as_pickle=False,
-    instance_path=None,
+    save_as_csvs=False,
+    filepath_projects=None,
+    filepath_students=None,
 )

@@ -27,9 +27,12 @@ def test_vns(
         random.seed(current_random_seed)
         for num_projects in range(min_num_projects, max_num_projects + 1, step_num_projects):
             for num_students in range(min_num_students, max_num_students + 1, step_num_students):
-                problem_instance = generate_throwaway_instance(num_projects=num_projects, num_students=num_students)
+                projects_info, students_info = generate_throwaway_instance(
+                    num_projects=num_projects, num_students=num_students
+                )
                 vns_run = VariableNeighborhoodSearch(
-                    problem_instance,
+                    projects_info,
+                    students_info,
                     reward_bilateral_interest_collaboration=2,
                     penalty_student_not_assigned=3,
                 )
