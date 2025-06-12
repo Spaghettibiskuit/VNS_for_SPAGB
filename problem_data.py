@@ -1,6 +1,7 @@
 """Prevents crash because num_projects do not match by enforcing equality."""
 
 import json
+import random as rd
 from functools import partial
 from pathlib import Path
 
@@ -37,8 +38,12 @@ def generate_projects_and_students_data(
     percentage_project_preference_overlap: float = 0.7,
     min_project_preference: int = 0,
     max_project_preference: int = 3,
+    # random seed
+    seed: int | None = None,
 ) -> tuple[pd.DataFrame, pd.DataFrame]:
     """Return random projects and students data in one tuple."""
+    if seed:
+        rd.seed(seed)
     instance_tuple = tuple(
         (
             random_projects_df(

@@ -1,4 +1,3 @@
-import random
 from pathlib import Path
 
 from problem_data import generate_throwaway_instance
@@ -24,26 +23,22 @@ def test_vns(
     current_random_seed = starting_random_seed
     lines_written = 0
     while lines_written < line_limit:
-        random.seed(current_random_seed)
         for num_projects in range(min_num_projects, max_num_projects + 1, step_num_projects):
             for num_students in range(min_num_students, max_num_students + 1, step_num_students):
                 projects_info, students_info = generate_throwaway_instance(
-                    num_projects=num_projects, num_students=num_students
+                    num_projects=num_projects, num_students=num_students, seed=current_random_seed
                 )
                 vns_run = VariableNeighborhoodSearch(
                     projects_info,
                     students_info,
-                    reward_bilateral_interest_collaboration=2,
-                    penalty_student_not_assigned=3,
                 )
                 error_report = vns_run.run_general_vns_best_improvement(
-                    iteration_limit=40,
-                    max_neighborhood=6,
-                    assignment_bias=10,
-                    unassignment_probability=0.05,
-                    testing=True,
+                    iteration_limit=40, max_neighborhood=6, testing=True, seed=current_random_seed
                 )
                 if not error_report:
+                    print(
+                        f"Success for {num_projects} projects, {num_students} students and seed {current_random_seed}!"
+                    )
                     continue
                 error_description_elements = [
                     f"Seed: {current_random_seed}; Number of Projects: {num_projects}; "
@@ -55,18 +50,9 @@ def test_vns(
                         f"The objective value calculated with deltas is: {error_report["claimed_obj"]}; "
                         f"The actual objective value obtained by complete recalculation is {error_report["actual_obj"]}"
                     )
-                if "groups_too_small" in error_report:
-                    error_description_elements += [
-                        group_to_small_description for group_to_small_description in error_report["groups_too_small"]
-                    ]
-                if "groups_too_big" in error_report:
-                    error_description_elements += [
-                        group_to_big_description for group_to_big_description in error_report["groups_too_big"]
-                    ]
-                if "too_many_groups" in error_report:
-                    error_description_elements += [
-                        too_many_groups_description for too_many_groups_description in error_report["too_many_groups"]
-                    ]
+                for key in ["groups_too_small", "groups_too_big", "too_many_groups"]:
+                    if key in error_report:
+                        error_description_elements += list(error_report[key])
                 if "inconsistency_students" in error_report:
                     error_description_elements.append("There is a inconsistency in how students are distributed;\n")
 
@@ -97,6 +83,6 @@ if __name__ == "__main__":
         step_num_students=5,
         starting_random_seed=0,
         line_limit=1000,
-        filename="error_log_5",
+        filename="error_log_6",
         extension=".txt",
     )

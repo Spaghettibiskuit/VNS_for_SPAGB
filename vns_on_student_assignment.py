@@ -3,6 +3,7 @@
 import itertools as it
 import json
 import random as rd
+import time as t
 from collections import Counter
 from collections.abc import Iterator
 from pathlib import Path
@@ -14,9 +15,6 @@ from project import Project
 from project_group import ProjectGroup
 from student import Student
 
-# rd.seed(0)
-# rd.seed(3869)
-
 
 class VariableNeighborhoodSearch:
     """Applies VNS on a student assignment problem."""
@@ -25,14 +23,15 @@ class VariableNeighborhoodSearch:
         self,
         projects_info: pd.DataFrame,
         students_info: pd.DataFrame,
-        reward_bilateral_interest_collaboration: int,
-        penalty_student_not_assigned: int,
+        reward_bilateral_interest_collaboration: int = 2,
+        penalty_student_not_assigned: int = 3,
     ):
         self.projects_info, self.students_info = projects_info, students_info
         self.reward_bilateral_interest_collaboration = reward_bilateral_interest_collaboration
         self.penalty_student_not_assigned = penalty_student_not_assigned
         self.projects = tuple((Project(*row) for row in self.projects_info.itertuples()))
         self.students = tuple((Student(*row) for row in self.students_info.itertuples()))
+        self.time_data_loaded = t.time()
         self.unassigned_students: list[Student] = []
         self.neigborhood_visit_counter = {}
         self._initial_solution()
@@ -42,22 +41,30 @@ class VariableNeighborhoodSearch:
 
     def run_general_vns_best_improvement(
         self,
-        iteration_limit: int,
         max_neighborhood: int,
-        assignment_bias: float | int,
-        unassignment_probability: float,
+        assignment_bias: float | int = 10,
+        unassignment_probability: float = 0.05,
         min_neighborhood: int = 1,
         testing: bool = False,
+        benchmarking: bool = False,
+        iteration_limit: int = 40,
+        time_limit: int = 300,
+        seed: int | None = None,
     ):
+        if seed:
+            rd.seed(seed)
         if not 0 <= unassignment_probability <= 1:
             raise ValueError("A probability must be between 0 and 1.")
         self.neigborhood_visit_counter = {
             neighborhood: 0 for neighborhood in range(min_neighborhood, max_neighborhood + 1)
         }
+        best_solutions = [
+            {"obj": self.best_objective_value, "runtime": t.time() - self.time_data_loaded, "neighborhood": 0}
+        ]
         current_iteration = 0
         current_neighborhood = min_neighborhood
 
-        while current_iteration < iteration_limit:
+        while True:
 
             current_iteration += 1
 
@@ -151,13 +158,20 @@ class VariableNeighborhoodSearch:
 
             if self.objective_value > self.best_objective_value:
                 self.best_objective_value = self.objective_value
+                best_solutions.append(
+                    {
+                        "obj": self.best_objective_value,
+                        "runtime": t.time() - self.time_data_loaded,
+                        "neighborhood": current_neighborhood,
+                    }
+                )
                 current_neighborhood = min_neighborhood
             else:
                 for move_reversal in reversed(self.move_reversals):
                     self._move_student(*move_reversal)
                 self.objective_value = self.best_objective_value
 
-                if current_neighborhood == max_neighborhood:
+                if current_neighborhood >= max_neighborhood:
                     current_neighborhood = min_neighborhood
                 else:
                     current_neighborhood += 1
@@ -165,6 +179,14 @@ class VariableNeighborhoodSearch:
             self.move_reversals = []
             for project in self.projects:
                 project.groups = [group for group in project.groups if group.students]
+
+            if benchmarking and t.time() - self.time_data_loaded > time_limit:
+                break
+            if not benchmarking and current_iteration >= iteration_limit:
+                break
+
+        if benchmarking:
+            return best_solutions
 
     def _check_solution(self):
         errors_validity = self._check_validity()
@@ -917,12 +939,12 @@ class VariableNeighborhoodSearch:
 if __name__ == "__main__":
     solve_specific_instance = True
     if solve_specific_instance:
-        dimension = "3_30_instances"
+        dimension = "4_30_instances"
         folder_projects = Path("instances_projects")
-        filename_projects = "generic_3_30_projects_0.csv"
+        filename_projects = "generic_4_30_projects_0.csv"
         filepath_projects = folder_projects / dimension / filename_projects
         folder_students = Path("instances_students")
-        filename_students = "generic_3_30_students_0.csv"
+        filename_students = "generic_4_30_students_0.csv"
         filepath_students = folder_students / dimension / filename_students
         projects_df = pd.read_csv(filepath_projects)
         students_df = pd.read_csv(filepath_students)
@@ -934,13 +956,11 @@ if __name__ == "__main__":
     vns_run = VariableNeighborhoodSearch(
         projects_df,
         students_df,
-        reward_bilateral_interest_collaboration=2,
-        penalty_student_not_assigned=3,
     )
     vns_run.report_input_data()
     vns_run.report_num_projects_and_students()
     vns_run.report_current_solution()
-    vns_run.run_general_vns_best_improvement(40, 6, 10, 0.05)
+    vns_run.run_general_vns_best_improvement(max_neighborhood=6)
     vns_run.report_current_solution()
     print("The objective after complete recalculation:", vns_run.current_objective_value())
     print("The list of unassigned students:", vns_run.unassigned_students)
