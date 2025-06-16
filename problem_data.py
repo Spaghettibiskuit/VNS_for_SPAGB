@@ -42,7 +42,7 @@ def generate_projects_and_students_data(
     seed: int | None = None,
 ) -> tuple[pd.DataFrame, pd.DataFrame]:
     """Return random projects and students data in one tuple."""
-    if seed:
+    if seed != None:
         rd.seed(seed)
     instance_tuple = tuple(
         (

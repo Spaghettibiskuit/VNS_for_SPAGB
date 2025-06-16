@@ -75,9 +75,7 @@ def random_partner_preferences(
     return students_partner_preferences
 
 
-def average_preferences(
-    desired_partners: list[int], project_preferences_so_far: list[tuple[int]]
-) -> dict[int | str : int]:
+def average_preferences(desired_partners: list[int], project_preferences_so_far: list[tuple[int]]) -> dict[int:int]:
     sums_preferences = {}
     num_students_with_preferences = len(project_preferences_so_far)
     desired_partners_with_preferences = [
@@ -122,8 +120,6 @@ def random_project_preferences(
                             * rd.uniform(min_project_preference - 0.5, max_project_preference + 0.5)
                         )
                     )
-                    if project_id in average_project_preferences_desired_partners
-                    else round(rd.uniform(min_project_preference - 0.5, max_project_preference + 0.5))
                 )
                 for project_id in range(num_projects)
             )

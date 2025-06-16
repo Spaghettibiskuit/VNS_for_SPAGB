@@ -11,6 +11,8 @@ def test_vns(
     min_num_students,
     max_num_students,
     step_num_students,
+    iteration_limit,
+    max_neighborhood,
     starting_random_seed,
     line_limit,
     filename="most_recent_error_log",
@@ -33,7 +35,10 @@ def test_vns(
                     students_info,
                 )
                 error_report = vns_run.run_general_vns_best_improvement(
-                    iteration_limit=40, max_neighborhood=6, testing=True, seed=current_random_seed
+                    iteration_limit=iteration_limit,
+                    max_neighborhood=max_neighborhood,
+                    testing=True,
+                    seed=current_random_seed,
                 )
                 if not error_report:
                     print(
@@ -43,21 +48,21 @@ def test_vns(
                 error_description_elements = [
                     f"Seed: {current_random_seed}; Number of Projects: {num_projects}; "
                     f"Number of Students: {num_students}; Iteration: {error_report["iteration"]}; "
-                    f"Point: {error_report["point"]}"
+                    f"Point: {error_report["point"]}; Neighborhood: {error_report["neighborhood"]}"
                 ]
                 if "claimed_obj" in error_report:
                     error_description_elements.append(
                         f"The objective value calculated with deltas is: {error_report["claimed_obj"]}; "
                         f"The actual objective value obtained by complete recalculation is {error_report["actual_obj"]}"
                     )
-                for key in ["groups_too_small", "groups_too_big", "too_many_groups"]:
-                    if key in error_report:
-                        error_description_elements += list(error_report[key])
+                for issue in ["groups_too_small", "groups_too_big", "too_many_groups"]:
+                    if issue in error_report:
+                        error_description_elements += list(error_report[issue])
                 if "inconsistency_students" in error_report:
-                    error_description_elements.append("There is a inconsistency in how students are distributed;\n")
+                    error_description_elements.append("There is a inconsistency in how students are distributed;")
 
                 with error_log_path.open("a", encoding="utf-8") as f:
-                    f.write("; ".join(error_description_elements))
+                    f.write("; ".join(error_description_elements) + "\n")
                 lines_written += 1
                 if lines_written >= line_limit:
                     break
@@ -81,8 +86,10 @@ if __name__ == "__main__":
         min_num_students=20,
         max_num_students=60,
         step_num_students=5,
-        starting_random_seed=0,
+        iteration_limit=100,
+        max_neighborhood=6,
+        starting_random_seed=14,
         line_limit=1000,
-        filename="error_log_6",
+        filename="error_log_14",
         extension=".txt",
     )
