@@ -654,26 +654,23 @@ class VariableNeighborhoodSearch:
 
         return best_move_combination, best_delta
 
-    # Hier habe ich begonnen
     def _find_best_arrivals_combination(
         self,
         ordered_n_tuples_destinations: Iterator[tuple[tuple[Project, ProjectGroup] | list[Student]]],
         corresponding_departures: tuple[tuple[Project, ProjectGroup, Student] | tuple[list[Student], Student]],
-        group_size_insufficiencies: dict,
+        group_size_insufficiencies: dict[tuple[int, int] : int],
         num_to_move: int,
     ) -> tuple[
-        tuple[tuple[Project, ProjectGroup, Student] | tuple[list[Student], Student]],
+        tuple[tuple[Project, ProjectGroup, Student] | tuple[list[Student], Student]] | None,
         int,
     ]:
         best_arrivals_combination = None
         combined_departure_delta = 0
         moving_students = tuple(corresponding_departure[-1] for corresponding_departure in corresponding_departures)
         for departure in corresponding_departures:
-            if departure[0] is self.unassigned_students:
-                combined_departure_delta += self._calculate_leaving_delta(departure)
-            else:
-                combined_departure_delta += self._calculate_leaving_delta(departure)
-                group, student = departure[1], departure[2]
+            combined_departure_delta += self._calculate_leaving_delta(departure)
+            if departure[0] is not self.unassigned_students:
+                _, group, student = departure
                 group.release_student(student)
 
         arrival_delta_to_surpass = -combined_departure_delta
@@ -706,25 +703,28 @@ class VariableNeighborhoodSearch:
                 group_student_acceptances = []
                 combined_arrival_delta = 0
                 invalid_destinations = False
-                for i, (project, group) in enumerate(group_destinations):
-                    project: Project
-                    group: ProjectGroup
-                    student = moving_students[i]
-                    if group.size() >= project.max_group_size:
-                        invalid_destinations = True
-                        break
-                    combined_arrival_delta += self._calculate_arrival_delta((project, group, student))
-                    group.accept_student(student)
-                    group_student_acceptances.append((group, student))
+                for i, destination in enumerate(destinations):
+                    if destination in group_destinations:
+                        project, group = destination
+                        project: Project
+                        group: ProjectGroup
+                        if group.size() >= project.max_group_size:
+                            invalid_destinations = True
+                            break
+                        student = moving_students[i]
+                        combined_arrival_delta += self._calculate_arrival_delta((project, group, student))
+                        group.accept_student(student)
+                        group_student_acceptances.append((group, student))
 
-                combined_arrival_delta += sum(
-                    -self.penalty_student_not_assigned for _ in range(num_to_move - num_group_destinations)
-                )
                 for group, student in group_student_acceptances:
                     group.release_student(student)
 
                 if invalid_destinations:
                     continue
+
+                combined_arrival_delta += sum(
+                    -self.penalty_student_not_assigned for _ in range(num_to_move - num_group_destinations)
+                )
 
             if combined_arrival_delta > arrival_delta_to_surpass:
                 arrival_delta_to_surpass = combined_arrival_delta
