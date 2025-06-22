@@ -31,14 +31,25 @@ class VariableNeighborhoodSearch:
         self.penalty_student_not_assigned = penalty_student_not_assigned
         self.projects = tuple((Project(*row) for row in self.projects_info.itertuples()))
         self.students = tuple((Student(*row) for row in self.students_info.itertuples()))
-        self.num_students = len(self.students)
         self.time_data_loaded = t.time()
+        self.num_students = len(self.students)
         self.unassigned_students: list[Student] = []
+        self.bilateral_pairs = self.get_bilateral_pairs()
         # self.neigborhood_visit_counter = {}
         self._initial_solution()
         self.objective_value = self.current_objective_value()
         self.best_objective_value = self.objective_value
         self.move_reversals = []
+
+    def get_bilateral_pairs(self) -> set[tuple[int, int]]:
+        favorite_partners_students = self.students_info["fav_partners"].tolist()
+
+        return {
+            (student_id, partner_id)
+            for student_id, favorite_partners in enumerate(favorite_partners_students)
+            for partner_id in favorite_partners
+            if student_id < partner_id and student_id in favorite_partners_students[partner_id]
+        }
 
     def run_general_vns_best_improvement(
         self,
@@ -451,7 +462,11 @@ class VariableNeighborhoodSearch:
 
     def _initial_dissolution_delta(self, project: Project, group: ProjectGroup) -> int:
         preference_loss = sum(student.preference_value(project) for student in group.students)
-        bilateral_reward_loss = len(group.bilateral_preferences) * self.reward_bilateral_interest_collaboration
+        bilateral_reward_loss = sum(
+            self.reward_bilateral_interest_collaboration
+            for id_pair in it.combinations(sorted([student.student_id for student in group.students]), 2)
+            if id_pair in self.bilateral_pairs
+        )
         reward_one_less_group = (
             project.penalty_extra_group if project.num_non_empty_groups() > project.offered_num_groups else 0
         )
@@ -774,18 +789,24 @@ class VariableNeighborhoodSearch:
     ) -> int:
         if arrival_specifications[0] is self.unassigned_students:
             return -self.penalty_student_not_assigned
-        arrival_project, arrival_group, arriving_student = arrival_specifications
-        preference_gain = arriving_student.preference_value(arrival_project)
-        bilateral_reward_gain = sum(
-            self.reward_bilateral_interest_collaboration
-            for student in arrival_group.students
-            if student.student_id in arriving_student.fav_partners
-            and arriving_student.student_id in student.fav_partners
+        project, group, student = arrival_specifications
+        preference_gain = student.preference_value(project)
+        bilateral_reward_gain = (
+            sum(
+                (
+                    (leaving_id, remaining_id) in self.bilateral_pairs
+                    if (leaving_id := student.student_id) < (remaining_id := group_member.student_id)
+                    else (remaining_id, leaving_id) in self.bilateral_pairs
+                )
+                for group_member in group.students
+                if group_member is not student
+            )
+            * self.reward_bilateral_interest_collaboration
         )
-        if arrival_group.size() < arrival_project.ideal_group_size:
-            delta_group_size = arrival_project.penalty_deviation_from_ideal_group_size
+        if group.size() < project.ideal_group_size:
+            delta_group_size = project.penalty_deviation_from_ideal_group_size
         else:
-            delta_group_size = -arrival_project.penalty_deviation_from_ideal_group_size
+            delta_group_size = -project.penalty_deviation_from_ideal_group_size
         return preference_gain + bilateral_reward_gain + delta_group_size
 
     def _shake_arrival(
@@ -852,10 +873,17 @@ class VariableNeighborhoodSearch:
             return self.penalty_student_not_assigned
         project, group, student = departure_specifications
         preference_loss = student.preference_value(project)
-        bilateral_reward_loss = sum(
-            self.reward_bilateral_interest_collaboration
-            for bilateral_preference in group.bilateral_preferences
-            if student.student_id in bilateral_preference
+        bilateral_reward_loss = (
+            sum(
+                (
+                    (leaving_id, remaining_id) in self.bilateral_pairs
+                    if (leaving_id := student.student_id) < (remaining_id := group_member.student_id)
+                    else (remaining_id, leaving_id) in self.bilateral_pairs
+                )
+                for group_member in group.students
+                if group_member is not student
+            )
+            * self.reward_bilateral_interest_collaboration
         )
         if group.size() > project.ideal_group_size:
             delta_group_size = project.penalty_deviation_from_ideal_group_size
@@ -938,13 +966,12 @@ class VariableNeighborhoodSearch:
         )
 
     def _sum_join_rewards(self):
-        for project in self.projects:
-            for group in project.groups:
-                group.populate_bilateral_preferences_set()
         return sum(
-            self.reward_bilateral_interest_collaboration * len(group.bilateral_preferences)
+            self.reward_bilateral_interest_collaboration
             for project in self.projects
             for group in project.groups
+            for id_pair in it.combinations(sorted([student.student_id for student in group.students]), 2)
+            if id_pair in self.bilateral_pairs
         )
 
     def _sum_missing_assignment_penalties(self):

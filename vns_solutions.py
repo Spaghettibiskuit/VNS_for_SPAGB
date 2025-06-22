@@ -31,7 +31,7 @@ for project_quantity in project_quantities:
             students_info["project_prefs"] = students_info["project_prefs"].apply(lambda x: tuple(json.loads(x)))
             vns = VariableNeighborhoodSearch(projects_info, students_info)
             vns_solution_developments[f"generic_{dimension}_{instance}"] = vns.run_general_vns_best_improvement(
-                benchmarking=True, time_limit=60, max_neighborhood=6, seed=100
+                benchmarking=True, time_limit=30, max_neighborhood=6, seed=100
             )
             print(f"Done with instance {project_quantity}_{student_quantity}_{instance}!")
             print(f"It took {t.time() - start} seconds")
@@ -45,5 +45,5 @@ for project_quantity in project_quantities:
         print(f"Done with student quantitiy {student_quantity}!")
     print(f"Done with project quantity {project_quantity}!")
 
-with open("vns_benchmarks_60s_every_dim_once_fixed.json", "w", encoding="utf-8") as f:
+with open("vns_benchmarks_30s_every_dim_once.json", "w", encoding="utf-8") as f:
     json.dump(vns_solution_developments, f, indent=4)
