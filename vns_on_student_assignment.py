@@ -31,6 +31,7 @@ class VariableNeighborhoodSearch:
         self.penalty_student_not_assigned = penalty_student_not_assigned
         self.projects = tuple((Project(*row) for row in self.projects_info.itertuples()))
         self.students = tuple((Student(*row) for row in self.students_info.itertuples()))
+        self.num_students = len(self.students)
         self.time_data_loaded = t.time()
         self.unassigned_students: list[Student] = []
         # self.neigborhood_visit_counter = {}
@@ -157,7 +158,7 @@ class VariableNeighborhoodSearch:
             if found_or_dissolve_group:
                 self._found_or_dissolve_one_group()
                 if testing:
-                    error_report = self._check_solution()
+                    error_report = self.check_solution()
                     if error_report:
                         error_report["iteration"] = current_iteration
                         error_report["neighborhood"] = current_neighborhood
@@ -171,7 +172,7 @@ class VariableNeighborhoodSearch:
                     unassignment_probability,
                 )
                 if testing:
-                    error_report = self._check_solution()
+                    error_report = self.check_solution()
                     if error_report:
                         error_report["iteration"] = current_iteration
                         error_report["neighborhood"] = current_neighborhood
@@ -181,7 +182,7 @@ class VariableNeighborhoodSearch:
 
             self._variable_neighborhood_descent(num_to_move, across_projects)
             if testing:
-                error_report = self._check_solution()
+                error_report = self.check_solution()
                 if error_report:
                     error_report["iteration"] = current_iteration
                     error_report["neighborhood"] = current_neighborhood
@@ -225,7 +226,7 @@ class VariableNeighborhoodSearch:
         if benchmarking:
             return best_solutions
 
-    def _check_solution(self):
+    def check_solution(self):
         errors_validity = self._check_validity()
         error_objective_value = self._check_objective_value()
         return errors_validity | error_objective_value
@@ -269,10 +270,8 @@ class VariableNeighborhoodSearch:
         return errors_validity
 
     def _check_objective_value(self):
-        delta_induced_objective_value = self.objective_value
-        actual_objective_value = self.current_objective_value()
-        if delta_induced_objective_value != actual_objective_value:
-            return {"claimed_obj": delta_induced_objective_value, "actual_obj": actual_objective_value}
+        if self.objective_value != (actual_objective_value := self.current_objective_value()):
+            return {"claimed_obj": self.objective_value, "actual_obj": actual_objective_value}
         return {}
 
     def _found_or_dissolve_one_group(self):
@@ -288,8 +287,8 @@ class VariableNeighborhoodSearch:
         moves = rd.choice(max_delta_options_moves)
         for move in moves:
             self._move_student(*move)
-            self.move_reversals.append(move[::-1])
 
+        self.move_reversals += [move[::-1] for move in moves]
         self.objective_value += max_delta
 
     def _get_founding_options(
@@ -305,9 +304,9 @@ class VariableNeighborhoodSearch:
             int,
         ]
     ]:
-        projects_applicable_for_group_founding = [
+        projects_applicable_for_group_founding = (
             project for project in self.projects if project.num_groups() < project.max_num_groups
-        ]
+        )
 
         founding_options = []
 
@@ -335,14 +334,14 @@ class VariableNeighborhoodSearch:
                     (project, new_group, addition_option_departure[-1])
                     for addition_option_departure in addition_options_departures
                 ]
-                addition_options_sum_arrival_deltas = [
+                addition_options_arrival_deltas = [
                     self._calculate_arrival_delta(addition_option_arrival)
                     for addition_option_arrival in addition_options_arrivals
                 ]
                 addition_options_deltas = [
                     leaving_delta + arrival_delta
                     for leaving_delta, arrival_delta in zip(
-                        addition_options_leaving_deltas, addition_options_sum_arrival_deltas
+                        addition_options_leaving_deltas, addition_options_arrival_deltas
                     )
                 ]
                 max_addition_delta = max(addition_options_deltas)
@@ -379,9 +378,9 @@ class VariableNeighborhoodSearch:
 
         dissolution_options = []
 
-        dissolution_candidates = [
+        dissolution_candidates = (
             (project, group) for project in self.projects for group in project.groups if group.students
-        ]
+        )
 
         destinations_with_free_capacity = [
             (project, group)
@@ -422,7 +421,7 @@ class VariableNeighborhoodSearch:
                         if arrival_with_delta[0][-1] is not student_in_move
                     ]
                     continue
-                project_student_moved_to, group_student_moved_to = arrival[0], arrival[1]
+                project_student_moved_to, group_student_moved_to, _ = arrival
                 if group_student_moved_to.size() >= project_student_moved_to.max_group_size:
                     arrivals_with_deltas = [
                         arrival_with_delta
@@ -432,17 +431,16 @@ class VariableNeighborhoodSearch:
                     ]
                     continue
                 arrivals_with_deltas = [
-                    arrival_with_delta
-                    for arrival_with_delta in arrivals_with_deltas
-                    if arrival_with_delta[0][-1] is not student_in_move
-                ]
-                arrivals_with_deltas = [
                     (
                         (arrival, self._calculate_arrival_delta(arrival))
                         if (arrival := arrival_with_delta[0])[1] is group_student_moved_to
                         else arrival_with_delta
                     )
-                    for arrival_with_delta in arrivals_with_deltas
+                    for arrival_with_delta in (
+                        arrival_with_delta
+                        for arrival_with_delta in arrivals_with_deltas
+                        if arrival_with_delta[0][-1] is not student_in_move
+                    )
                 ]
 
             for move in moves_made:
@@ -483,7 +481,6 @@ class VariableNeighborhoodSearch:
         self.objective_value += sum_departure_deltas + sum_arrival_deltas
 
     def _variable_neighborhood_descent(self, max_to_move: int, across_projects: bool, min_to_move: int = 1):
-        # print("VND!")
         destinations = [(project, group) for project in self.projects for group in project.groups if group.students]
         destinations.append(self.unassigned_students)
 
@@ -505,10 +502,8 @@ class VariableNeighborhoodSearch:
                 self.objective_value += delta
                 # print(best_moves_local)
                 # print(len(best_moves_local), "\n")
-                for best_move_local in best_moves_local:
-                    departure, arrival = best_move_local
+                for departure, arrival in best_moves_local:
                     self._move_student(departure, arrival)
-                    self.move_reversals.append((arrival, departure))
 
                     if arrival[0] is not self.unassigned_students:
                         project, group, student = arrival
@@ -520,7 +515,7 @@ class VariableNeighborhoodSearch:
                 # debugging
                 # if self.objective_value != self.current_objective_value():
                 #     raise ValueError("Incorrect calculation!")
-
+                self.move_reversals += [move[::-1] for move in best_moves_local]
                 num_to_move = min_to_move
 
             else:
@@ -532,22 +527,22 @@ class VariableNeighborhoodSearch:
         locations_students_by_id: dict[int : tuple[Project, ProjectGroup] | list[Student]],
         across_projects: bool,
         num_to_move: int,
-    ) -> tuple[
-        list[
-            tuple[
-                tuple[Project, ProjectGroup, Student] | tuple[list[Student], Student],
-                tuple[Project, ProjectGroup, Student] | tuple[list[Student], Student],
-            ]
-        ],
-        int,
-    ]:
+    ) -> (
+        tuple[
+            list[
+                tuple[
+                    tuple[Project, ProjectGroup, Student] | tuple[list[Student], Student],
+                    tuple[Project, ProjectGroup, Student] | tuple[list[Student], Student],
+                ]
+            ],
+            int,
+        ]
+        | tuple[None, 0]
+    ):
         best_move_combination = None
         best_delta = 0
 
-        combinations_student_ids = list(it.combinations(range(len(self.students)), num_to_move))
-        all_ordered_n_tuples_destinations = list(it.product(destinations, repeat=num_to_move))
-
-        for combination_ids in combinations_student_ids:
+        for combination_ids in it.combinations(range(self.num_students), num_to_move):
 
             locations_assigned_students_combination = [
                 location_student
@@ -603,15 +598,15 @@ class VariableNeighborhoodSearch:
             ordered_n_tuples_destinations_corresponding_student_moving = filter(
                 lambda ordered_n_tuple_destinations, combination_ids=combination_ids: all(
                     (
-                        student_location[1] is not ordered_n_tuple_destinations[i][1]
+                        student_location[1] is not student_destination[1]
                         if (student_location := locations_students_by_id[combination_ids[i]])
                         is not self.unassigned_students
-                        and ordered_n_tuple_destinations[i] is not self.unassigned_students
+                        and (student_destination := ordered_n_tuple_destinations[i]) is not self.unassigned_students
                         else student_location is not ordered_n_tuple_destinations[i]
                     )
                     for i in range(num_to_move)
                 ),
-                all_ordered_n_tuples_destinations,
+                it.product(destinations, repeat=num_to_move),
             )
 
             if across_projects:
@@ -665,66 +660,70 @@ class VariableNeighborhoodSearch:
         int,
     ]:
         best_arrivals_combination = None
-        combined_departure_delta = 0
         moving_students = tuple(corresponding_departure[-1] for corresponding_departure in corresponding_departures)
-        for departure in corresponding_departures:
-            combined_departure_delta += self._calculate_leaving_delta(departure)
-            if departure[0] is not self.unassigned_students:
-                _, group, student = departure
-                group.release_student(student)
+        group_departures = [
+            departure for departure in corresponding_departures if departure[0] is not self.unassigned_students
+        ]
+        combined_departure_delta = (num_to_move - len(group_departures)) * self.penalty_student_not_assigned
+        for project, group, student in group_departures:
+            combined_departure_delta += self._calculate_leaving_delta((project, group, student))
+            group.release_student(student)
 
         arrival_delta_to_surpass = -combined_departure_delta
 
+        ordered_n_tuples_destinations = filter(
+            lambda destinations: all(
+                group.size() < project.max_group_size
+                for project, group in (
+                    destination for destination in destinations if destination is not self.unassigned_students
+                )
+            ),
+            ordered_n_tuples_destinations,
+        )
+
         for destinations in ordered_n_tuples_destinations:
-            group_destinations = [
-                destination for destination in destinations if destination is not self.unassigned_students
+            group_arrivals = [
+                (*destination, moving_students[i])
+                for i, destination in enumerate(destinations)
+                if destination is not self.unassigned_students
             ]
-            if not all(group.size() < project.max_group_size for project, group in group_destinations):
-                continue
             if group_size_insufficiencies:
                 group_destination_occurences = Counter(
-                    (id(project), id(group)) for project, group in group_destinations
+                    (id(project), id(group)) for project, group, _ in group_arrivals
                 )
                 if not all(
                     group_destination_occurences.get(ids, -1) >= insufficiency
                     for ids, insufficiency in group_size_insufficiencies.items()
                 ):
                     continue
-            if len({(id(project), id(group)) for project, group in group_destinations}) == (
-                num_group_destinations := len(group_destinations)
+            if len({(id(project), id(group)) for project, group, _ in group_arrivals}) == (
+                num_group_arrivals := len(group_arrivals)
             ):
-                combined_arrival_delta = sum(
-                    self._calculate_arrival_delta((*destination, moving_students[i]))
-                    for i, destination in enumerate(destinations)
-                    if destination in group_destinations
-                ) + sum(-self.penalty_student_not_assigned for _ in range(num_to_move - num_group_destinations))
+                combined_arrival_delta = (
+                    sum(self._calculate_arrival_delta(arrival) for arrival in group_arrivals)
+                    - (num_to_move - num_group_arrivals) * self.penalty_student_not_assigned
+                )
 
             else:
                 group_student_acceptances = []
                 combined_arrival_delta = 0
                 invalid_destinations = False
-                for i, destination in enumerate(destinations):
-                    if destination in group_destinations:
-                        project, group = destination
-                        project: Project
-                        group: ProjectGroup
-                        if group.size() >= project.max_group_size:
-                            invalid_destinations = True
-                            break
-                        student = moving_students[i]
-                        combined_arrival_delta += self._calculate_arrival_delta((project, group, student))
-                        group.accept_student(student)
-                        group_student_acceptances.append((group, student))
+                for project, group, student in group_arrivals:
+                    if group.size() >= project.max_group_size:
+                        invalid_destinations = True
+                        break
+                    combined_arrival_delta += self._calculate_arrival_delta((project, group, student))
+                    group.accept_student(student)
+                    group_student_acceptances.append((group, student))
 
                 for group, student in group_student_acceptances:
+                    group: ProjectGroup
                     group.release_student(student)
 
                 if invalid_destinations:
                     continue
 
-                combined_arrival_delta += sum(
-                    -self.penalty_student_not_assigned for _ in range(num_to_move - num_group_destinations)
-                )
+                combined_arrival_delta -= (num_to_move - num_group_arrivals) * self.penalty_student_not_assigned
 
             if combined_arrival_delta > arrival_delta_to_surpass:
                 arrival_delta_to_surpass = combined_arrival_delta
@@ -737,10 +736,8 @@ class VariableNeighborhoodSearch:
                     for i, destination in enumerate(destinations)
                 )
 
-        for departure in corresponding_departures:
-            if departure[0] is not self.unassigned_students:
-                project, group, student = departure
-                group.accept_student(student)
+        for _, group, student in group_departures:
+            group.accept_student(student)
 
         return best_arrivals_combination, arrival_delta_to_surpass + combined_departure_delta
 
@@ -877,7 +874,7 @@ class VariableNeighborhoodSearch:
             ]
 
             if unassigned_students_remaining and (
-                rd.random() < len(unassigned_students_remaining) / len(self.students) * assignment_bias
+                rd.random() < len(unassigned_students_remaining) / self.num_students * assignment_bias
             ):
                 student_to_move: Student = rd.choice(unassigned_students_remaining)
                 departing_students.append(student_to_move)
@@ -897,10 +894,12 @@ class VariableNeighborhoodSearch:
 
             if not candidate_projects:
                 if unassigned_students_remaining:
-                    students_to_move = rd.choices(
-                        unassigned_students_remaining, k=min(len(unassigned_students_remaining), num_to_move - i)
-                    )
-                    departures_specifications += [(self.unassigned_students, student) for student in students_to_move]
+                    departures_specifications += [
+                        (self.unassigned_students, student)
+                        for student in rd.choices(
+                            unassigned_students_remaining, k=min(len(unassigned_students_remaining), num_to_move - i)
+                        )
+                    ]
                 break
 
             chosen_project: Project = rd.choice(candidate_projects)
@@ -976,12 +975,10 @@ class VariableNeighborhoodSearch:
         }
         assigned_students = []
         any_group_added = True
-        num_students = len(self.students)
-        while len(assigned_students) < num_students and any_group_added:
+        while len(assigned_students) < self.num_students and any_group_added:
             any_group_added = False
-            for project in self.projects:
-                if project.num_groups() >= project.offered_num_groups:
-                    continue
+            keen_projects = (project for project in self.projects if project.num_groups() < project.offered_num_groups)
+            for project in keen_projects:
                 unassigned_descending_preference = [
                     student for student in projects_waitlists[project.project_id] if student not in assigned_students
                 ]
@@ -1018,7 +1015,7 @@ class VariableNeighborhoodSearch:
 
 
 if __name__ == "__main__":
-    solve_specific_instance = False
+    solve_specific_instance = True
     if solve_specific_instance:
         dimension = "4_40_instances"
         folder_projects = Path("instances_projects")
@@ -1041,7 +1038,7 @@ if __name__ == "__main__":
     vns_run.report_input_data()
     vns_run.report_num_projects_and_students()
     vns_run.report_current_solution()
-    vns_run.run_general_vns_best_improvement(max_neighborhood=6, seed=100, iteration_limit=20)
+    vns_run.run_general_vns_best_improvement(max_neighborhood=6, seed=100, iteration_limit=50)
     vns_run.report_current_solution()
     print("The objective after complete recalculation:", vns_run.current_objective_value())
     print("The list of unassigned students:", vns_run.unassigned_students)

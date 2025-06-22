@@ -218,7 +218,7 @@ if __name__ == "__main__":
     best_objs_60sec_obj_bounds = {}
     project_quantities = [3, 4, 5]
     student_quantities = [30, 40, 50]
-    instances_per_combination = 10
+    INSTANCES_PER_COMBINATION = 10
 
     reward_bilateral = 2
     penalty_unassignment = 3
@@ -230,7 +230,7 @@ if __name__ == "__main__":
         for student_quantity in student_quantities:
             dimension = f"{project_quantity}_{student_quantity}"
             dimension_subfolder = f"{dimension}_instances"
-            for instance in range(instances_per_combination):
+            for instance in range(INSTANCES_PER_COMBINATION):
                 filename_projects = f"generic_{dimension}_projects_{instance}.csv"
                 filename_students = f"generic_{dimension}_students_{instance}.csv"
                 filepath_projects = folder_projects / dimension_subfolder / filename_projects

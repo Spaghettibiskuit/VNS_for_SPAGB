@@ -19,7 +19,7 @@ for project_quantity in project_quantities:
     for student_quantity in student_quantities:
         dimension = f"{project_quantity}_{student_quantity}"
         dimension_subfolder = f"{dimension}_instances"
-        for instance in range(instances_per_combination):
+        for instance in range(instances_per_combination - 9):
             start = t.time()
             filename_projects = f"generic_{dimension}_projects_{instance}.csv"
             filename_students = f"generic_{dimension}_students_{instance}.csv"
@@ -31,17 +31,19 @@ for project_quantity in project_quantities:
             students_info["project_prefs"] = students_info["project_prefs"].apply(lambda x: tuple(json.loads(x)))
             vns = VariableNeighborhoodSearch(projects_info, students_info)
             vns_solution_developments[f"generic_{dimension}_{instance}"] = vns.run_general_vns_best_improvement(
-                benchmarking=True, time_limit=300, max_neighborhood=6, seed=100
+                benchmarking=True, time_limit=60, max_neighborhood=6, seed=100
             )
             print(f"Done with instance {project_quantity}_{student_quantity}_{instance}!")
             print(f"It took {t.time() - start} seconds")
-            if vns.objective_value != (actual_objective_value := vns.current_objective_value()):
-                print(
-                    f"THE OBJECTIVE WAS WRONGLY CALCULATED AS {vns.objective_value}. "
-                    f"ACTUAL OBJ: {actual_objective_value}"
-                )
+            if vns.check_solution():
+                print("SOMETHING WENT WRONG!")
+            # if vns.objective_value != (actual_objective_value := vns.current_objective_value()):
+            #     print(
+            #         f"THE OBJECTIVE WAS WRONGLY CALCULATED AS {vns.objective_value}. "
+            #         f"ACTUAL OBJ: {actual_objective_value}"
+            #     )
         print(f"Done with student quantitiy {student_quantity}!")
     print(f"Done with project quantity {project_quantity}!")
 
-with open("vns_benchmarks_300s.json", "w", encoding="utf-8") as f:
+with open("vns_benchmarks_60s_every_dim_once_fixed.json", "w", encoding="utf-8") as f:
     json.dump(vns_solution_developments, f, indent=4)
