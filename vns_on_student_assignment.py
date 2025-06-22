@@ -40,6 +40,7 @@ class VariableNeighborhoodSearch:
         self.objective_value = self.current_objective_value()
         self.best_objective_value = self.objective_value
         self.move_reversals = []
+        self.combinations_student_ids_by_dimension = {1: list(it.combinations(range(self.num_students), 1))}
 
     def get_bilateral_pairs(self) -> set[tuple[int, int]]:
         favorite_partners_students = self.students_info["fav_partners"].tolist()
@@ -499,6 +500,16 @@ class VariableNeighborhoodSearch:
         destinations = [(project, group) for project in self.projects for group in project.groups if group.students]
         destinations.append(self.unassigned_students)
 
+        if max_to_move > (highest_saved_dimension := max(self.combinations_student_ids_by_dimension.keys())):
+            for num_in_combination in range(highest_saved_dimension, max_to_move + 1):
+                self.combinations_student_ids_by_dimension[num_in_combination] = list(
+                    it.combinations(range(self.num_students), num_in_combination)
+                )
+
+        ordered_n_tuples_destinations_by_dimension = {
+            n: list(it.product(destinations, repeat=n)) for n in range(min_to_move, max_to_move + 1)
+        }
+
         locations_students_by_id = {
             student.student_id: (project, group)
             for project in self.projects
@@ -511,7 +522,10 @@ class VariableNeighborhoodSearch:
         num_to_move = min_to_move
         while num_to_move <= max_to_move:
             best_moves_local, delta = self._local_search_best_improvement(
-                destinations, locations_students_by_id, across_projects, num_to_move
+                ordered_n_tuples_destinations_by_dimension[num_to_move],
+                locations_students_by_id,
+                across_projects,
+                num_to_move,
             )
             if delta > 0:
                 self.objective_value += delta
@@ -538,7 +552,7 @@ class VariableNeighborhoodSearch:
 
     def _local_search_best_improvement(
         self,
-        destinations: list[tuple[Project, ProjectGroup] | list[Student]],
+        ordered_n_tuples_destinations: list[tuple[tuple[Project, ProjectGroup] | list[Student]]],
         locations_students_by_id: dict[int : tuple[Project, ProjectGroup] | list[Student]],
         across_projects: bool,
         num_to_move: int,
@@ -557,7 +571,7 @@ class VariableNeighborhoodSearch:
         best_move_combination = None
         best_delta = 0
 
-        for combination_ids in it.combinations(range(self.num_students), num_to_move):
+        for combination_ids in self.combinations_student_ids_by_dimension[num_to_move]:
 
             locations_assigned_students_combination = [
                 location_student
@@ -621,7 +635,7 @@ class VariableNeighborhoodSearch:
                     )
                     for i in range(num_to_move)
                 ),
-                it.product(destinations, repeat=num_to_move),
+                ordered_n_tuples_destinations,
             )
 
             if across_projects:
