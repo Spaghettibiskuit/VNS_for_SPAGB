@@ -90,6 +90,6 @@ if __name__ == "__main__":
         max_neighborhood=6,
         starting_random_seed=0,
         line_limit=1000,
-        filename="error_log_20",
+        filename="error_log_21",
         extension=".txt",
     )

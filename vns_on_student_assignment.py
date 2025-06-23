@@ -339,17 +339,17 @@ class VariableNeighborhoodSearch:
                 ]
                 if not addition_options_departures:
                     break
-                addition_options_leaving_deltas = [
+                addition_options_leaving_deltas = (
                     self._calculate_leaving_delta(addition_option) for addition_option in addition_options_departures
-                ]
+                )
                 addition_options_arrivals = [
                     (project, new_group, addition_option_departure[-1])
                     for addition_option_departure in addition_options_departures
                 ]
-                addition_options_arrival_deltas = [
+                addition_options_arrival_deltas = (
                     self._calculate_arrival_delta(addition_option_arrival)
                     for addition_option_arrival in addition_options_arrivals
-                ]
+                )
                 addition_options_deltas = [
                     leaving_delta + arrival_delta
                     for leaving_delta, arrival_delta in zip(
@@ -401,15 +401,16 @@ class VariableNeighborhoodSearch:
             if group.students and group.size() < project.max_group_size
         ]
 
-        for dissolution_candidate in dissolution_candidates:
-            project, group = dissolution_candidate
+        for project, group in dissolution_candidates:
+            project: Project
+            group: ProjectGroup
             moves_made = []
             dissolution_delta = self._initial_dissolution_delta(project, group)
             arrivals_with_deltas = [
                 ((*destination, student), self._calculate_arrival_delta((*destination, student)))
                 for destination in destinations_with_free_capacity
                 for student in group.students
-                if not all(x is y for x, y in zip(destination, dissolution_candidate))
+                if not all(x is y for x, y in zip(destination, (project, group)))
             ]
             arrivals_with_deltas += [
                 ((self.unassigned_students, student), -self.penalty_student_not_assigned) for student in group.students
@@ -422,7 +423,7 @@ class VariableNeighborhoodSearch:
                     if arrival_with_delta[-1] == max_delta
                 ]
                 arrival = rd.choice(max_delta_arrivals)
-                move = ((*dissolution_candidate, (student_in_move := arrival[-1])), arrival)
+                move = ((project, group, (student_in_move := arrival[-1])), arrival)
                 self._move_student(*move)
                 dissolution_delta += max_delta
                 moves_made.append(move)
