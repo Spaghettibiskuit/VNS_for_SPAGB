@@ -1,16 +1,13 @@
 """Main file of VNS implementation for a student assignment problem."""
 
 import itertools as it
-import json
 import random as rd
 import time as t
 from collections import Counter
 from collections.abc import Iterator
-from pathlib import Path
 
 import pandas as pd
 
-from problem_data import generate_throwaway_instance
 from project import Project
 from project_group import ProjectGroup
 from student import Student
@@ -35,7 +32,6 @@ class VariableNeighborhoodSearch:
         self.num_students = len(self.students)
         self.unassigned_students: list[Student] = []
         self.bilateral_pairs = self.get_bilateral_pairs()
-        # self.neigborhood_visit_counter = {}
         self._initial_solution()
         self.objective_value = self.current_objective_value()
         self.best_objective_value = self.objective_value
@@ -44,7 +40,6 @@ class VariableNeighborhoodSearch:
 
     def get_bilateral_pairs(self) -> set[tuple[int, int]]:
         favorite_partners_students = self.students_info["fav_partners"].tolist()
-
         return {
             (student_id, partner_id)
             for student_id, favorite_partners in enumerate(favorite_partners_students)
@@ -54,12 +49,13 @@ class VariableNeighborhoodSearch:
 
     def run_general_vns_best_improvement(
         self,
-        max_neighborhood: int,
+        max_neighborhood: int = 6,
         assignment_bias: float | int = 10,
         unassignment_probability: float = 0.05,
         min_neighborhood: int = 1,
         testing: bool = False,
         benchmarking: bool = False,
+        demonstrating: bool = False,
         iteration_limit: int = 40,
         time_limit: int = 300,
         seed: int | None = None,
@@ -68,114 +64,63 @@ class VariableNeighborhoodSearch:
             rd.seed(seed)
         if not 0 <= unassignment_probability <= 1:
             raise ValueError("A probability must be between 0 and 1.")
-        # self.neigborhood_visit_counter = {
-        #     neighborhood: 0 for neighborhood in range(min_neighborhood, max_neighborhood + 1)
-        # }
         if benchmarking:
             best_solutions = [
                 {"obj": self.best_objective_value, "runtime": t.time() - self.time_data_loaded, "neighborhood": 0}
             ]
         current_iteration = 0
         current_neighborhood = min_neighborhood
-
         while True:
-
             current_iteration += 1
-
             match current_neighborhood:
                 case 1:
                     num_to_move = 1
                     across_projects = False
                     shake = True
                     found_or_dissolve_group = False
-
                 case 2:
                     num_to_move = 2
                     across_projects = False
                     shake = True
                     found_or_dissolve_group = False
-
                 case 3:
                     num_to_move = 2
                     across_projects = False
                     shake = False
                     found_or_dissolve_group = True
-
                 case 4:
                     num_to_move = 1
                     across_projects = True
                     shake = True
                     found_or_dissolve_group = False
-
                 case 5:
                     num_to_move = 2
                     across_projects = True
                     shake = True
                     found_or_dissolve_group = False
-
                 case 6:
                     num_to_move = 2
                     across_projects = True
                     shake = False
                     found_or_dissolve_group = True
 
-                case 7:
-                    num_to_move = 3
-                    across_projects = True
-                    shake = False
-                    found_or_dissolve_group = False
-
-                case 8:
-                    num_to_move = 3
-                    across_projects = True
-                    shake = True
-                    found_or_dissolve_group = False
-
-                case 9:
-                    num_to_move = 3
-                    across_projects = True
-                    shake = False
-                    found_or_dissolve_group = True
-
-                case 10:
-                    num_to_move = 3
-                    across_projects = True
-                    shake = True
-                    found_or_dissolve_group = True
-
-                case 11:
-                    num_to_move = 4
-                    across_projects = True
-                    shake = False
-                    found_or_dissolve_group = False
-
-                case 12:
-                    num_to_move = 4
-                    across_projects = True
-                    shake = True
-                    found_or_dissolve_group = False
-
-                case 13:
-                    num_to_move = 4
-                    across_projects = True
-                    shake = False
-                    found_or_dissolve_group = True
-
-            # self.neigborhood_visit_counter[current_neighborhood] += 1
-            # if not current_iteration % 10:
-            #     print(f"\nIteration {current_iteration}/{iteration_limit}")
-            # print("\nThe current neighborhood is:", current_neighborhood)
-            # start_time = t.time()
+            if demonstrating:
+                print(f"\nIteration {current_iteration}/{iteration_limit}")
+                print("The incumbent best objective value is:", self.best_objective_value)
+                print("The neighborhood is:", current_neighborhood)
+                start_time = t.time()
 
             if found_or_dissolve_group:
                 self._found_or_dissolve_one_group()
                 if testing:
-                    error_report = self.check_solution()
-                    if error_report:
+                    if error_report := self.check_solution():
                         error_report["iteration"] = current_iteration
                         error_report["neighborhood"] = current_neighborhood
                         error_report["point"] = "founding or dissolution"
                         return error_report
+                if demonstrating:
+                    print("The objective value after founding or dissoving a group is:", self.objective_value)
+
             if shake:
                 self._shake(
                     num_to_move,
@@ -184,26 +129,24 @@ class VariableNeighborhoodSearch:
                     unassignment_probability,
                 )
                 if testing:
-                    error_report = self.check_solution()
-                    if error_report:
+                    if error_report := self.check_solution():
                         error_report["iteration"] = current_iteration
                         error_report["neighborhood"] = current_neighborhood
                         error_report["point"] = "shake"
                         return error_report
-                # print("The objective value after the shake is:", self.objective_value)
+                if demonstrating:
+                    print("The objective value after shaking is:", self.objective_value)
 
             self._variable_neighborhood_descent(num_to_move, across_projects)
             if testing:
-                error_report = self.check_solution()
-                if error_report:
+                if error_report := self.check_solution():
                     error_report["iteration"] = current_iteration
                     error_report["neighborhood"] = current_neighborhood
                     error_report["point"] = "VND"
                     return error_report
-
-            # print("The stated current objective value after VND is:", self.objective_value)
-            # print("The objective value after VND is:", self.current_objective_value())
-            # print(f"Visiting the neighborhood took {t.time() - start_time} seconds.")
+            if demonstrating:
+                print("The objective value after VND is:", self.objective_value)
+                print(f"Visiting the neighborhood took {t.time() - start_time} seconds.")
 
             if self.objective_value > self.best_objective_value:
                 self.best_objective_value = self.objective_value
@@ -276,7 +219,6 @@ class VariableNeighborhoodSearch:
             + self.unassigned_students,
             key=lambda student: student.student_id,
         )
-        # students_anywhere[0] = Student(35, "Jerry", [1, 2, 3], (1, 2, 3))
         if not all(a is b for a, b in zip(self.students, students_anywhere)):
             errors_validity["inconsistency_students"] = True
         return errors_validity
@@ -319,7 +261,6 @@ class VariableNeighborhoodSearch:
         projects_applicable_for_group_founding = (
             project for project in self.projects if project.num_groups() < project.max_num_groups
         )
-
         founding_options = []
 
         for project in projects_applicable_for_group_founding:
@@ -387,13 +328,10 @@ class VariableNeighborhoodSearch:
             int,
         ]
     ]:
-
         dissolution_options = []
-
         dissolution_candidates = (
             (project, group) for project in self.projects for group in project.groups if group.students
         )
-
         destinations_with_free_capacity = [
             (project, group)
             for project in self.projects
@@ -530,8 +468,6 @@ class VariableNeighborhoodSearch:
             )
             if delta > 0:
                 self.objective_value += delta
-                # print(best_moves_local)
-                # print(len(best_moves_local), "\n")
                 for departure, arrival in best_moves_local:
                     self._move_student(departure, arrival)
 
@@ -542,9 +478,6 @@ class VariableNeighborhoodSearch:
                     else:
                         student = arrival[-1]
                         locations_students_by_id[student.student_id] = self.unassigned_students
-                # debugging
-                # if self.objective_value != self.current_objective_value():
-                #     raise ValueError("Incorrect calculation!")
                 self.move_reversals += [move[::-1] for move in best_moves_local]
                 num_to_move = min_to_move
 
@@ -1031,62 +964,3 @@ class VariableNeighborhoodSearch:
                     any_group_added = True
 
         self.unassigned_students = [student for student in self.students if student not in assigned_students]
-
-    def report_input_data(self):
-        """Print the data frames that constitute the problem data."""
-        pd.set_option("display.max_columns", None)
-        print(self.projects_info)
-        print(self.students_info)
-
-    def report_num_projects_and_students(self):
-        """Return number of projects."""
-        print(f"Number of Projects: {len(self.projects)}\nNumber of Students: {len(self.students)}")
-
-    def report_current_solution(self):
-        """Currently reports who is in which group."""
-        for project in self.projects:
-            print(f"\nThese are the groups in the project {project.name}")
-            for group in project.groups:
-                print("\n")
-                for student in group.students:
-                    print(student.name, student.student_id)
-        print("\nThese students were not assigned:")
-        for student in self.unassigned_students:
-            print(student.name, student.student_id)
-        print(f"The stated objective value: {self.objective_value}")
-
-
-if __name__ == "__main__":
-    solve_specific_instance = True
-    if solve_specific_instance:
-        dimension = "4_40_instances"
-        folder_projects = Path("instances_projects")
-        filename_projects = "generic_4_40_projects_2.csv"
-        filepath_projects = folder_projects / dimension / filename_projects
-        folder_students = Path("instances_students")
-        filename_students = "generic_4_40_students_2.csv"
-        filepath_students = folder_students / dimension / filename_students
-        projects_df = pd.read_csv(filepath_projects)
-        students_df = pd.read_csv(filepath_students)
-        students_df["fav_partners"] = students_df["fav_partners"].apply(json.loads)
-        students_df["project_prefs"] = students_df["project_prefs"].apply(lambda x: tuple(json.loads(x)))
-    else:
-        projects_df, students_df = generate_throwaway_instance(num_projects=3, num_students=35, seed=0)
-
-    vns_run = VariableNeighborhoodSearch(
-        projects_df,
-        students_df,
-    )
-    vns_run.report_input_data()
-    vns_run.report_num_projects_and_students()
-    vns_run.report_current_solution()
-    vns_run.run_general_vns_best_improvement(max_neighborhood=6, seed=100, iteration_limit=50)
-    vns_run.report_current_solution()
-    print("The objective after complete recalculation:", vns_run.current_objective_value())
-    print("The list of unassigned students:", vns_run.unassigned_students)
-    # for neigborhood, num_visits in vns_run.neigborhood_visit_counter.items():
-    #     print(f"{neigborhood}: {num_visits}")
-
-
-# parameters with vnd introduction:  50, 10, 0.05 1000, 10, 0.05  Fehler mit vnd:  16, 10, 0.05 3869
-# Improve at last: 40, 10, 0.05 neighborhood 6
