@@ -40,7 +40,7 @@ class TestSettings:
         self.max_num_students = 60
         self.step_num_students = 5
         self.iteration_limit = 100
-        self.starting_random_seed = 0
+        self.starting_random_seed = 1
         self.line_limit = 1000
         self.filename = "error_log_22.txt"
 
