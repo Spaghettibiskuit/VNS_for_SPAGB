@@ -2,3 +2,5 @@
 __pycache__/
 error_logs/
 vns_benchmark_runs/
+chunks/
+instances/
