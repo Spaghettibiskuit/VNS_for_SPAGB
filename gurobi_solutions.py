@@ -5,21 +5,45 @@ import gurobipy as gp
 import pandas as pd
 from gurobipy import GRB
 
+from settings import BenchmarkSettingsGurobi
 
-def get_gurobi_best_obj_60sec_and_obj_bound(
-    projects,
-    students,
-    bilateral_reward,
-    unassignment_penalty,
-):
-    m = gp.Model()
+
+class SolutionsRecorder:
+
+    def __init__(self, model, time_limit):
+        self.model: gp.Model = model
+        self.solutions_with_runtime: list = []
+        self.time_limit: int = time_limit
+
+    def _record_solutions(self, model, where):
+        if where == GRB.Callback.MIPSOL:
+            self.solutions_with_runtime.append(
+                {
+                    "incumbent_obj": model.cbGet(GRB.Callback.MIPSOL_OBJ),
+                    "obj_bound": model.cbGet(GRB.Callback.MIPSOL_OBJBND),
+                    "runtime": model.cbGet(GRB.Callback.RUNTIME),
+                }
+            )
+
+    def solutions_with_bound(self):
+        self.solutions_with_runtime.clear()
+        self.model.Params.TimeLimit = self.time_limit
+        self.model.optimize(self._record_solutions)
+        self.solutions_with_runtime.append(
+            {"incumbent_obj": self.model.ObjVal, "obj_bound": self.model.ObjBound, "runtime": self.model.Runtime}
+        )
+        return self.solutions_with_runtime
+
+
+def get_gurobi_model(projects: pd.DataFrame, students: pd.DataFrame, reward_bilateral: int, penalty_unassignment: int):
+    model = gp.Model()
 
     project_ids = range(len(projects))
     student_ids = range(len(students))
 
     projects_group_ids = {project_id: range(projects["max#groups"][project_id]) for project_id in project_ids}
 
-    x = m.addVars(
+    x = model.addVars(
         (
             (project_id, group_id, student_id)
             for project_id in project_ids
@@ -29,34 +53,31 @@ def get_gurobi_best_obj_60sec_and_obj_bound(
         vtype=GRB.BINARY,
         name="assign",
     )
-    m.update()
+    model.update()
 
-    y = m.addVars(
+    y = model.addVars(
         ((project_id, group_id) for project_id in project_ids for group_id in projects_group_ids[project_id]),
         vtype=GRB.BINARY,
         name="establish_group",
     )
-
     favorite_partners_students = students["fav_partners"].tolist()
-    mutual_pairs = set()
+    mutual_pairs = {
+        (student_id, partner_id)
+        for student_id, favorite_partners in enumerate(favorite_partners_students)
+        for partner_id in favorite_partners
+        if student_id < partner_id and student_id in favorite_partners_students[partner_id]
+    }
 
-    for student_id, favorite_partners in enumerate(favorite_partners_students):
-        for partner_id in favorite_partners:
-            if partner_id <= student_id:
-                continue
-            if student_id in favorite_partners_students[partner_id]:
-                mutual_pairs.add((student_id, partner_id))
+    z = model.addVars(mutual_pairs, vtype=GRB.BINARY, name="not_realize_bilateral_cooperation_wish")
 
-    z = m.addVars(mutual_pairs, vtype=GRB.BINARY, name="not_realize_bilateral_cooperation_wish")
+    v = model.addVars(student_ids, name="student_unassigned")
 
-    v = m.addVars(student_ids, name="student_unassigned")
-
-    gs_surplus = m.addVars(
+    gs_surplus = model.addVars(
         ((project_id, group_id) for project_id in project_ids for group_id in projects_group_ids[project_id]),
         name="group_size_surplus",
     )
 
-    gs_deficit = m.addVars(
+    gs_deficit = model.addVars(
         ((project_id, group_id) for project_id in project_ids for group_id in projects_group_ids[project_id]),
         name="group_size_deficit",
     )
@@ -74,11 +95,11 @@ def get_gurobi_best_obj_60sec_and_obj_bound(
         for student_id in student_ids
     )
 
-    rewards_bilateral_cooperation_wish_realized = bilateral_reward * gp.quicksum(
+    rewards_bilateral_cooperation_wish_realized = reward_bilateral * gp.quicksum(
         1 - z[*mutual_pair] for mutual_pair in mutual_pairs
     )
 
-    penalties_student_unassigned = unassignment_penalty * gp.quicksum(v.values())
+    penalties_student_unassigned = penalty_unassignment * gp.quicksum(v.values())
 
     penalties_more_groups_than_offered = gp.quicksum(
         projects["pen_groups"][project_id] * y[project_id, group_id]
@@ -93,7 +114,7 @@ def get_gurobi_best_obj_60sec_and_obj_bound(
         for group_id in projects_group_ids[project_id]
     )
 
-    m.setObjective(
+    model.setObjective(
         rewards_student_project_preference
         + rewards_bilateral_cooperation_wish_realized
         - penalties_student_unassigned
@@ -102,13 +123,13 @@ def get_gurobi_best_obj_60sec_and_obj_bound(
         sense=GRB.MAXIMIZE,
     )
 
-    m.addConstrs(
+    model.addConstrs(
         (x.sum("*", "*", student_id) + v[student_id] == 1 for student_id in student_ids),
         name="penalty_if_unassigned",
     )
-    m.update()
+    model.update()
 
-    m.addConstrs(
+    model.addConstrs(
         (
             y[project_id, group_id] <= y[project_id, group_id - 1]
             for project_id in project_ids
@@ -117,9 +138,9 @@ def get_gurobi_best_obj_60sec_and_obj_bound(
         ),
         name="only_consecutive_group_ids",
     )
-    m.update()
+    model.update()
 
-    m.addConstrs(
+    model.addConstrs(
         (
             x.sum(project_id, group_id, "*") >= projects["min_group_size"][project_id] * y[project_id, group_id]
             for project_id in project_ids
@@ -127,9 +148,9 @@ def get_gurobi_best_obj_60sec_and_obj_bound(
         ),
         name="ensure_min_group_size",
     )
-    m.update()
+    model.update()
 
-    m.addConstrs(
+    model.addConstrs(
         (
             x.sum(project_id, group_id, "*") <= projects["max_group_size"][project_id] * y[project_id, group_id]
             for project_id in project_ids
@@ -137,9 +158,9 @@ def get_gurobi_best_obj_60sec_and_obj_bound(
         ),
         name="cap_group_size_at_max",
     )
-    m.update()
+    model.update()
 
-    m.addConstrs(
+    model.addConstrs(
         (
             gs_surplus[project_id, group_id]
             >= x.sum(project_id, group_id, "*") - projects["ideal_group_size"][project_id]
@@ -148,9 +169,9 @@ def get_gurobi_best_obj_60sec_and_obj_bound(
         ),
         name="ensure_correct_group_size_surplus",
     )
-    m.update()
+    model.update()
 
-    m.addConstrs(
+    model.addConstrs(
         (
             gs_deficit[project_id, group_id]
             >= projects["ideal_group_size"][project_id]
@@ -161,7 +182,7 @@ def get_gurobi_best_obj_60sec_and_obj_bound(
         ),
         name="ensure_correct_group_size_deficit",
     )
-    m.update()
+    model.update()
 
     max_num_groups = max(projects["max#groups"])
 
@@ -173,7 +194,7 @@ def get_gurobi_best_obj_60sec_and_obj_bound(
 
     num_projects = len(projects)
 
-    m.addConstrs(
+    model.addConstrs(
         (
             z[first_student_id, second_student_id] * num_projects
             >= sum(
@@ -186,9 +207,9 @@ def get_gurobi_best_obj_60sec_and_obj_bound(
         ),
         name="ensure_correct_inidicator_different_group_1",
     )
-    m.update()
+    model.update()
 
-    m.addConstrs(
+    model.addConstrs(
         (
             z[first_student_id, second_student_id] * num_projects
             >= sum(
@@ -201,36 +222,32 @@ def get_gurobi_best_obj_60sec_and_obj_bound(
         ),
         name="ensure_correct_inidicator_different_group_2",
     )
-    m.update()
+    model.update()
 
-    m.Params.TimeLimit = 60
-    m.optimize()
-
-    best_obj_60sec_and_obj_bound = {"best_obj": m.ObjVal, "obj_bound": m.ObjBound}
-
-    m.dispose()
-    gp.disposeDefaultEnv()
-
-    return best_obj_60sec_and_obj_bound
+    return model
 
 
-if __name__ == "__main__":
-    best_objs_60sec_obj_bounds = {}
-    project_quantities = [3, 4, 5]
-    student_quantities = [30, 40, 50]
-    instances_per_combination = 10
+def benchmark_gurobi(
+    project_quantities: list[int],
+    student_quantities: list[int],
+    instances_per_dimension: int,
+    reward_bilateral: int,
+    penalty_unassignment: int,
+    filename: str,
+    time_limit: int,
+):
 
-    reward_bilateral = 2
-    penalty_unassignment = 3
-
+    solution_and_bound_developments = {}
     folder_projects = Path("instances_projects")
     folder_students = Path("instances_students")
-
+    results_path = Path(filename)
+    if results_path.is_file():
+        raise ValueError(f"{results_path} already exists!")
     for project_quantity in project_quantities:
         for student_quantity in student_quantities:
             dimension = f"{project_quantity}_{student_quantity}"
             dimension_subfolder = f"{dimension}_instances"
-            for instance in range(instances_per_combination):
+            for instance in range(instances_per_dimension):
                 filename_projects = f"generic_{dimension}_projects_{instance}.csv"
                 filename_students = f"generic_{dimension}_students_{instance}.csv"
                 filepath_projects = folder_projects / dimension_subfolder / filename_projects
@@ -239,13 +256,28 @@ if __name__ == "__main__":
                 students_info = pd.read_csv(filepath_students)
                 students_info["fav_partners"] = students_info["fav_partners"].apply(json.loads)
                 students_info["project_prefs"] = students_info["project_prefs"].apply(lambda x: tuple(json.loads(x)))
-                best_objs_60sec_obj_bounds[f"generic_{dimension}_{instance}"] = (
-                    get_gurobi_best_obj_60sec_and_obj_bound(
-                        projects_info,
-                        students_info,
-                        reward_bilateral,
-                        penalty_unassignment,
-                    )
+                model = get_gurobi_model(
+                    projects=projects_info,
+                    students=students_info,
+                    reward_bilateral=reward_bilateral,
+                    penalty_unassignment=penalty_unassignment,
                 )
-    with open("gurobi_benchmarks.json", "w", encoding="utf-8") as f:
-        json.dump(best_objs_60sec_obj_bounds, f, indent=4)
+                solution_and_bound_developments[f"generic_{dimension}_{instance}"] = SolutionsRecorder(
+                    model, time_limit
+                ).solutions_with_bound()
+                results_path.write_text(json.dumps(solution_and_bound_developments, indent=4), encoding="utf-8")
+                model.dispose()
+                gp.disposeDefaultEnv()
+
+
+if __name__ == "__main__":
+    settings = BenchmarkSettingsGurobi()
+    benchmark_gurobi(
+        project_quantities=settings.project_quantities,
+        student_quantities=settings.student_quantities,
+        instances_per_dimension=settings.instances_per_dimesion,
+        reward_bilateral=settings.reward_bilateral,
+        penalty_unassignment=settings.penalty_unassignment,
+        filename=settings.filename,
+        time_limit=settings.time_limit,
+    )

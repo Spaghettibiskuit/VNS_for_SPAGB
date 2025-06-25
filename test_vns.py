@@ -1,27 +1,27 @@
 from pathlib import Path
 
 from problem_data import generate_throwaway_instance
+from settings import TestSettings
 from vns_on_student_assignment import VariableNeighborhoodSearch
 
 
 def test_vns(
-    min_num_projects,
-    max_num_projects,
-    step_num_projects,
-    min_num_students,
-    max_num_students,
-    step_num_students,
-    iteration_limit,
-    max_neighborhood,
-    starting_random_seed,
-    line_limit,
-    filename="most_recent_error_log",
-    extension=".txt",
+    min_num_projects: int,
+    max_num_projects: int,
+    step_num_projects: int,
+    min_num_students: int,
+    max_num_students: int,
+    step_num_students: int,
+    iteration_limit: int,
+    starting_random_seed: int,
+    line_limit: int,
+    filename: str,
 ):
     folder = Path("error_logs")
-    if not folder.exists():
-        folder.mkdir()
-    error_log_path = folder / (filename + extension)
+    folder.mkdir(exist_ok=True)
+    error_log_path = folder / filename
+    if error_log_path.is_file():
+        raise ValueError(f"{error_log_path} already exists!")
     current_random_seed = starting_random_seed
     lines_written = 0
     while lines_written < line_limit:
@@ -36,7 +36,6 @@ def test_vns(
                 )
                 error_report = vns_run.run_general_vns_best_improvement(
                     iteration_limit=iteration_limit,
-                    max_neighborhood=max_neighborhood,
                     testing=True,
                     seed=current_random_seed,
                 )
@@ -66,10 +65,8 @@ def test_vns(
                 lines_written += 1
                 if lines_written >= line_limit:
                     break
-
             if lines_written >= line_limit:
                 break
-
         if lines_written >= line_limit:
             break
         with error_log_path.open("a", encoding="utf-8") as f:
@@ -79,17 +76,16 @@ def test_vns(
 
 
 if __name__ == "__main__":
+    settings = TestSettings()
     test_vns(
-        min_num_projects=3,
-        max_num_projects=6,
-        step_num_projects=1,
-        min_num_students=20,
-        max_num_students=60,
-        step_num_students=5,
-        iteration_limit=100,
-        max_neighborhood=6,
-        starting_random_seed=17,
-        line_limit=1000,
-        filename="error_log_15",
-        extension=".txt",
+        min_num_projects=settings.min_num_projects,
+        max_num_projects=settings.max_num_projects,
+        step_num_projects=settings.step_num_projects,
+        min_num_students=settings.min_num_students,
+        max_num_students=settings.max_num_students,
+        step_num_students=settings.step_num_students,
+        iteration_limit=settings.iteration_limit,
+        starting_random_seed=settings.starting_random_seed,
+        line_limit=settings.line_limit,
+        filename=settings.filename,
     )
