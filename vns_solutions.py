@@ -75,10 +75,10 @@ def benchmark_vns(
 if __name__ == "__main__":
     settings = BenchmarkSettingsVNS()
     benchmark_vns(
-        settings.filename_results,
-        settings.filename_error_logs,
-        settings.project_quantities,
-        settings.student_quantities,
+        filename_results=settings.filename_results,
+        filename_error_logs=settings.filename_error_logs,
+        project_quantities=settings.project_quantities,
+        student_quantities=settings.student_quantities,
         instances_per_dimension=settings.instances_per_dimension,
         time_limit=settings.time_limit,
         seed=settings.seed,

@@ -22,10 +22,10 @@ class BenchmarkSettingsVNS:
     def __init__(self):
         self.project_quantities = [3, 4, 5]
         self.student_quantities = [30, 40, 50]
-        self.instances_per_dimension = 1
-        self.time_limit = 15
+        self.instances_per_dimension = 10
+        self.time_limit = 300
         self.seed = 100
-        self.filename_results = "vns_benchmarks_300s_res.json"
+        self.filename_results = "vns_benchmarks_300s_new.json"
         self.filename_error_logs = "benchmark_1.txt"
 
 
