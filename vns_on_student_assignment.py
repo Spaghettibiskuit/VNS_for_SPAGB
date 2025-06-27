@@ -742,12 +742,11 @@ class VariableNeighborhoodSearch:
         bilateral_reward_gain = (
             sum(
                 (
-                    (leaving_id, remaining_id) in self.bilateral_pairs
-                    if (leaving_id := student.student_id) < (remaining_id := group_member.student_id)
-                    else (remaining_id, leaving_id) in self.bilateral_pairs
+                    (arriving_id, present_id) in self.bilateral_pairs
+                    if (arriving_id := student.student_id) < (present_id := group_member.student_id)
+                    else (present_id, arriving_id) in self.bilateral_pairs
                 )
                 for group_member in group.students
-                if group_member is not student
             )
             * self.reward_bilateral_interest_collaboration
         )

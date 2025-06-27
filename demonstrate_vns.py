@@ -17,7 +17,6 @@ def report_current_solution(vns_instance: VariableNeighborhoodSearch):
                 print(student.name, student.student_id)
     if vns_instance.unassigned_students:
         print("\nThese students were not assigned:")
-        print(vns_instance.unassigned_students)
         for student in vns_instance.unassigned_students:
             print(student.name, student.student_id)
     else:
