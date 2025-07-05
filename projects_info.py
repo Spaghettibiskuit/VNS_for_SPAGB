@@ -1,4 +1,4 @@
-"""Randomly generate a dataframe with relevant information on offered projects"""
+"""Contains function to generate a dataframe on random projects."""
 
 import random as rd
 
@@ -24,7 +24,49 @@ def random_projects_df(
     min_pen_group_size: int = 1,
     max_pen_group_size: int = 3,
 ) -> pd.DataFrame:
-    """Randomly generate a dataframe describing requirements of projects."""
+    """Returns random projects with names and information on them.
+
+    Args:
+        num_projects: The number of projects in the problem.
+        min_desired_num_groups: The minimum number of groups a project
+            can want to supervise.
+        max_desired_num_groups: The maximum number of groups a project
+            can want to supervise.
+        min_manageable_surplus_groups: The minimum number of groups on
+            top of those it wants to supervise any group is willing to
+            supervise.
+        max_manageable_surplus_groups: The maximum number of groups on
+            top of those it wants to supervise any group is willing to
+            supervise.
+        min_ideal_group_size: The minimum group size any project deems
+            ideal.
+        max_ideal_group_size: The maximum group size any project deems
+            ideal.
+        min_tolerable_group_size_deficit: The minimum negative deviation
+            from the ideal group size any project can accept.
+        max_tolerable_group_size_deficit: The maximum negative deviation
+            from the ideal group size any project can accept.
+        min_tolerable_group_size_surplus: The minimum positive deviation
+            from the ideal group size any project can accept.
+        max_tolerable_group_size_surplus: The maximum positive deviation
+            from the ideal group size any project can accept.
+        min_pen_num_groups: The minimum penalty any project attributes
+            to each group exceeding the number of groups it wants to
+            supervise.
+        max_pen_num_groups: The maximum penalty any project attributes
+            to each group exceeding the number of groups it wants to
+            supervise.
+        min_pen_group_size: The minimum coefficient with which deviation
+            from ideal_group_size is penalized by any project.
+        max_pen_group_size: The maximum coefficient with which deviation
+            from ideal_group_size is penalized by any project.
+
+        Returns:
+            Project names with each project's guidelines, whishes and penalties
+            regarding the number of groups and group sizes. All is generated
+            randomly within the bounds set by the arguments. THE INDEX
+            POSITION IN THE DATAFRAME LATER BECOMES THE PROJECT'S ID.
+    """
 
     names_projects = rd.sample(BUSINESS_DISCIPLINES, k=num_projects)
     desired_nums_groups = [rd.randint(min_desired_num_groups, max_desired_num_groups) for _ in names_projects]

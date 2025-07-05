@@ -1,0 +1,5337 @@
+{
+    "generic_3_30_0": [
+        {
+            "obj": -4,
+            "runtime": 0.0002465248107910156,
+            "neighborhood": 0
+        },
+        {
+            "obj": 32,
+            "runtime": 0.01013803482055664,
+            "neighborhood": 1
+        },
+        {
+            "obj": 41,
+            "runtime": 0.5445327758789062,
+            "neighborhood": 2
+        },
+        {
+            "obj": 62,
+            "runtime": 0.7417068481445312,
+            "neighborhood": 3
+        },
+        {
+            "obj": 74,
+            "runtime": 0.9965968132019043,
+            "neighborhood": 3
+        },
+        {
+            "obj": 78,
+            "runtime": 1.3357911109924316,
+            "neighborhood": 3
+        },
+        {
+            "obj": 79,
+            "runtime": 1.6614165306091309,
+            "neighborhood": 3
+        }
+    ],
+    "generic_3_30_1": [
+        {
+            "obj": 67,
+            "runtime": 0.0002779960632324219,
+            "neighborhood": 0
+        },
+        {
+            "obj": 70,
+            "runtime": 0.0027837753295898438,
+            "neighborhood": 1
+        },
+        {
+            "obj": 78,
+            "runtime": 0.6527132987976074,
+            "neighborhood": 2
+        },
+        {
+            "obj": 82,
+            "runtime": 0.964963436126709,
+            "neighborhood": 3
+        },
+        {
+            "obj": 87,
+            "runtime": 1.410550594329834,
+            "neighborhood": 3
+        },
+        {
+            "obj": 89,
+            "runtime": 2.721588134765625,
+            "neighborhood": 5
+        },
+        {
+            "obj": 91,
+            "runtime": 3.810349941253662,
+            "neighborhood": 6
+        },
+        {
+            "obj": 92,
+            "runtime": 4.623579978942871,
+            "neighborhood": 5
+        }
+    ],
+    "generic_3_30_2": [
+        {
+            "obj": 37,
+            "runtime": 0.00028586387634277344,
+            "neighborhood": 0
+        },
+        {
+            "obj": 71,
+            "runtime": 0.013653278350830078,
+            "neighborhood": 1
+        },
+        {
+            "obj": 73,
+            "runtime": 0.16243314743041992,
+            "neighborhood": 2
+        },
+        {
+            "obj": 79,
+            "runtime": 0.31543684005737305,
+            "neighborhood": 3
+        },
+        {
+            "obj": 80,
+            "runtime": 0.5106842517852783,
+            "neighborhood": 4
+        },
+        {
+            "obj": 85,
+            "runtime": 1.3781816959381104,
+            "neighborhood": 5
+        },
+        {
+            "obj": 86,
+            "runtime": 13.887653589248657,
+            "neighborhood": 5
+        }
+    ],
+    "generic_3_30_3": [
+        {
+            "obj": 67,
+            "runtime": 0.0001895427703857422,
+            "neighborhood": 0
+        },
+        {
+            "obj": 71,
+            "runtime": 0.004014015197753906,
+            "neighborhood": 1
+        },
+        {
+            "obj": 81,
+            "runtime": 0.41625475883483887,
+            "neighborhood": 2
+        },
+        {
+            "obj": 82,
+            "runtime": 0.6333966255187988,
+            "neighborhood": 3
+        },
+        {
+            "obj": 91,
+            "runtime": 1.4134230613708496,
+            "neighborhood": 5
+        },
+        {
+            "obj": 93,
+            "runtime": 1.621591567993164,
+            "neighborhood": 2
+        },
+        {
+            "obj": 95,
+            "runtime": 43.70822477340698,
+            "neighborhood": 5
+        }
+    ],
+    "generic_3_30_4": [
+        {
+            "obj": 45,
+            "runtime": 0.00019788742065429688,
+            "neighborhood": 0
+        },
+        {
+            "obj": 67,
+            "runtime": 0.006619691848754883,
+            "neighborhood": 1
+        },
+        {
+            "obj": 71,
+            "runtime": 0.1264805793762207,
+            "neighborhood": 2
+        },
+        {
+            "obj": 86,
+            "runtime": 0.43341827392578125,
+            "neighborhood": 3
+        },
+        {
+            "obj": 90,
+            "runtime": 0.6095371246337891,
+            "neighborhood": 3
+        },
+        {
+            "obj": 93,
+            "runtime": 0.782555103302002,
+            "neighborhood": 3
+        },
+        {
+            "obj": 98,
+            "runtime": 1.8859333992004395,
+            "neighborhood": 5
+        },
+        {
+            "obj": 99,
+            "runtime": 52.505940675735474,
+            "neighborhood": 5
+        },
+        {
+            "obj": 100,
+            "runtime": 377.7425193786621,
+            "neighborhood": 5
+        }
+    ],
+    "generic_3_30_5": [
+        {
+            "obj": 57,
+            "runtime": 0.00017499923706054688,
+            "neighborhood": 0
+        },
+        {
+            "obj": 76,
+            "runtime": 0.008171319961547852,
+            "neighborhood": 1
+        },
+        {
+            "obj": 80,
+            "runtime": 0.28560805320739746,
+            "neighborhood": 2
+        },
+        {
+            "obj": 85,
+            "runtime": 0.4549229145050049,
+            "neighborhood": 3
+        },
+        {
+            "obj": 88,
+            "runtime": 0.6304874420166016,
+            "neighborhood": 3
+        },
+        {
+            "obj": 94,
+            "runtime": 1.3264133930206299,
+            "neighborhood": 5
+        },
+        {
+            "obj": 96,
+            "runtime": 9.147311925888062,
+            "neighborhood": 5
+        }
+    ],
+    "generic_3_30_6": [
+        {
+            "obj": 76,
+            "runtime": 0.00018334388732910156,
+            "neighborhood": 0
+        },
+        {
+            "obj": 80,
+            "runtime": 0.0035631656646728516,
+            "neighborhood": 1
+        },
+        {
+            "obj": 84,
+            "runtime": 0.0059778690338134766,
+            "neighborhood": 1
+        },
+        {
+            "obj": 88,
+            "runtime": 0.20408225059509277,
+            "neighborhood": 2
+        },
+        {
+            "obj": 90,
+            "runtime": 1.188065528869629,
+            "neighborhood": 5
+        },
+        {
+            "obj": 92,
+            "runtime": 1.5608320236206055,
+            "neighborhood": 3
+        },
+        {
+            "obj": 96,
+            "runtime": 2.0077931880950928,
+            "neighborhood": 5
+        },
+        {
+            "obj": 97,
+            "runtime": 184.1110110282898,
+            "neighborhood": 5
+        },
+        {
+            "obj": 98,
+            "runtime": 185.41603660583496,
+            "neighborhood": 6
+        }
+    ],
+    "generic_3_30_7": [
+        {
+            "obj": -7,
+            "runtime": 0.00029015541076660156,
+            "neighborhood": 0
+        },
+        {
+            "obj": 28,
+            "runtime": 0.014718294143676758,
+            "neighborhood": 1
+        },
+        {
+            "obj": 33,
+            "runtime": 0.2087421417236328,
+            "neighborhood": 2
+        },
+        {
+            "obj": 45,
+            "runtime": 0.42465758323669434,
+            "neighborhood": 3
+        },
+        {
+            "obj": 51,
+            "runtime": 0.6273415088653564,
+            "neighborhood": 3
+        },
+        {
+            "obj": 57,
+            "runtime": 0.9690818786621094,
+            "neighborhood": 3
+        },
+        {
+            "obj": 60,
+            "runtime": 1.2669920921325684,
+            "neighborhood": 3
+        },
+        {
+            "obj": 68,
+            "runtime": 2.3544745445251465,
+            "neighborhood": 5
+        },
+        {
+            "obj": 69,
+            "runtime": 10.445335865020752,
+            "neighborhood": 5
+        }
+    ],
+    "generic_3_30_8": [
+        {
+            "obj": 69,
+            "runtime": 0.0002956390380859375,
+            "neighborhood": 0
+        },
+        {
+            "obj": 73,
+            "runtime": 0.004400730133056641,
+            "neighborhood": 1
+        },
+        {
+            "obj": 75,
+            "runtime": 0.008218526840209961,
+            "neighborhood": 1
+        },
+        {
+            "obj": 77,
+            "runtime": 0.011560916900634766,
+            "neighborhood": 1
+        },
+        {
+            "obj": 79,
+            "runtime": 0.1823568344116211,
+            "neighborhood": 2
+        },
+        {
+            "obj": 82,
+            "runtime": 0.3195657730102539,
+            "neighborhood": 3
+        },
+        {
+            "obj": 87,
+            "runtime": 0.4415304660797119,
+            "neighborhood": 3
+        },
+        {
+            "obj": 88,
+            "runtime": 0.5869016647338867,
+            "neighborhood": 3
+        },
+        {
+            "obj": 91,
+            "runtime": 0.7860102653503418,
+            "neighborhood": 3
+        },
+        {
+            "obj": 98,
+            "runtime": 1.8389151096343994,
+            "neighborhood": 6
+        },
+        {
+            "obj": 99,
+            "runtime": 86.70223498344421,
+            "neighborhood": 5
+        },
+        {
+            "obj": 100,
+            "runtime": 104.30199003219604,
+            "neighborhood": 5
+        }
+    ],
+    "generic_3_30_9": [
+        {
+            "obj": 13,
+            "runtime": 0.0005614757537841797,
+            "neighborhood": 0
+        },
+        {
+            "obj": 54,
+            "runtime": 0.011976242065429688,
+            "neighborhood": 1
+        },
+        {
+            "obj": 60,
+            "runtime": 0.23826265335083008,
+            "neighborhood": 2
+        },
+        {
+            "obj": 72,
+            "runtime": 0.5055696964263916,
+            "neighborhood": 3
+        },
+        {
+            "obj": 75,
+            "runtime": 0.7256186008453369,
+            "neighborhood": 3
+        },
+        {
+            "obj": 76,
+            "runtime": 0.9573307037353516,
+            "neighborhood": 4
+        },
+        {
+            "obj": 78,
+            "runtime": 1.519458293914795,
+            "neighborhood": 5
+        },
+        {
+            "obj": 80,
+            "runtime": 4.928661584854126,
+            "neighborhood": 5
+        }
+    ],
+    "generic_3_40_0": [
+        {
+            "obj": 35,
+            "runtime": 0.0003859996795654297,
+            "neighborhood": 0
+        },
+        {
+            "obj": 96,
+            "runtime": 0.04292893409729004,
+            "neighborhood": 1
+        },
+        {
+            "obj": 98,
+            "runtime": 0.4045867919921875,
+            "neighborhood": 2
+        },
+        {
+            "obj": 105,
+            "runtime": 1.010366678237915,
+            "neighborhood": 3
+        },
+        {
+            "obj": 108,
+            "runtime": 1.9216668605804443,
+            "neighborhood": 3
+        },
+        {
+            "obj": 109,
+            "runtime": 2.5887064933776855,
+            "neighborhood": 3
+        },
+        {
+            "obj": 111,
+            "runtime": 7.435797452926636,
+            "neighborhood": 6
+        },
+        {
+            "obj": 112,
+            "runtime": 10.010166645050049,
+            "neighborhood": 5
+        },
+        {
+            "obj": 113,
+            "runtime": 20.614243030548096,
+            "neighborhood": 6
+        },
+        {
+            "obj": 116,
+            "runtime": 22.839555501937866,
+            "neighborhood": 6
+        },
+        {
+            "obj": 117,
+            "runtime": 88.46523928642273,
+            "neighborhood": 5
+        },
+        {
+            "obj": 118,
+            "runtime": 698.8103256225586,
+            "neighborhood": 5
+        }
+    ],
+    "generic_3_40_1": [
+        {
+            "obj": 1,
+            "runtime": 0.00035643577575683594,
+            "neighborhood": 0
+        },
+        {
+            "obj": 61,
+            "runtime": 0.03564929962158203,
+            "neighborhood": 1
+        },
+        {
+            "obj": 71,
+            "runtime": 0.9779036045074463,
+            "neighborhood": 2
+        },
+        {
+            "obj": 83,
+            "runtime": 1.7162432670593262,
+            "neighborhood": 3
+        },
+        {
+            "obj": 89,
+            "runtime": 2.1551640033721924,
+            "neighborhood": 3
+        },
+        {
+            "obj": 92,
+            "runtime": 2.8401541709899902,
+            "neighborhood": 3
+        },
+        {
+            "obj": 94,
+            "runtime": 3.497579574584961,
+            "neighborhood": 4
+        },
+        {
+            "obj": 95,
+            "runtime": 4.127117872238159,
+            "neighborhood": 3
+        },
+        {
+            "obj": 99,
+            "runtime": 4.7128005027771,
+            "neighborhood": 3
+        },
+        {
+            "obj": 103,
+            "runtime": 7.412792921066284,
+            "neighborhood": 5
+        },
+        {
+            "obj": 105,
+            "runtime": 99.71982002258301,
+            "neighborhood": 5
+        },
+        {
+            "obj": 108,
+            "runtime": 1723.241174697876,
+            "neighborhood": 5
+        }
+    ],
+    "generic_3_40_2": [
+        {
+            "obj": 17,
+            "runtime": 0.00038170814514160156,
+            "neighborhood": 0
+        },
+        {
+            "obj": 82,
+            "runtime": 0.03374314308166504,
+            "neighborhood": 1
+        },
+        {
+            "obj": 87,
+            "runtime": 0.2880725860595703,
+            "neighborhood": 2
+        },
+        {
+            "obj": 99,
+            "runtime": 0.7462680339813232,
+            "neighborhood": 3
+        },
+        {
+            "obj": 104,
+            "runtime": 1.1069567203521729,
+            "neighborhood": 3
+        },
+        {
+            "obj": 105,
+            "runtime": 1.607569694519043,
+            "neighborhood": 3
+        },
+        {
+            "obj": 106,
+            "runtime": 2.0833168029785156,
+            "neighborhood": 3
+        },
+        {
+            "obj": 108,
+            "runtime": 2.4940240383148193,
+            "neighborhood": 3
+        },
+        {
+            "obj": 109,
+            "runtime": 2.922804117202759,
+            "neighborhood": 4
+        },
+        {
+            "obj": 112,
+            "runtime": 4.765765190124512,
+            "neighborhood": 6
+        },
+        {
+            "obj": 114,
+            "runtime": 7.261274337768555,
+            "neighborhood": 6
+        }
+    ],
+    "generic_3_40_3": [
+        {
+            "obj": 8,
+            "runtime": 0.0003428459167480469,
+            "neighborhood": 0
+        },
+        {
+            "obj": 84,
+            "runtime": 0.03372335433959961,
+            "neighborhood": 1
+        },
+        {
+            "obj": 94,
+            "runtime": 0.7041397094726562,
+            "neighborhood": 2
+        },
+        {
+            "obj": 99,
+            "runtime": 1.1254184246063232,
+            "neighborhood": 3
+        },
+        {
+            "obj": 103,
+            "runtime": 1.6870315074920654,
+            "neighborhood": 3
+        },
+        {
+            "obj": 105,
+            "runtime": 2.076646327972412,
+            "neighborhood": 3
+        },
+        {
+            "obj": 107,
+            "runtime": 2.43005108833313,
+            "neighborhood": 3
+        },
+        {
+            "obj": 109,
+            "runtime": 3.3313937187194824,
+            "neighborhood": 3
+        },
+        {
+            "obj": 112,
+            "runtime": 5.663023471832275,
+            "neighborhood": 6
+        },
+        {
+            "obj": 113,
+            "runtime": 12.749802112579346,
+            "neighborhood": 5
+        }
+    ],
+    "generic_3_40_4": [
+        {
+            "obj": 39,
+            "runtime": 0.0003681182861328125,
+            "neighborhood": 0
+        },
+        {
+            "obj": 76,
+            "runtime": 0.024752378463745117,
+            "neighborhood": 1
+        },
+        {
+            "obj": 88,
+            "runtime": 0.9211406707763672,
+            "neighborhood": 2
+        },
+        {
+            "obj": 93,
+            "runtime": 0.9269626140594482,
+            "neighborhood": 1
+        },
+        {
+            "obj": 95,
+            "runtime": 1.2350904941558838,
+            "neighborhood": 2
+        },
+        {
+            "obj": 105,
+            "runtime": 1.5467753410339355,
+            "neighborhood": 3
+        },
+        {
+            "obj": 113,
+            "runtime": 1.9546253681182861,
+            "neighborhood": 3
+        },
+        {
+            "obj": 120,
+            "runtime": 5.045008182525635,
+            "neighborhood": 5
+        },
+        {
+            "obj": 121,
+            "runtime": 106.72627186775208,
+            "neighborhood": 5
+        }
+    ],
+    "generic_3_40_5": [
+        {
+            "obj": 50,
+            "runtime": 0.0003936290740966797,
+            "neighborhood": 0
+        },
+        {
+            "obj": 90,
+            "runtime": 0.02991008758544922,
+            "neighborhood": 1
+        },
+        {
+            "obj": 94,
+            "runtime": 0.5356874465942383,
+            "neighborhood": 2
+        },
+        {
+            "obj": 104,
+            "runtime": 1.0250318050384521,
+            "neighborhood": 3
+        },
+        {
+            "obj": 112,
+            "runtime": 2.0261290073394775,
+            "neighborhood": 3
+        },
+        {
+            "obj": 114,
+            "runtime": 2.8496592044830322,
+            "neighborhood": 3
+        },
+        {
+            "obj": 115,
+            "runtime": 3.6368093490600586,
+            "neighborhood": 3
+        },
+        {
+            "obj": 117,
+            "runtime": 426.17794728279114,
+            "neighborhood": 2
+        },
+        {
+            "obj": 119,
+            "runtime": 533.790091753006,
+            "neighborhood": 5
+        }
+    ],
+    "generic_3_40_6": [
+        {
+            "obj": 16,
+            "runtime": 0.00027370452880859375,
+            "neighborhood": 0
+        },
+        {
+            "obj": 43,
+            "runtime": 0.02008962631225586,
+            "neighborhood": 1
+        },
+        {
+            "obj": 53,
+            "runtime": 0.9570555686950684,
+            "neighborhood": 2
+        },
+        {
+            "obj": 66,
+            "runtime": 1.4163026809692383,
+            "neighborhood": 3
+        },
+        {
+            "obj": 80,
+            "runtime": 1.993992805480957,
+            "neighborhood": 3
+        },
+        {
+            "obj": 88,
+            "runtime": 2.6666746139526367,
+            "neighborhood": 3
+        },
+        {
+            "obj": 92,
+            "runtime": 3.2886860370635986,
+            "neighborhood": 4
+        },
+        {
+            "obj": 96,
+            "runtime": 4.439636707305908,
+            "neighborhood": 2
+        },
+        {
+            "obj": 97,
+            "runtime": 6.255104303359985,
+            "neighborhood": 5
+        },
+        {
+            "obj": 99,
+            "runtime": 9.570656299591064,
+            "neighborhood": 6
+        },
+        {
+            "obj": 100,
+            "runtime": 29.47039484977722,
+            "neighborhood": 6
+        },
+        {
+            "obj": 101,
+            "runtime": 31.97435164451599,
+            "neighborhood": 6
+        },
+        {
+            "obj": 102,
+            "runtime": 47.549907207489014,
+            "neighborhood": 5
+        }
+    ],
+    "generic_3_40_7": [
+        {
+            "obj": -27,
+            "runtime": 0.00031113624572753906,
+            "neighborhood": 0
+        },
+        {
+            "obj": 37,
+            "runtime": 0.02877354621887207,
+            "neighborhood": 1
+        },
+        {
+            "obj": 44,
+            "runtime": 0.5460162162780762,
+            "neighborhood": 2
+        },
+        {
+            "obj": 64,
+            "runtime": 0.7340128421783447,
+            "neighborhood": 3
+        },
+        {
+            "obj": 83,
+            "runtime": 0.9712207317352295,
+            "neighborhood": 3
+        },
+        {
+            "obj": 89,
+            "runtime": 1.280200481414795,
+            "neighborhood": 3
+        },
+        {
+            "obj": 92,
+            "runtime": 1.6837210655212402,
+            "neighborhood": 3
+        },
+        {
+            "obj": 96,
+            "runtime": 2.202216625213623,
+            "neighborhood": 3
+        },
+        {
+            "obj": 100,
+            "runtime": 3.0569217205047607,
+            "neighborhood": 3
+        },
+        {
+            "obj": 101,
+            "runtime": 4.9604833126068115,
+            "neighborhood": 5
+        },
+        {
+            "obj": 102,
+            "runtime": 7.881946325302124,
+            "neighborhood": 6
+        },
+        {
+            "obj": 103,
+            "runtime": 160.83239245414734,
+            "neighborhood": 5
+        },
+        {
+            "obj": 105,
+            "runtime": 752.0883131027222,
+            "neighborhood": 5
+        }
+    ],
+    "generic_3_40_8": [
+        {
+            "obj": 18,
+            "runtime": 0.00020360946655273438,
+            "neighborhood": 0
+        },
+        {
+            "obj": 88,
+            "runtime": 0.020951271057128906,
+            "neighborhood": 1
+        },
+        {
+            "obj": 90,
+            "runtime": 0.024741172790527344,
+            "neighborhood": 1
+        },
+        {
+            "obj": 96,
+            "runtime": 0.705747127532959,
+            "neighborhood": 2
+        },
+        {
+            "obj": 105,
+            "runtime": 1.257514238357544,
+            "neighborhood": 3
+        },
+        {
+            "obj": 106,
+            "runtime": 1.7177379131317139,
+            "neighborhood": 3
+        },
+        {
+            "obj": 107,
+            "runtime": 2.16157865524292,
+            "neighborhood": 3
+        },
+        {
+            "obj": 110,
+            "runtime": 2.6163394451141357,
+            "neighborhood": 3
+        },
+        {
+            "obj": 112,
+            "runtime": 3.638772964477539,
+            "neighborhood": 3
+        },
+        {
+            "obj": 114,
+            "runtime": 7.144280195236206,
+            "neighborhood": 5
+        },
+        {
+            "obj": 116,
+            "runtime": 9.750602722167969,
+            "neighborhood": 6
+        },
+        {
+            "obj": 118,
+            "runtime": 20.185643911361694,
+            "neighborhood": 2
+        },
+        {
+            "obj": 119,
+            "runtime": 21.706493854522705,
+            "neighborhood": 5
+        }
+    ],
+    "generic_3_40_9": [
+        {
+            "obj": 24,
+            "runtime": 0.000385284423828125,
+            "neighborhood": 0
+        },
+        {
+            "obj": 86,
+            "runtime": 0.03432011604309082,
+            "neighborhood": 1
+        },
+        {
+            "obj": 94,
+            "runtime": 0.48824095726013184,
+            "neighborhood": 2
+        },
+        {
+            "obj": 103,
+            "runtime": 1.285874843597412,
+            "neighborhood": 3
+        },
+        {
+            "obj": 105,
+            "runtime": 1.619161605834961,
+            "neighborhood": 3
+        },
+        {
+            "obj": 110,
+            "runtime": 2.0394132137298584,
+            "neighborhood": 3
+        },
+        {
+            "obj": 113,
+            "runtime": 2.932245969772339,
+            "neighborhood": 3
+        }
+    ],
+    "generic_3_50_0": [
+        {
+            "obj": 2,
+            "runtime": 0.00041556358337402344,
+            "neighborhood": 0
+        },
+        {
+            "obj": 105,
+            "runtime": 0.0494379997253418,
+            "neighborhood": 1
+        },
+        {
+            "obj": 115,
+            "runtime": 1.213210105895996,
+            "neighborhood": 2
+        },
+        {
+            "obj": 134,
+            "runtime": 2.028019428253174,
+            "neighborhood": 3
+        },
+        {
+            "obj": 141,
+            "runtime": 2.7815730571746826,
+            "neighborhood": 3
+        },
+        {
+            "obj": 145,
+            "runtime": 3.6163642406463623,
+            "neighborhood": 3
+        },
+        {
+            "obj": 146,
+            "runtime": 4.599525690078735,
+            "neighborhood": 3
+        },
+        {
+            "obj": 147,
+            "runtime": 5.509441614151001,
+            "neighborhood": 4
+        },
+        {
+            "obj": 151,
+            "runtime": 9.847208261489868,
+            "neighborhood": 5
+        },
+        {
+            "obj": 153,
+            "runtime": 14.060558319091797,
+            "neighborhood": 5
+        },
+        {
+            "obj": 154,
+            "runtime": 32.66330051422119,
+            "neighborhood": 5
+        },
+        {
+            "obj": 155,
+            "runtime": 278.3287513256073,
+            "neighborhood": 5
+        },
+        {
+            "obj": 157,
+            "runtime": 1223.210470199585,
+            "neighborhood": 2
+        }
+    ],
+    "generic_3_50_1": [
+        {
+            "obj": 14,
+            "runtime": 0.0004131793975830078,
+            "neighborhood": 0
+        },
+        {
+            "obj": 93,
+            "runtime": 0.0469965934753418,
+            "neighborhood": 1
+        },
+        {
+            "obj": 96,
+            "runtime": 0.7031204700469971,
+            "neighborhood": 2
+        },
+        {
+            "obj": 97,
+            "runtime": 1.1281967163085938,
+            "neighborhood": 2
+        },
+        {
+            "obj": 113,
+            "runtime": 1.584242343902588,
+            "neighborhood": 3
+        },
+        {
+            "obj": 122,
+            "runtime": 2.562812089920044,
+            "neighborhood": 3
+        },
+        {
+            "obj": 128,
+            "runtime": 3.2658157348632812,
+            "neighborhood": 3
+        },
+        {
+            "obj": 133,
+            "runtime": 4.167513608932495,
+            "neighborhood": 3
+        },
+        {
+            "obj": 134,
+            "runtime": 5.164658308029175,
+            "neighborhood": 3
+        },
+        {
+            "obj": 135,
+            "runtime": 6.522363185882568,
+            "neighborhood": 3
+        },
+        {
+            "obj": 140,
+            "runtime": 7.910006523132324,
+            "neighborhood": 3
+        },
+        {
+            "obj": 147,
+            "runtime": 16.866135358810425,
+            "neighborhood": 5
+        },
+        {
+            "obj": 149,
+            "runtime": 22.20840334892273,
+            "neighborhood": 6
+        },
+        {
+            "obj": 150,
+            "runtime": 27.995373964309692,
+            "neighborhood": 6
+        },
+        {
+            "obj": 151,
+            "runtime": 81.6474277973175,
+            "neighborhood": 5
+        }
+    ],
+    "generic_3_50_2": [
+        {
+            "obj": 11,
+            "runtime": 0.0004448890686035156,
+            "neighborhood": 0
+        },
+        {
+            "obj": 92,
+            "runtime": 0.04302835464477539,
+            "neighborhood": 1
+        },
+        {
+            "obj": 100,
+            "runtime": 1.1939599514007568,
+            "neighborhood": 2
+        },
+        {
+            "obj": 112,
+            "runtime": 1.982529640197754,
+            "neighborhood": 3
+        },
+        {
+            "obj": 117,
+            "runtime": 2.634958028793335,
+            "neighborhood": 3
+        },
+        {
+            "obj": 121,
+            "runtime": 3.6807329654693604,
+            "neighborhood": 3
+        },
+        {
+            "obj": 123,
+            "runtime": 4.689913272857666,
+            "neighborhood": 2
+        },
+        {
+            "obj": 129,
+            "runtime": 6.957810401916504,
+            "neighborhood": 3
+        },
+        {
+            "obj": 131,
+            "runtime": 8.686957597732544,
+            "neighborhood": 3
+        },
+        {
+            "obj": 132,
+            "runtime": 12.701938152313232,
+            "neighborhood": 5
+        },
+        {
+            "obj": 133,
+            "runtime": 136.13647961616516,
+            "neighborhood": 5
+        },
+        {
+            "obj": 134,
+            "runtime": 142.34689044952393,
+            "neighborhood": 6
+        },
+        {
+            "obj": 136,
+            "runtime": 149.85411620140076,
+            "neighborhood": 2
+        },
+        {
+            "obj": 138,
+            "runtime": 307.9157168865204,
+            "neighborhood": 5
+        },
+        {
+            "obj": 139,
+            "runtime": 2688.537418603897,
+            "neighborhood": 5
+        }
+    ],
+    "generic_3_50_3": [
+        {
+            "obj": -28,
+            "runtime": 0.0004298686981201172,
+            "neighborhood": 0
+        },
+        {
+            "obj": 72,
+            "runtime": 0.058516740798950195,
+            "neighborhood": 1
+        },
+        {
+            "obj": 80,
+            "runtime": 1.3844196796417236,
+            "neighborhood": 2
+        },
+        {
+            "obj": 94,
+            "runtime": 1.9884839057922363,
+            "neighborhood": 3
+        },
+        {
+            "obj": 99,
+            "runtime": 3.2010014057159424,
+            "neighborhood": 3
+        },
+        {
+            "obj": 104,
+            "runtime": 4.569727420806885,
+            "neighborhood": 3
+        },
+        {
+            "obj": 106,
+            "runtime": 5.608025789260864,
+            "neighborhood": 3
+        },
+        {
+            "obj": 107,
+            "runtime": 6.797839164733887,
+            "neighborhood": 3
+        },
+        {
+            "obj": 115,
+            "runtime": 13.766295194625854,
+            "neighborhood": 5
+        },
+        {
+            "obj": 116,
+            "runtime": 18.67509365081787,
+            "neighborhood": 3
+        },
+        {
+            "obj": 118,
+            "runtime": 20.16740369796753,
+            "neighborhood": 4
+        },
+        {
+            "obj": 119,
+            "runtime": 26.167959451675415,
+            "neighborhood": 6
+        },
+        {
+            "obj": 120,
+            "runtime": 27.57939314842224,
+            "neighborhood": 3
+        },
+        {
+            "obj": 121,
+            "runtime": 2927.247053861618,
+            "neighborhood": 5
+        }
+    ],
+    "generic_3_50_4": [
+        {
+            "obj": -57,
+            "runtime": 0.0003654956817626953,
+            "neighborhood": 0
+        },
+        {
+            "obj": -33,
+            "runtime": 0.015036582946777344,
+            "neighborhood": 1
+        },
+        {
+            "obj": -16,
+            "runtime": 1.2847692966461182,
+            "neighborhood": 2
+        },
+        {
+            "obj": 5,
+            "runtime": 1.6631016731262207,
+            "neighborhood": 3
+        },
+        {
+            "obj": 23,
+            "runtime": 2.078014373779297,
+            "neighborhood": 3
+        },
+        {
+            "obj": 43,
+            "runtime": 2.4929397106170654,
+            "neighborhood": 3
+        },
+        {
+            "obj": 58,
+            "runtime": 3.0467238426208496,
+            "neighborhood": 3
+        },
+        {
+            "obj": 69,
+            "runtime": 3.633293628692627,
+            "neighborhood": 3
+        },
+        {
+            "obj": 77,
+            "runtime": 4.721211671829224,
+            "neighborhood": 3
+        },
+        {
+            "obj": 79,
+            "runtime": 7.3018479347229,
+            "neighborhood": 5
+        },
+        {
+            "obj": 81,
+            "runtime": 171.36184930801392,
+            "neighborhood": 2
+        },
+        {
+            "obj": 83,
+            "runtime": 270.8269877433777,
+            "neighborhood": 5
+        },
+        {
+            "obj": 84,
+            "runtime": 1588.2033376693726,
+            "neighborhood": 5
+        },
+        {
+            "obj": 86,
+            "runtime": 1593.4513263702393,
+            "neighborhood": 5
+        },
+        {
+            "obj": 87,
+            "runtime": 3112.124536752701,
+            "neighborhood": 5
+        }
+    ],
+    "generic_3_50_5": [
+        {
+            "obj": 36,
+            "runtime": 0.0005118846893310547,
+            "neighborhood": 0
+        },
+        {
+            "obj": 123,
+            "runtime": 0.05039858818054199,
+            "neighborhood": 1
+        },
+        {
+            "obj": 127,
+            "runtime": 1.169003963470459,
+            "neighborhood": 2
+        },
+        {
+            "obj": 128,
+            "runtime": 1.1752889156341553,
+            "neighborhood": 1
+        },
+        {
+            "obj": 133,
+            "runtime": 2.5390920639038086,
+            "neighborhood": 3
+        },
+        {
+            "obj": 137,
+            "runtime": 3.7206485271453857,
+            "neighborhood": 3
+        },
+        {
+            "obj": 138,
+            "runtime": 4.88265061378479,
+            "neighborhood": 4
+        },
+        {
+            "obj": 139,
+            "runtime": 8.620477676391602,
+            "neighborhood": 5
+        },
+        {
+            "obj": 141,
+            "runtime": 21.108522415161133,
+            "neighborhood": 6
+        },
+        {
+            "obj": 142,
+            "runtime": 88.13386917114258,
+            "neighborhood": 6
+        },
+        {
+            "obj": 143,
+            "runtime": 301.8268060684204,
+            "neighborhood": 5
+        },
+        {
+            "obj": 144,
+            "runtime": 347.6523289680481,
+            "neighborhood": 6
+        },
+        {
+            "obj": 145,
+            "runtime": 1392.8296732902527,
+            "neighborhood": 5
+        }
+    ],
+    "generic_3_50_6": [
+        {
+            "obj": -30,
+            "runtime": 0.0004889965057373047,
+            "neighborhood": 0
+        },
+        {
+            "obj": 24,
+            "runtime": 0.027344226837158203,
+            "neighborhood": 1
+        },
+        {
+            "obj": 41,
+            "runtime": 1.5827665328979492,
+            "neighborhood": 2
+        },
+        {
+            "obj": 72,
+            "runtime": 1.9058687686920166,
+            "neighborhood": 3
+        },
+        {
+            "obj": 93,
+            "runtime": 2.633326292037964,
+            "neighborhood": 3
+        },
+        {
+            "obj": 108,
+            "runtime": 3.183372974395752,
+            "neighborhood": 3
+        },
+        {
+            "obj": 115,
+            "runtime": 3.868196725845337,
+            "neighborhood": 3
+        },
+        {
+            "obj": 118,
+            "runtime": 4.667447328567505,
+            "neighborhood": 3
+        },
+        {
+            "obj": 122,
+            "runtime": 9.573022365570068,
+            "neighborhood": 5
+        },
+        {
+            "obj": 123,
+            "runtime": 10.51123833656311,
+            "neighborhood": 3
+        },
+        {
+            "obj": 124,
+            "runtime": 13.939520359039307,
+            "neighborhood": 6
+        },
+        {
+            "obj": 129,
+            "runtime": 43.879016637802124,
+            "neighborhood": 6
+        },
+        {
+            "obj": 130,
+            "runtime": 44.90325474739075,
+            "neighborhood": 3
+        },
+        {
+            "obj": 131,
+            "runtime": 260.0377526283264,
+            "neighborhood": 5
+        }
+    ],
+    "generic_3_50_7": [
+        {
+            "obj": 22,
+            "runtime": 0.00026917457580566406,
+            "neighborhood": 0
+        },
+        {
+            "obj": 76,
+            "runtime": 0.03208637237548828,
+            "neighborhood": 1
+        },
+        {
+            "obj": 98,
+            "runtime": 2.5682687759399414,
+            "neighborhood": 2
+        },
+        {
+            "obj": 115,
+            "runtime": 4.112051486968994,
+            "neighborhood": 3
+        },
+        {
+            "obj": 125,
+            "runtime": 5.049370050430298,
+            "neighborhood": 3
+        },
+        {
+            "obj": 139,
+            "runtime": 6.664053678512573,
+            "neighborhood": 3
+        },
+        {
+            "obj": 143,
+            "runtime": 7.853440761566162,
+            "neighborhood": 3
+        },
+        {
+            "obj": 144,
+            "runtime": 9.112014293670654,
+            "neighborhood": 3
+        },
+        {
+            "obj": 147,
+            "runtime": 16.204657793045044,
+            "neighborhood": 6
+        },
+        {
+            "obj": 148,
+            "runtime": 17.574044704437256,
+            "neighborhood": 3
+        },
+        {
+            "obj": 149,
+            "runtime": 39.824671268463135,
+            "neighborhood": 6
+        },
+        {
+            "obj": 150,
+            "runtime": 49.48133134841919,
+            "neighborhood": 6
+        },
+        {
+            "obj": 151,
+            "runtime": 547.0577504634857,
+            "neighborhood": 5
+        },
+        {
+            "obj": 152,
+            "runtime": 652.6091310977936,
+            "neighborhood": 5
+        },
+        {
+            "obj": 153,
+            "runtime": 3398.75501036644,
+            "neighborhood": 5
+        }
+    ],
+    "generic_3_50_8": [
+        {
+            "obj": 5,
+            "runtime": 0.0002732276916503906,
+            "neighborhood": 0
+        },
+        {
+            "obj": 74,
+            "runtime": 0.04223489761352539,
+            "neighborhood": 1
+        },
+        {
+            "obj": 80,
+            "runtime": 0.848191499710083,
+            "neighborhood": 2
+        },
+        {
+            "obj": 92,
+            "runtime": 1.3409674167633057,
+            "neighborhood": 3
+        },
+        {
+            "obj": 101,
+            "runtime": 1.984046459197998,
+            "neighborhood": 3
+        },
+        {
+            "obj": 115,
+            "runtime": 3.221480131149292,
+            "neighborhood": 3
+        },
+        {
+            "obj": 122,
+            "runtime": 4.933747053146362,
+            "neighborhood": 3
+        },
+        {
+            "obj": 124,
+            "runtime": 6.276170015335083,
+            "neighborhood": 3
+        },
+        {
+            "obj": 126,
+            "runtime": 8.074326038360596,
+            "neighborhood": 3
+        },
+        {
+            "obj": 127,
+            "runtime": 9.297875881195068,
+            "neighborhood": 3
+        },
+        {
+            "obj": 130,
+            "runtime": 15.379444599151611,
+            "neighborhood": 5
+        },
+        {
+            "obj": 131,
+            "runtime": 747.7221441268921,
+            "neighborhood": 5
+        }
+    ],
+    "generic_3_50_9": [
+        {
+            "obj": 16,
+            "runtime": 0.0004715919494628906,
+            "neighborhood": 0
+        },
+        {
+            "obj": 75,
+            "runtime": 0.04990673065185547,
+            "neighborhood": 1
+        },
+        {
+            "obj": 82,
+            "runtime": 1.7461838722229004,
+            "neighborhood": 2
+        },
+        {
+            "obj": 102,
+            "runtime": 2.865224599838257,
+            "neighborhood": 3
+        },
+        {
+            "obj": 106,
+            "runtime": 3.754995107650757,
+            "neighborhood": 3
+        },
+        {
+            "obj": 109,
+            "runtime": 4.878647327423096,
+            "neighborhood": 3
+        },
+        {
+            "obj": 114,
+            "runtime": 5.991924047470093,
+            "neighborhood": 3
+        },
+        {
+            "obj": 117,
+            "runtime": 8.137619495391846,
+            "neighborhood": 3
+        },
+        {
+            "obj": 118,
+            "runtime": 9.816109418869019,
+            "neighborhood": 3
+        },
+        {
+            "obj": 120,
+            "runtime": 12.756146430969238,
+            "neighborhood": 3
+        },
+        {
+            "obj": 121,
+            "runtime": 14.44331431388855,
+            "neighborhood": 3
+        },
+        {
+            "obj": 123,
+            "runtime": 16.63591742515564,
+            "neighborhood": 3
+        },
+        {
+            "obj": 125,
+            "runtime": 26.243247747421265,
+            "neighborhood": 5
+        },
+        {
+            "obj": 126,
+            "runtime": 95.31393647193909,
+            "neighborhood": 5
+        },
+        {
+            "obj": 127,
+            "runtime": 649.8858671188354,
+            "neighborhood": 5
+        },
+        {
+            "obj": 128,
+            "runtime": 1084.4449501037598,
+            "neighborhood": 5
+        },
+        {
+            "obj": 129,
+            "runtime": 1158.7646095752716,
+            "neighborhood": 5
+        }
+    ],
+    "generic_4_30_0": [
+        {
+            "obj": 41,
+            "runtime": 0.00017309188842773438,
+            "neighborhood": 0
+        },
+        {
+            "obj": 61,
+            "runtime": 0.004200935363769531,
+            "neighborhood": 1
+        },
+        {
+            "obj": 65,
+            "runtime": 0.2857515811920166,
+            "neighborhood": 3
+        },
+        {
+            "obj": 67,
+            "runtime": 0.42781901359558105,
+            "neighborhood": 3
+        },
+        {
+            "obj": 71,
+            "runtime": 0.5757191181182861,
+            "neighborhood": 3
+        },
+        {
+            "obj": 74,
+            "runtime": 0.6425735950469971,
+            "neighborhood": 2
+        },
+        {
+            "obj": 75,
+            "runtime": 0.7860016822814941,
+            "neighborhood": 3
+        },
+        {
+            "obj": 77,
+            "runtime": 0.9283883571624756,
+            "neighborhood": 3
+        },
+        {
+            "obj": 78,
+            "runtime": 1.0684688091278076,
+            "neighborhood": 3
+        },
+        {
+            "obj": 80,
+            "runtime": 1.2126059532165527,
+            "neighborhood": 3
+        },
+        {
+            "obj": 82,
+            "runtime": 1.356008768081665,
+            "neighborhood": 3
+        },
+        {
+            "obj": 84,
+            "runtime": 2.133430004119873,
+            "neighborhood": 5
+        },
+        {
+            "obj": 85,
+            "runtime": 2.704374313354492,
+            "neighborhood": 6
+        },
+        {
+            "obj": 88,
+            "runtime": 22.209426879882812,
+            "neighborhood": 5
+        },
+        {
+            "obj": 89,
+            "runtime": 121.26164221763611,
+            "neighborhood": 5
+        }
+    ],
+    "generic_4_30_1": [
+        {
+            "obj": 65,
+            "runtime": 0.0001862049102783203,
+            "neighborhood": 0
+        },
+        {
+            "obj": 69,
+            "runtime": 0.0017445087432861328,
+            "neighborhood": 1
+        },
+        {
+            "obj": 75,
+            "runtime": 0.1311633586883545,
+            "neighborhood": 2
+        },
+        {
+            "obj": 86,
+            "runtime": 1.5103764533996582,
+            "neighborhood": 5
+        },
+        {
+            "obj": 88,
+            "runtime": 6.9651854038238525,
+            "neighborhood": 5
+        },
+        {
+            "obj": 89,
+            "runtime": 12.68336796760559,
+            "neighborhood": 6
+        },
+        {
+            "obj": 91,
+            "runtime": 12.859456300735474,
+            "neighborhood": 3
+        },
+        {
+            "obj": 92,
+            "runtime": 41.00927782058716,
+            "neighborhood": 5
+        }
+    ],
+    "generic_4_30_2": [
+        {
+            "obj": 79,
+            "runtime": 0.00015735626220703125,
+            "neighborhood": 0
+        },
+        {
+            "obj": 83,
+            "runtime": 0.001447439193725586,
+            "neighborhood": 1
+        },
+        {
+            "obj": 85,
+            "runtime": 0.0959627628326416,
+            "neighborhood": 1
+        },
+        {
+            "obj": 91,
+            "runtime": 0.24821257591247559,
+            "neighborhood": 3
+        },
+        {
+            "obj": 94,
+            "runtime": 0.35217738151550293,
+            "neighborhood": 3
+        },
+        {
+            "obj": 96,
+            "runtime": 0.4539527893066406,
+            "neighborhood": 3
+        },
+        {
+            "obj": 98,
+            "runtime": 0.7355289459228516,
+            "neighborhood": 5
+        },
+        {
+            "obj": 100,
+            "runtime": 0.826108455657959,
+            "neighborhood": 2
+        },
+        {
+            "obj": 102,
+            "runtime": 65.61498856544495,
+            "neighborhood": 5
+        },
+        {
+            "obj": 103,
+            "runtime": 69.13800597190857,
+            "neighborhood": 5
+        }
+    ],
+    "generic_4_30_3": [
+        {
+            "obj": 76,
+            "runtime": 0.0001544952392578125,
+            "neighborhood": 0
+        },
+        {
+            "obj": 78,
+            "runtime": 0.0015876293182373047,
+            "neighborhood": 1
+        },
+        {
+            "obj": 86,
+            "runtime": 0.28841495513916016,
+            "neighborhood": 2
+        },
+        {
+            "obj": 102,
+            "runtime": 2.0930228233337402,
+            "neighborhood": 5
+        },
+        {
+            "obj": 103,
+            "runtime": 12.056668996810913,
+            "neighborhood": 5
+        }
+    ],
+    "generic_4_30_4": [
+        {
+            "obj": 78,
+            "runtime": 0.0001590251922607422,
+            "neighborhood": 0
+        },
+        {
+            "obj": 82,
+            "runtime": 0.0015811920166015625,
+            "neighborhood": 1
+        },
+        {
+            "obj": 90,
+            "runtime": 0.27237725257873535,
+            "neighborhood": 2
+        },
+        {
+            "obj": 93,
+            "runtime": 0.4483051300048828,
+            "neighborhood": 3
+        },
+        {
+            "obj": 95,
+            "runtime": 0.6335675716400146,
+            "neighborhood": 3
+        },
+        {
+            "obj": 98,
+            "runtime": 0.7600016593933105,
+            "neighborhood": 3
+        },
+        {
+            "obj": 99,
+            "runtime": 0.8903193473815918,
+            "neighborhood": 3
+        },
+        {
+            "obj": 106,
+            "runtime": 1.0768139362335205,
+            "neighborhood": 3
+        },
+        {
+            "obj": 108,
+            "runtime": 3040.8635387420654,
+            "neighborhood": 5
+        },
+        {
+            "obj": 109,
+            "runtime": 3057.0938670635223,
+            "neighborhood": 5
+        }
+    ],
+    "generic_4_30_5": [
+        {
+            "obj": 51,
+            "runtime": 0.00015115737915039062,
+            "neighborhood": 0
+        },
+        {
+            "obj": 65,
+            "runtime": 0.002449512481689453,
+            "neighborhood": 1
+        },
+        {
+            "obj": 67,
+            "runtime": 0.13667941093444824,
+            "neighborhood": 2
+        },
+        {
+            "obj": 70,
+            "runtime": 0.23416376113891602,
+            "neighborhood": 3
+        },
+        {
+            "obj": 77,
+            "runtime": 0.3346571922302246,
+            "neighborhood": 3
+        },
+        {
+            "obj": 79,
+            "runtime": 0.42153453826904297,
+            "neighborhood": 2
+        },
+        {
+            "obj": 85,
+            "runtime": 1.028085470199585,
+            "neighborhood": 5
+        },
+        {
+            "obj": 86,
+            "runtime": 1.5895586013793945,
+            "neighborhood": 5
+        },
+        {
+            "obj": 87,
+            "runtime": 26.577019929885864,
+            "neighborhood": 5
+        },
+        {
+            "obj": 88,
+            "runtime": 64.15180325508118,
+            "neighborhood": 5
+        }
+    ],
+    "generic_4_30_6": [
+        {
+            "obj": 81,
+            "runtime": 0.00015497207641601562,
+            "neighborhood": 0
+        },
+        {
+            "obj": 95,
+            "runtime": 0.21963119506835938,
+            "neighborhood": 2
+        },
+        {
+            "obj": 105,
+            "runtime": 1.3696234226226807,
+            "neighborhood": 5
+        },
+        {
+            "obj": 106,
+            "runtime": 100.32019352912903,
+            "neighborhood": 5
+        },
+        {
+            "obj": 107,
+            "runtime": 122.34789514541626,
+            "neighborhood": 5
+        },
+        {
+            "obj": 111,
+            "runtime": 202.35342741012573,
+            "neighborhood": 5
+        }
+    ],
+    "generic_4_30_7": [
+        {
+            "obj": 61,
+            "runtime": 0.00016260147094726562,
+            "neighborhood": 0
+        },
+        {
+            "obj": 71,
+            "runtime": 0.0013854503631591797,
+            "neighborhood": 1
+        },
+        {
+            "obj": 74,
+            "runtime": 0.09009885787963867,
+            "neighborhood": 2
+        },
+        {
+            "obj": 78,
+            "runtime": 0.18519258499145508,
+            "neighborhood": 3
+        },
+        {
+            "obj": 81,
+            "runtime": 0.28485941886901855,
+            "neighborhood": 3
+        },
+        {
+            "obj": 85,
+            "runtime": 0.3842000961303711,
+            "neighborhood": 3
+        },
+        {
+            "obj": 88,
+            "runtime": 1.1426448822021484,
+            "neighborhood": 5
+        },
+        {
+            "obj": 89,
+            "runtime": 19.12897539138794,
+            "neighborhood": 5
+        },
+        {
+            "obj": 90,
+            "runtime": 36.61438345909119,
+            "neighborhood": 5
+        }
+    ],
+    "generic_4_30_8": [
+        {
+            "obj": 57,
+            "runtime": 0.00016999244689941406,
+            "neighborhood": 0
+        },
+        {
+            "obj": 59,
+            "runtime": 0.11387467384338379,
+            "neighborhood": 2
+        },
+        {
+            "obj": 62,
+            "runtime": 0.23667693138122559,
+            "neighborhood": 3
+        },
+        {
+            "obj": 68,
+            "runtime": 0.36480069160461426,
+            "neighborhood": 3
+        },
+        {
+            "obj": 70,
+            "runtime": 0.4704737663269043,
+            "neighborhood": 3
+        },
+        {
+            "obj": 71,
+            "runtime": 0.5838286876678467,
+            "neighborhood": 3
+        },
+        {
+            "obj": 73,
+            "runtime": 0.7460160255432129,
+            "neighborhood": 3
+        },
+        {
+            "obj": 74,
+            "runtime": 0.8473021984100342,
+            "neighborhood": 3
+        },
+        {
+            "obj": 77,
+            "runtime": 0.9513161182403564,
+            "neighborhood": 3
+        },
+        {
+            "obj": 84,
+            "runtime": 1.6284658908843994,
+            "neighborhood": 5
+        }
+    ],
+    "generic_4_30_9": [
+        {
+            "obj": 51,
+            "runtime": 0.00017261505126953125,
+            "neighborhood": 0
+        },
+        {
+            "obj": 62,
+            "runtime": 0.002154827117919922,
+            "neighborhood": 1
+        },
+        {
+            "obj": 66,
+            "runtime": 0.11283588409423828,
+            "neighborhood": 3
+        },
+        {
+            "obj": 73,
+            "runtime": 0.21680545806884766,
+            "neighborhood": 3
+        },
+        {
+            "obj": 77,
+            "runtime": 0.32378363609313965,
+            "neighborhood": 3
+        },
+        {
+            "obj": 80,
+            "runtime": 0.42929649353027344,
+            "neighborhood": 3
+        },
+        {
+            "obj": 87,
+            "runtime": 0.5394749641418457,
+            "neighborhood": 3
+        },
+        {
+            "obj": 90,
+            "runtime": 0.6459927558898926,
+            "neighborhood": 3
+        },
+        {
+            "obj": 92,
+            "runtime": 1.0098929405212402,
+            "neighborhood": 6
+        }
+    ],
+    "generic_4_40_0": [
+        {
+            "obj": 89,
+            "runtime": 0.0001971721649169922,
+            "neighborhood": 0
+        },
+        {
+            "obj": 93,
+            "runtime": 0.0036020278930664062,
+            "neighborhood": 1
+        },
+        {
+            "obj": 97,
+            "runtime": 0.006120204925537109,
+            "neighborhood": 1
+        },
+        {
+            "obj": 105,
+            "runtime": 0.7741193771362305,
+            "neighborhood": 2
+        },
+        {
+            "obj": 107,
+            "runtime": 1.2848505973815918,
+            "neighborhood": 3
+        },
+        {
+            "obj": 111,
+            "runtime": 1.8224432468414307,
+            "neighborhood": 3
+        },
+        {
+            "obj": 122,
+            "runtime": 4.787945747375488,
+            "neighborhood": 5
+        },
+        {
+            "obj": 123,
+            "runtime": 7.234069347381592,
+            "neighborhood": 6
+        },
+        {
+            "obj": 125,
+            "runtime": 9.589682340621948,
+            "neighborhood": 3
+        },
+        {
+            "obj": 127,
+            "runtime": 145.52033519744873,
+            "neighborhood": 5
+        },
+        {
+            "obj": 128,
+            "runtime": 193.27910947799683,
+            "neighborhood": 5
+        }
+    ],
+    "generic_4_40_1": [
+        {
+            "obj": 27,
+            "runtime": 0.00021529197692871094,
+            "neighborhood": 0
+        },
+        {
+            "obj": 69,
+            "runtime": 0.013877391815185547,
+            "neighborhood": 1
+        },
+        {
+            "obj": 75,
+            "runtime": 0.5387957096099854,
+            "neighborhood": 2
+        },
+        {
+            "obj": 85,
+            "runtime": 0.8333508968353271,
+            "neighborhood": 3
+        },
+        {
+            "obj": 93,
+            "runtime": 1.3800365924835205,
+            "neighborhood": 3
+        },
+        {
+            "obj": 96,
+            "runtime": 1.80153489112854,
+            "neighborhood": 3
+        },
+        {
+            "obj": 102,
+            "runtime": 2.5609352588653564,
+            "neighborhood": 3
+        },
+        {
+            "obj": 103,
+            "runtime": 3.069566011428833,
+            "neighborhood": 3
+        },
+        {
+            "obj": 106,
+            "runtime": 3.577024459838867,
+            "neighborhood": 3
+        },
+        {
+            "obj": 109,
+            "runtime": 4.141256093978882,
+            "neighborhood": 3
+        },
+        {
+            "obj": 113,
+            "runtime": 7.0865092277526855,
+            "neighborhood": 5
+        },
+        {
+            "obj": 115,
+            "runtime": 10.261608839035034,
+            "neighborhood": 6
+        },
+        {
+            "obj": 116,
+            "runtime": 254.44713020324707,
+            "neighborhood": 5
+        },
+        {
+            "obj": 117,
+            "runtime": 257.2076575756073,
+            "neighborhood": 6
+        },
+        {
+            "obj": 118,
+            "runtime": 1313.6226828098297,
+            "neighborhood": 5
+        }
+    ],
+    "generic_4_40_2": [
+        {
+            "obj": 30,
+            "runtime": 0.00018310546875,
+            "neighborhood": 0
+        },
+        {
+            "obj": 90,
+            "runtime": 0.01575016975402832,
+            "neighborhood": 1
+        },
+        {
+            "obj": 100,
+            "runtime": 0.5506606101989746,
+            "neighborhood": 2
+        },
+        {
+            "obj": 109,
+            "runtime": 0.8577890396118164,
+            "neighborhood": 3
+        },
+        {
+            "obj": 114,
+            "runtime": 1.2171485424041748,
+            "neighborhood": 3
+        },
+        {
+            "obj": 115,
+            "runtime": 1.6295671463012695,
+            "neighborhood": 3
+        },
+        {
+            "obj": 119,
+            "runtime": 2.2676515579223633,
+            "neighborhood": 3
+        },
+        {
+            "obj": 124,
+            "runtime": 4.906064748764038,
+            "neighborhood": 5
+        }
+    ],
+    "generic_4_40_3": [
+        {
+            "obj": 57,
+            "runtime": 0.0002079010009765625,
+            "neighborhood": 0
+        },
+        {
+            "obj": 86,
+            "runtime": 0.010460615158081055,
+            "neighborhood": 1
+        },
+        {
+            "obj": 98,
+            "runtime": 0.5006721019744873,
+            "neighborhood": 2
+        },
+        {
+            "obj": 99,
+            "runtime": 0.8640217781066895,
+            "neighborhood": 3
+        },
+        {
+            "obj": 102,
+            "runtime": 1.3830485343933105,
+            "neighborhood": 3
+        },
+        {
+            "obj": 103,
+            "runtime": 1.7390143871307373,
+            "neighborhood": 3
+        },
+        {
+            "obj": 105,
+            "runtime": 2.1588528156280518,
+            "neighborhood": 3
+        },
+        {
+            "obj": 114,
+            "runtime": 6.280431032180786,
+            "neighborhood": 5
+        },
+        {
+            "obj": 115,
+            "runtime": 149.0850875377655,
+            "neighborhood": 5
+        }
+    ],
+    "generic_4_40_4": [
+        {
+            "obj": 62,
+            "runtime": 0.00019693374633789062,
+            "neighborhood": 0
+        },
+        {
+            "obj": 90,
+            "runtime": 0.007805347442626953,
+            "neighborhood": 1
+        },
+        {
+            "obj": 94,
+            "runtime": 0.01234889030456543,
+            "neighborhood": 1
+        },
+        {
+            "obj": 100,
+            "runtime": 0.7432522773742676,
+            "neighborhood": 3
+        },
+        {
+            "obj": 103,
+            "runtime": 1.1596527099609375,
+            "neighborhood": 3
+        },
+        {
+            "obj": 107,
+            "runtime": 1.76552414894104,
+            "neighborhood": 3
+        },
+        {
+            "obj": 109,
+            "runtime": 2.1255786418914795,
+            "neighborhood": 3
+        },
+        {
+            "obj": 110,
+            "runtime": 2.4945178031921387,
+            "neighborhood": 3
+        },
+        {
+            "obj": 111,
+            "runtime": 2.855384588241577,
+            "neighborhood": 3
+        },
+        {
+            "obj": 112,
+            "runtime": 4.102403163909912,
+            "neighborhood": 5
+        },
+        {
+            "obj": 113,
+            "runtime": 80.89769411087036,
+            "neighborhood": 6
+        },
+        {
+            "obj": 115,
+            "runtime": 435.8231554031372,
+            "neighborhood": 5
+        }
+    ],
+    "generic_4_40_5": [
+        {
+            "obj": 57,
+            "runtime": 0.00020170211791992188,
+            "neighborhood": 0
+        },
+        {
+            "obj": 89,
+            "runtime": 0.011147499084472656,
+            "neighborhood": 1
+        },
+        {
+            "obj": 91,
+            "runtime": 0.013631105422973633,
+            "neighborhood": 1
+        },
+        {
+            "obj": 97,
+            "runtime": 0.8498978614807129,
+            "neighborhood": 2
+        },
+        {
+            "obj": 102,
+            "runtime": 1.306187391281128,
+            "neighborhood": 3
+        },
+        {
+            "obj": 104,
+            "runtime": 1.8347752094268799,
+            "neighborhood": 3
+        },
+        {
+            "obj": 112,
+            "runtime": 5.91588830947876,
+            "neighborhood": 5
+        },
+        {
+            "obj": 113,
+            "runtime": 11.165759086608887,
+            "neighborhood": 6
+        },
+        {
+            "obj": 114,
+            "runtime": 187.4461588859558,
+            "neighborhood": 5
+        },
+        {
+            "obj": 116,
+            "runtime": 300.1669170856476,
+            "neighborhood": 5
+        },
+        {
+            "obj": 117,
+            "runtime": 943.5659720897675,
+            "neighborhood": 5
+        }
+    ],
+    "generic_4_40_6": [
+        {
+            "obj": 59,
+            "runtime": 0.0001976490020751953,
+            "neighborhood": 0
+        },
+        {
+            "obj": 87,
+            "runtime": 0.009842395782470703,
+            "neighborhood": 1
+        },
+        {
+            "obj": 95,
+            "runtime": 0.663773775100708,
+            "neighborhood": 2
+        },
+        {
+            "obj": 105,
+            "runtime": 1.0270648002624512,
+            "neighborhood": 3
+        },
+        {
+            "obj": 107,
+            "runtime": 1.453425645828247,
+            "neighborhood": 4
+        },
+        {
+            "obj": 109,
+            "runtime": 1.821152925491333,
+            "neighborhood": 3
+        },
+        {
+            "obj": 113,
+            "runtime": 2.379018783569336,
+            "neighborhood": 3
+        },
+        {
+            "obj": 114,
+            "runtime": 4.013129711151123,
+            "neighborhood": 5
+        },
+        {
+            "obj": 116,
+            "runtime": 51.19363284111023,
+            "neighborhood": 5
+        },
+        {
+            "obj": 118,
+            "runtime": 94.0672459602356,
+            "neighborhood": 5
+        },
+        {
+            "obj": 119,
+            "runtime": 507.0363874435425,
+            "neighborhood": 5
+        },
+        {
+            "obj": 120,
+            "runtime": 510.6597743034363,
+            "neighborhood": 6
+        }
+    ],
+    "generic_4_40_7": [
+        {
+            "obj": 75,
+            "runtime": 0.00021386146545410156,
+            "neighborhood": 0
+        },
+        {
+            "obj": 82,
+            "runtime": 0.0025637149810791016,
+            "neighborhood": 1
+        },
+        {
+            "obj": 84,
+            "runtime": 0.005366086959838867,
+            "neighborhood": 1
+        },
+        {
+            "obj": 86,
+            "runtime": 0.007988214492797852,
+            "neighborhood": 1
+        },
+        {
+            "obj": 88,
+            "runtime": 0.010689735412597656,
+            "neighborhood": 1
+        },
+        {
+            "obj": 92,
+            "runtime": 0.6040244102478027,
+            "neighborhood": 2
+        },
+        {
+            "obj": 99,
+            "runtime": 1.0349245071411133,
+            "neighborhood": 3
+        },
+        {
+            "obj": 106,
+            "runtime": 1.4670400619506836,
+            "neighborhood": 3
+        },
+        {
+            "obj": 108,
+            "runtime": 1.8266172409057617,
+            "neighborhood": 3
+        },
+        {
+            "obj": 116,
+            "runtime": 2.3821139335632324,
+            "neighborhood": 3
+        },
+        {
+            "obj": 121,
+            "runtime": 4.321980953216553,
+            "neighborhood": 5
+        },
+        {
+            "obj": 122,
+            "runtime": 382.76325726509094,
+            "neighborhood": 5
+        },
+        {
+            "obj": 123,
+            "runtime": 395.80181312561035,
+            "neighborhood": 5
+        }
+    ],
+    "generic_4_40_8": [
+        {
+            "obj": 88,
+            "runtime": 0.00019931793212890625,
+            "neighborhood": 0
+        },
+        {
+            "obj": 98,
+            "runtime": 0.0033483505249023438,
+            "neighborhood": 1
+        },
+        {
+            "obj": 112,
+            "runtime": 1.0497431755065918,
+            "neighborhood": 2
+        },
+        {
+            "obj": 117,
+            "runtime": 1.3226821422576904,
+            "neighborhood": 3
+        },
+        {
+            "obj": 121,
+            "runtime": 1.5902314186096191,
+            "neighborhood": 3
+        },
+        {
+            "obj": 126,
+            "runtime": 1.8613026142120361,
+            "neighborhood": 3
+        },
+        {
+            "obj": 127,
+            "runtime": 2.085416793823242,
+            "neighborhood": 3
+        },
+        {
+            "obj": 129,
+            "runtime": 2.30991792678833,
+            "neighborhood": 3
+        },
+        {
+            "obj": 130,
+            "runtime": 59.98586344718933,
+            "neighborhood": 5
+        },
+        {
+            "obj": 131,
+            "runtime": 1784.423017024994,
+            "neighborhood": 5
+        },
+        {
+            "obj": 135,
+            "runtime": 2364.0289103984833,
+            "neighborhood": 5
+        }
+    ],
+    "generic_4_40_9": [
+        {
+            "obj": 86,
+            "runtime": 0.00020432472229003906,
+            "neighborhood": 0
+        },
+        {
+            "obj": 95,
+            "runtime": 0.003693103790283203,
+            "neighborhood": 1
+        },
+        {
+            "obj": 109,
+            "runtime": 0.9769387245178223,
+            "neighborhood": 2
+        },
+        {
+            "obj": 116,
+            "runtime": 1.686361312866211,
+            "neighborhood": 3
+        },
+        {
+            "obj": 118,
+            "runtime": 1.9972658157348633,
+            "neighborhood": 3
+        },
+        {
+            "obj": 120,
+            "runtime": 2.1376163959503174,
+            "neighborhood": 2
+        },
+        {
+            "obj": 123,
+            "runtime": 2.4450669288635254,
+            "neighborhood": 3
+        },
+        {
+            "obj": 127,
+            "runtime": 3.976168632507324,
+            "neighborhood": 5
+        },
+        {
+            "obj": 128,
+            "runtime": 9.596512794494629,
+            "neighborhood": 5
+        },
+        {
+            "obj": 129,
+            "runtime": 57.990349769592285,
+            "neighborhood": 5
+        },
+        {
+            "obj": 130,
+            "runtime": 59.4006564617157,
+            "neighborhood": 6
+        },
+        {
+            "obj": 131,
+            "runtime": 62.517738342285156,
+            "neighborhood": 6
+        },
+        {
+            "obj": 132,
+            "runtime": 858.14062333107,
+            "neighborhood": 5
+        }
+    ],
+    "generic_4_50_0": [
+        {
+            "obj": 56,
+            "runtime": 0.0002148151397705078,
+            "neighborhood": 0
+        },
+        {
+            "obj": 112,
+            "runtime": 0.0185394287109375,
+            "neighborhood": 1
+        },
+        {
+            "obj": 116,
+            "runtime": 0.6520826816558838,
+            "neighborhood": 2
+        },
+        {
+            "obj": 124,
+            "runtime": 1.11159348487854,
+            "neighborhood": 3
+        },
+        {
+            "obj": 134,
+            "runtime": 2.256603717803955,
+            "neighborhood": 3
+        },
+        {
+            "obj": 135,
+            "runtime": 2.9043140411376953,
+            "neighborhood": 3
+        },
+        {
+            "obj": 137,
+            "runtime": 3.5578629970550537,
+            "neighborhood": 3
+        },
+        {
+            "obj": 138,
+            "runtime": 4.2104575634002686,
+            "neighborhood": 3
+        },
+        {
+            "obj": 142,
+            "runtime": 4.967061996459961,
+            "neighborhood": 4
+        },
+        {
+            "obj": 144,
+            "runtime": 7.481708526611328,
+            "neighborhood": 5
+        },
+        {
+            "obj": 151,
+            "runtime": 21.937230348587036,
+            "neighborhood": 6
+        },
+        {
+            "obj": 152,
+            "runtime": 33.04219031333923,
+            "neighborhood": 6
+        },
+        {
+            "obj": 153,
+            "runtime": 96.25827193260193,
+            "neighborhood": 5
+        }
+    ],
+    "generic_4_50_1": [
+        {
+            "obj": 21,
+            "runtime": 0.00022649765014648438,
+            "neighborhood": 0
+        },
+        {
+            "obj": 103,
+            "runtime": 0.02752518653869629,
+            "neighborhood": 1
+        },
+        {
+            "obj": 112,
+            "runtime": 1.2120566368103027,
+            "neighborhood": 2
+        },
+        {
+            "obj": 121,
+            "runtime": 1.7335402965545654,
+            "neighborhood": 3
+        },
+        {
+            "obj": 129,
+            "runtime": 2.3497095108032227,
+            "neighborhood": 3
+        },
+        {
+            "obj": 130,
+            "runtime": 3.0739974975585938,
+            "neighborhood": 3
+        },
+        {
+            "obj": 133,
+            "runtime": 6.310041427612305,
+            "neighborhood": 5
+        },
+        {
+            "obj": 135,
+            "runtime": 7.016621351242065,
+            "neighborhood": 3
+        },
+        {
+            "obj": 138,
+            "runtime": 12.244022369384766,
+            "neighborhood": 6
+        },
+        {
+            "obj": 141,
+            "runtime": 15.880250215530396,
+            "neighborhood": 6
+        },
+        {
+            "obj": 144,
+            "runtime": 16.999172687530518,
+            "neighborhood": 3
+        },
+        {
+            "obj": 146,
+            "runtime": 2423.8417477607727,
+            "neighborhood": 2
+        }
+    ],
+    "generic_4_50_2": [
+        {
+            "obj": 38,
+            "runtime": 0.00024175643920898438,
+            "neighborhood": 0
+        },
+        {
+            "obj": 112,
+            "runtime": 0.02756047248840332,
+            "neighborhood": 1
+        },
+        {
+            "obj": 118,
+            "runtime": 0.9000425338745117,
+            "neighborhood": 2
+        },
+        {
+            "obj": 127,
+            "runtime": 1.6371440887451172,
+            "neighborhood": 3
+        },
+        {
+            "obj": 133,
+            "runtime": 2.2063164710998535,
+            "neighborhood": 3
+        },
+        {
+            "obj": 137,
+            "runtime": 2.895148515701294,
+            "neighborhood": 3
+        },
+        {
+            "obj": 142,
+            "runtime": 4.108930587768555,
+            "neighborhood": 3
+        },
+        {
+            "obj": 144,
+            "runtime": 4.9015045166015625,
+            "neighborhood": 3
+        },
+        {
+            "obj": 145,
+            "runtime": 6.043797731399536,
+            "neighborhood": 3
+        },
+        {
+            "obj": 155,
+            "runtime": 14.934229612350464,
+            "neighborhood": 5
+        },
+        {
+            "obj": 157,
+            "runtime": 31.026139736175537,
+            "neighborhood": 6
+        },
+        {
+            "obj": 158,
+            "runtime": 42.00397968292236,
+            "neighborhood": 6
+        },
+        {
+            "obj": 159,
+            "runtime": 419.54734563827515,
+            "neighborhood": 5
+        }
+    ],
+    "generic_4_50_3": [
+        {
+            "obj": 85,
+            "runtime": 0.0002639293670654297,
+            "neighborhood": 0
+        },
+        {
+            "obj": 99,
+            "runtime": 0.006628751754760742,
+            "neighborhood": 1
+        },
+        {
+            "obj": 101,
+            "runtime": 0.011589288711547852,
+            "neighborhood": 1
+        },
+        {
+            "obj": 111,
+            "runtime": 1.5591247081756592,
+            "neighborhood": 2
+        },
+        {
+            "obj": 120,
+            "runtime": 2.399566650390625,
+            "neighborhood": 3
+        },
+        {
+            "obj": 124,
+            "runtime": 3.239576816558838,
+            "neighborhood": 3
+        },
+        {
+            "obj": 127,
+            "runtime": 4.486155271530151,
+            "neighborhood": 3
+        },
+        {
+            "obj": 129,
+            "runtime": 5.3694093227386475,
+            "neighborhood": 3
+        },
+        {
+            "obj": 131,
+            "runtime": 6.269551753997803,
+            "neighborhood": 4
+        },
+        {
+            "obj": 144,
+            "runtime": 11.361661434173584,
+            "neighborhood": 5
+        },
+        {
+            "obj": 145,
+            "runtime": 152.81475186347961,
+            "neighborhood": 5
+        },
+        {
+            "obj": 146,
+            "runtime": 246.50808000564575,
+            "neighborhood": 5
+        },
+        {
+            "obj": 148,
+            "runtime": 295.88957357406616,
+            "neighborhood": 5
+        }
+    ],
+    "generic_4_50_4": [
+        {
+            "obj": 70,
+            "runtime": 0.0002315044403076172,
+            "neighborhood": 0
+        },
+        {
+            "obj": 124,
+            "runtime": 0.01995253562927246,
+            "neighborhood": 1
+        },
+        {
+            "obj": 128,
+            "runtime": 0.5020568370819092,
+            "neighborhood": 2
+        },
+        {
+            "obj": 136,
+            "runtime": 1.0184979438781738,
+            "neighborhood": 3
+        },
+        {
+            "obj": 140,
+            "runtime": 1.6398921012878418,
+            "neighborhood": 3
+        },
+        {
+            "obj": 142,
+            "runtime": 2.3825271129608154,
+            "neighborhood": 3
+        },
+        {
+            "obj": 143,
+            "runtime": 3.1183133125305176,
+            "neighborhood": 3
+        },
+        {
+            "obj": 144,
+            "runtime": 3.874605655670166,
+            "neighborhood": 3
+        },
+        {
+            "obj": 146,
+            "runtime": 4.628706216812134,
+            "neighborhood": 3
+        },
+        {
+            "obj": 147,
+            "runtime": 5.354437351226807,
+            "neighborhood": 3
+        },
+        {
+            "obj": 149,
+            "runtime": 6.082981824874878,
+            "neighborhood": 3
+        },
+        {
+            "obj": 150,
+            "runtime": 6.735716819763184,
+            "neighborhood": 3
+        },
+        {
+            "obj": 154,
+            "runtime": 7.391519784927368,
+            "neighborhood": 3
+        },
+        {
+            "obj": 162,
+            "runtime": 14.427583694458008,
+            "neighborhood": 5
+        },
+        {
+            "obj": 163,
+            "runtime": 18.321871519088745,
+            "neighborhood": 6
+        },
+        {
+            "obj": 165,
+            "runtime": 20.715300798416138,
+            "neighborhood": 6
+        },
+        {
+            "obj": 166,
+            "runtime": 41.95263361930847,
+            "neighborhood": 6
+        },
+        {
+            "obj": 168,
+            "runtime": 42.612404108047485,
+            "neighborhood": 3
+        }
+    ],
+    "generic_4_50_5": [
+        {
+            "obj": 33,
+            "runtime": 0.00022411346435546875,
+            "neighborhood": 0
+        },
+        {
+            "obj": 101,
+            "runtime": 0.023497343063354492,
+            "neighborhood": 1
+        },
+        {
+            "obj": 113,
+            "runtime": 0.7339770793914795,
+            "neighborhood": 2
+        },
+        {
+            "obj": 126,
+            "runtime": 1.3366737365722656,
+            "neighborhood": 3
+        },
+        {
+            "obj": 136,
+            "runtime": 1.8105292320251465,
+            "neighborhood": 3
+        },
+        {
+            "obj": 138,
+            "runtime": 2.6163170337677,
+            "neighborhood": 3
+        },
+        {
+            "obj": 139,
+            "runtime": 3.251152515411377,
+            "neighborhood": 3
+        },
+        {
+            "obj": 141,
+            "runtime": 3.8902499675750732,
+            "neighborhood": 3
+        },
+        {
+            "obj": 142,
+            "runtime": 4.52268385887146,
+            "neighborhood": 3
+        },
+        {
+            "obj": 146,
+            "runtime": 9.104975461959839,
+            "neighborhood": 5
+        },
+        {
+            "obj": 147,
+            "runtime": 11.614143371582031,
+            "neighborhood": 6
+        },
+        {
+            "obj": 148,
+            "runtime": 721.9401576519012,
+            "neighborhood": 5
+        },
+        {
+            "obj": 149,
+            "runtime": 725.4467520713806,
+            "neighborhood": 6
+        }
+    ],
+    "generic_4_50_6": [
+        {
+            "obj": 34,
+            "runtime": 0.00023126602172851562,
+            "neighborhood": 0
+        },
+        {
+            "obj": 104,
+            "runtime": 0.02836322784423828,
+            "neighborhood": 1
+        },
+        {
+            "obj": 110,
+            "runtime": 0.774040699005127,
+            "neighborhood": 2
+        },
+        {
+            "obj": 111,
+            "runtime": 1.0181636810302734,
+            "neighborhood": 2
+        },
+        {
+            "obj": 126,
+            "runtime": 2.1040468215942383,
+            "neighborhood": 3
+        },
+        {
+            "obj": 137,
+            "runtime": 3.050499200820923,
+            "neighborhood": 3
+        },
+        {
+            "obj": 142,
+            "runtime": 4.146459341049194,
+            "neighborhood": 3
+        },
+        {
+            "obj": 146,
+            "runtime": 4.988168478012085,
+            "neighborhood": 3
+        },
+        {
+            "obj": 148,
+            "runtime": 6.441619873046875,
+            "neighborhood": 3
+        },
+        {
+            "obj": 149,
+            "runtime": 7.396040439605713,
+            "neighborhood": 3
+        },
+        {
+            "obj": 151,
+            "runtime": 11.494920015335083,
+            "neighborhood": 5
+        },
+        {
+            "obj": 153,
+            "runtime": 64.19033765792847,
+            "neighborhood": 6
+        },
+        {
+            "obj": 154,
+            "runtime": 2392.024178981781,
+            "neighborhood": 5
+        },
+        {
+            "obj": 155,
+            "runtime": 2402.068263530731,
+            "neighborhood": 6
+        }
+    ],
+    "generic_4_50_7": [
+        {
+            "obj": 56,
+            "runtime": 0.0002613067626953125,
+            "neighborhood": 0
+        },
+        {
+            "obj": 96,
+            "runtime": 0.013236045837402344,
+            "neighborhood": 1
+        },
+        {
+            "obj": 98,
+            "runtime": 0.016009092330932617,
+            "neighborhood": 1
+        },
+        {
+            "obj": 112,
+            "runtime": 1.2128028869628906,
+            "neighborhood": 2
+        },
+        {
+            "obj": 125,
+            "runtime": 1.7403512001037598,
+            "neighborhood": 3
+        },
+        {
+            "obj": 126,
+            "runtime": 2.369044542312622,
+            "neighborhood": 3
+        },
+        {
+            "obj": 132,
+            "runtime": 3.2780213356018066,
+            "neighborhood": 3
+        },
+        {
+            "obj": 135,
+            "runtime": 3.9051456451416016,
+            "neighborhood": 3
+        },
+        {
+            "obj": 137,
+            "runtime": 4.552788019180298,
+            "neighborhood": 3
+        },
+        {
+            "obj": 139,
+            "runtime": 5.489749908447266,
+            "neighborhood": 3
+        },
+        {
+            "obj": 141,
+            "runtime": 6.13218092918396,
+            "neighborhood": 3
+        },
+        {
+            "obj": 142,
+            "runtime": 6.694838047027588,
+            "neighborhood": 4
+        },
+        {
+            "obj": 144,
+            "runtime": 7.255405902862549,
+            "neighborhood": 4
+        },
+        {
+            "obj": 146,
+            "runtime": 9.035251140594482,
+            "neighborhood": 5
+        },
+        {
+            "obj": 147,
+            "runtime": 15.608313798904419,
+            "neighborhood": 5
+        },
+        {
+            "obj": 148,
+            "runtime": 25.113468170166016,
+            "neighborhood": 5
+        },
+        {
+            "obj": 150,
+            "runtime": 48.61294484138489,
+            "neighborhood": 5
+        },
+        {
+            "obj": 152,
+            "runtime": 126.83012795448303,
+            "neighborhood": 2
+        },
+        {
+            "obj": 153,
+            "runtime": 128.6994173526764,
+            "neighborhood": 5
+        },
+        {
+            "obj": 155,
+            "runtime": 538.2446577548981,
+            "neighborhood": 5
+        }
+    ],
+    "generic_4_50_8": [
+        {
+            "obj": 96,
+            "runtime": 0.0002703666687011719,
+            "neighborhood": 0
+        },
+        {
+            "obj": 122,
+            "runtime": 0.015343666076660156,
+            "neighborhood": 1
+        },
+        {
+            "obj": 128,
+            "runtime": 1.2636582851409912,
+            "neighborhood": 2
+        },
+        {
+            "obj": 134,
+            "runtime": 1.9292972087860107,
+            "neighborhood": 3
+        },
+        {
+            "obj": 136,
+            "runtime": 2.5862326622009277,
+            "neighborhood": 3
+        },
+        {
+            "obj": 139,
+            "runtime": 3.2367029190063477,
+            "neighborhood": 3
+        },
+        {
+            "obj": 150,
+            "runtime": 11.032854080200195,
+            "neighborhood": 5
+        },
+        {
+            "obj": 153,
+            "runtime": 16.70847463607788,
+            "neighborhood": 6
+        },
+        {
+            "obj": 154,
+            "runtime": 240.9885218143463,
+            "neighborhood": 5
+        },
+        {
+            "obj": 155,
+            "runtime": 250.92866826057434,
+            "neighborhood": 5
+        }
+    ],
+    "generic_4_50_9": [
+        {
+            "obj": 20,
+            "runtime": 0.00021338462829589844,
+            "neighborhood": 0
+        },
+        {
+            "obj": 90,
+            "runtime": 0.0257568359375,
+            "neighborhood": 1
+        },
+        {
+            "obj": 96,
+            "runtime": 0.6139702796936035,
+            "neighborhood": 2
+        },
+        {
+            "obj": 111,
+            "runtime": 1.0782814025878906,
+            "neighborhood": 3
+        },
+        {
+            "obj": 125,
+            "runtime": 1.69590425491333,
+            "neighborhood": 3
+        },
+        {
+            "obj": 132,
+            "runtime": 2.4551799297332764,
+            "neighborhood": 3
+        },
+        {
+            "obj": 137,
+            "runtime": 3.0405120849609375,
+            "neighborhood": 3
+        },
+        {
+            "obj": 139,
+            "runtime": 5.22659707069397,
+            "neighborhood": 5
+        },
+        {
+            "obj": 140,
+            "runtime": 120.27453589439392,
+            "neighborhood": 5
+        },
+        {
+            "obj": 142,
+            "runtime": 223.94844675064087,
+            "neighborhood": 5
+        }
+    ],
+    "generic_5_30_0": [
+        {
+            "obj": 67,
+            "runtime": 0.00017452239990234375,
+            "neighborhood": 0
+        },
+        {
+            "obj": 75,
+            "runtime": 0.1637098789215088,
+            "neighborhood": 2
+        },
+        {
+            "obj": 94,
+            "runtime": 1.7922611236572266,
+            "neighborhood": 5
+        }
+    ],
+    "generic_5_30_1": [
+        {
+            "obj": 65,
+            "runtime": 0.0001704692840576172,
+            "neighborhood": 0
+        },
+        {
+            "obj": 68,
+            "runtime": 0.144791841506958,
+            "neighborhood": 3
+        },
+        {
+            "obj": 71,
+            "runtime": 0.28966212272644043,
+            "neighborhood": 3
+        },
+        {
+            "obj": 86,
+            "runtime": 2.6353704929351807,
+            "neighborhood": 5
+        },
+        {
+            "obj": 88,
+            "runtime": 8.7216215133667,
+            "neighborhood": 2
+        },
+        {
+            "obj": 89,
+            "runtime": 78.92257475852966,
+            "neighborhood": 5
+        },
+        {
+            "obj": 90,
+            "runtime": 416.06928396224976,
+            "neighborhood": 5
+        },
+        {
+            "obj": 92,
+            "runtime": 3428.5314531326294,
+            "neighborhood": 5
+        }
+    ],
+    "generic_5_30_2": [
+        {
+            "obj": 73,
+            "runtime": 0.0001780986785888672,
+            "neighborhood": 0
+        },
+        {
+            "obj": 79,
+            "runtime": 0.002247333526611328,
+            "neighborhood": 1
+        },
+        {
+            "obj": 81,
+            "runtime": 0.004732370376586914,
+            "neighborhood": 1
+        },
+        {
+            "obj": 83,
+            "runtime": 0.0071032047271728516,
+            "neighborhood": 1
+        },
+        {
+            "obj": 87,
+            "runtime": 0.23388075828552246,
+            "neighborhood": 2
+        },
+        {
+            "obj": 92,
+            "runtime": 0.39849400520324707,
+            "neighborhood": 3
+        },
+        {
+            "obj": 94,
+            "runtime": 0.5621249675750732,
+            "neighborhood": 3
+        },
+        {
+            "obj": 96,
+            "runtime": 0.7001297473907471,
+            "neighborhood": 3
+        },
+        {
+            "obj": 99,
+            "runtime": 0.8429856300354004,
+            "neighborhood": 3
+        },
+        {
+            "obj": 100,
+            "runtime": 50.24832248687744,
+            "neighborhood": 5
+        }
+    ],
+    "generic_5_30_3": [
+        {
+            "obj": 74,
+            "runtime": 0.00015473365783691406,
+            "neighborhood": 0
+        },
+        {
+            "obj": 78,
+            "runtime": 0.0014355182647705078,
+            "neighborhood": 1
+        },
+        {
+            "obj": 82,
+            "runtime": 0.003660917282104492,
+            "neighborhood": 1
+        },
+        {
+            "obj": 86,
+            "runtime": 0.15924453735351562,
+            "neighborhood": 2
+        },
+        {
+            "obj": 94,
+            "runtime": 0.2573704719543457,
+            "neighborhood": 3
+        },
+        {
+            "obj": 96,
+            "runtime": 0.35196375846862793,
+            "neighborhood": 3
+        },
+        {
+            "obj": 97,
+            "runtime": 0.4946765899658203,
+            "neighborhood": 3
+        },
+        {
+            "obj": 102,
+            "runtime": 0.5912494659423828,
+            "neighborhood": 3
+        },
+        {
+            "obj": 106,
+            "runtime": 1.0857429504394531,
+            "neighborhood": 5
+        },
+        {
+            "obj": 107,
+            "runtime": 31.41348147392273,
+            "neighborhood": 5
+        }
+    ],
+    "generic_5_30_4": [
+        {
+            "obj": 72,
+            "runtime": 0.0001728534698486328,
+            "neighborhood": 0
+        },
+        {
+            "obj": 74,
+            "runtime": 0.13137269020080566,
+            "neighborhood": 2
+        },
+        {
+            "obj": 79,
+            "runtime": 0.25225210189819336,
+            "neighborhood": 3
+        },
+        {
+            "obj": 83,
+            "runtime": 0.37634968757629395,
+            "neighborhood": 3
+        },
+        {
+            "obj": 90,
+            "runtime": 1.2190515995025635,
+            "neighborhood": 5
+        },
+        {
+            "obj": 91,
+            "runtime": 2.4935524463653564,
+            "neighborhood": 6
+        },
+        {
+            "obj": 92,
+            "runtime": 56.13580012321472,
+            "neighborhood": 5
+        }
+    ],
+    "generic_5_30_5": [
+        {
+            "obj": 60,
+            "runtime": 0.00016570091247558594,
+            "neighborhood": 0
+        },
+        {
+            "obj": 72,
+            "runtime": 0.002572298049926758,
+            "neighborhood": 1
+        },
+        {
+            "obj": 74,
+            "runtime": 0.11391258239746094,
+            "neighborhood": 2
+        },
+        {
+            "obj": 77,
+            "runtime": 0.28380513191223145,
+            "neighborhood": 3
+        },
+        {
+            "obj": 78,
+            "runtime": 0.28539299964904785,
+            "neighborhood": 1
+        },
+        {
+            "obj": 87,
+            "runtime": 0.4034743309020996,
+            "neighborhood": 3
+        },
+        {
+            "obj": 89,
+            "runtime": 0.5960538387298584,
+            "neighborhood": 3
+        },
+        {
+            "obj": 92,
+            "runtime": 0.7175600528717041,
+            "neighborhood": 3
+        },
+        {
+            "obj": 93,
+            "runtime": 146.26070427894592,
+            "neighborhood": 5
+        },
+        {
+            "obj": 96,
+            "runtime": 147.07161855697632,
+            "neighborhood": 6
+        },
+        {
+            "obj": 97,
+            "runtime": 147.19132447242737,
+            "neighborhood": 3
+        },
+        {
+            "obj": 98,
+            "runtime": 147.4633219242096,
+            "neighborhood": 5
+        }
+    ],
+    "generic_5_30_6": [
+        {
+            "obj": 61,
+            "runtime": 0.0001842975616455078,
+            "neighborhood": 0
+        },
+        {
+            "obj": 63,
+            "runtime": 0.0010325908660888672,
+            "neighborhood": 1
+        },
+        {
+            "obj": 67,
+            "runtime": 0.185899019241333,
+            "neighborhood": 2
+        },
+        {
+            "obj": 69,
+            "runtime": 0.3818962574005127,
+            "neighborhood": 3
+        },
+        {
+            "obj": 74,
+            "runtime": 0.5771634578704834,
+            "neighborhood": 3
+        },
+        {
+            "obj": 81,
+            "runtime": 2.332172393798828,
+            "neighborhood": 5
+        },
+        {
+            "obj": 82,
+            "runtime": 15.594886064529419,
+            "neighborhood": 5
+        },
+        {
+            "obj": 84,
+            "runtime": 51.23000979423523,
+            "neighborhood": 5
+        }
+    ],
+    "generic_5_30_7": [
+        {
+            "obj": 58,
+            "runtime": 0.00018548965454101562,
+            "neighborhood": 0
+        },
+        {
+            "obj": 62,
+            "runtime": 0.001583099365234375,
+            "neighborhood": 1
+        },
+        {
+            "obj": 68,
+            "runtime": 0.3098418712615967,
+            "neighborhood": 2
+        },
+        {
+            "obj": 74,
+            "runtime": 0.4737522602081299,
+            "neighborhood": 3
+        },
+        {
+            "obj": 78,
+            "runtime": 0.7318189144134521,
+            "neighborhood": 3
+        },
+        {
+            "obj": 80,
+            "runtime": 0.8731653690338135,
+            "neighborhood": 3
+        },
+        {
+            "obj": 83,
+            "runtime": 1.0922982692718506,
+            "neighborhood": 3
+        },
+        {
+            "obj": 84,
+            "runtime": 1.2502148151397705,
+            "neighborhood": 2
+        },
+        {
+            "obj": 85,
+            "runtime": 1.3947758674621582,
+            "neighborhood": 3
+        },
+        {
+            "obj": 86,
+            "runtime": 1.5391805171966553,
+            "neighborhood": 3
+        },
+        {
+            "obj": 90,
+            "runtime": 2.343439817428589,
+            "neighborhood": 5
+        },
+        {
+            "obj": 92,
+            "runtime": 118.72475481033325,
+            "neighborhood": 5
+        }
+    ],
+    "generic_5_30_8": [
+        {
+            "obj": 78,
+            "runtime": 0.00018215179443359375,
+            "neighborhood": 0
+        },
+        {
+            "obj": 82,
+            "runtime": 0.0017457008361816406,
+            "neighborhood": 1
+        },
+        {
+            "obj": 84,
+            "runtime": 0.18041205406188965,
+            "neighborhood": 2
+        },
+        {
+            "obj": 86,
+            "runtime": 0.348233699798584,
+            "neighborhood": 3
+        },
+        {
+            "obj": 87,
+            "runtime": 0.4878098964691162,
+            "neighborhood": 3
+        },
+        {
+            "obj": 89,
+            "runtime": 0.6352508068084717,
+            "neighborhood": 3
+        },
+        {
+            "obj": 95,
+            "runtime": 1.5689613819122314,
+            "neighborhood": 5
+        },
+        {
+            "obj": 98,
+            "runtime": 3.341247797012329,
+            "neighborhood": 5
+        },
+        {
+            "obj": 99,
+            "runtime": 3.4831507205963135,
+            "neighborhood": 3
+        },
+        {
+            "obj": 102,
+            "runtime": 3.989316463470459,
+            "neighborhood": 6
+        },
+        {
+            "obj": 103,
+            "runtime": 226.2918257713318,
+            "neighborhood": 5
+        }
+    ],
+    "generic_5_30_9": [
+        {
+            "obj": 70,
+            "runtime": 0.0001659393310546875,
+            "neighborhood": 0
+        },
+        {
+            "obj": 72,
+            "runtime": 0.12866997718811035,
+            "neighborhood": 2
+        },
+        {
+            "obj": 74,
+            "runtime": 0.25164079666137695,
+            "neighborhood": 3
+        },
+        {
+            "obj": 78,
+            "runtime": 0.37114405632019043,
+            "neighborhood": 3
+        },
+        {
+            "obj": 80,
+            "runtime": 0.48580265045166016,
+            "neighborhood": 3
+        },
+        {
+            "obj": 82,
+            "runtime": 0.6625411510467529,
+            "neighborhood": 3
+        },
+        {
+            "obj": 83,
+            "runtime": 0.7781403064727783,
+            "neighborhood": 3
+        },
+        {
+            "obj": 84,
+            "runtime": 0.895688533782959,
+            "neighborhood": 3
+        },
+        {
+            "obj": 85,
+            "runtime": 0.8975839614868164,
+            "neighborhood": 1
+        },
+        {
+            "obj": 86,
+            "runtime": 1.0207610130310059,
+            "neighborhood": 3
+        },
+        {
+            "obj": 87,
+            "runtime": 1.1383774280548096,
+            "neighborhood": 3
+        },
+        {
+            "obj": 90,
+            "runtime": 2.0393013954162598,
+            "neighborhood": 6
+        },
+        {
+            "obj": 91,
+            "runtime": 16.854766845703125,
+            "neighborhood": 5
+        }
+    ],
+    "generic_5_40_0": [
+        {
+            "obj": 90,
+            "runtime": 0.0002655982971191406,
+            "neighborhood": 0
+        },
+        {
+            "obj": 97,
+            "runtime": 0.003564596176147461,
+            "neighborhood": 1
+        },
+        {
+            "obj": 99,
+            "runtime": 0.3431429862976074,
+            "neighborhood": 2
+        },
+        {
+            "obj": 103,
+            "runtime": 0.6592874526977539,
+            "neighborhood": 3
+        },
+        {
+            "obj": 112,
+            "runtime": 1.137890338897705,
+            "neighborhood": 3
+        },
+        {
+            "obj": 113,
+            "runtime": 1.451643943786621,
+            "neighborhood": 3
+        },
+        {
+            "obj": 115,
+            "runtime": 1.7648205757141113,
+            "neighborhood": 3
+        },
+        {
+            "obj": 118,
+            "runtime": 2.079618453979492,
+            "neighborhood": 3
+        },
+        {
+            "obj": 122,
+            "runtime": 2.401851177215576,
+            "neighborhood": 4
+        },
+        {
+            "obj": 132,
+            "runtime": 4.802608251571655,
+            "neighborhood": 5
+        },
+        {
+            "obj": 133,
+            "runtime": 497.2795407772064,
+            "neighborhood": 5
+        }
+    ],
+    "generic_5_40_1": [
+        {
+            "obj": 88,
+            "runtime": 0.001150369644165039,
+            "neighborhood": 0
+        },
+        {
+            "obj": 96,
+            "runtime": 0.003584623336791992,
+            "neighborhood": 1
+        },
+        {
+            "obj": 102,
+            "runtime": 0.46306896209716797,
+            "neighborhood": 2
+        },
+        {
+            "obj": 107,
+            "runtime": 0.8774638175964355,
+            "neighborhood": 3
+        },
+        {
+            "obj": 110,
+            "runtime": 1.3067431449890137,
+            "neighborhood": 3
+        },
+        {
+            "obj": 113,
+            "runtime": 1.7259597778320312,
+            "neighborhood": 3
+        },
+        {
+            "obj": 116,
+            "runtime": 2.142033576965332,
+            "neighborhood": 3
+        },
+        {
+            "obj": 118,
+            "runtime": 2.7834060192108154,
+            "neighborhood": 3
+        },
+        {
+            "obj": 120,
+            "runtime": 3.1467816829681396,
+            "neighborhood": 3
+        },
+        {
+            "obj": 125,
+            "runtime": 3.512821912765503,
+            "neighborhood": 3
+        },
+        {
+            "obj": 126,
+            "runtime": 3.8899905681610107,
+            "neighborhood": 4
+        },
+        {
+            "obj": 129,
+            "runtime": 5.91490626335144,
+            "neighborhood": 5
+        },
+        {
+            "obj": 130,
+            "runtime": 6.3317859172821045,
+            "neighborhood": 3
+        },
+        {
+            "obj": 131,
+            "runtime": 9.49548625946045,
+            "neighborhood": 3
+        },
+        {
+            "obj": 132,
+            "runtime": 11.03853726387024,
+            "neighborhood": 5
+        },
+        {
+            "obj": 133,
+            "runtime": 18.056561946868896,
+            "neighborhood": 5
+        }
+    ],
+    "generic_5_40_2": [
+        {
+            "obj": 103,
+            "runtime": 0.0002193450927734375,
+            "neighborhood": 0
+        },
+        {
+            "obj": 105,
+            "runtime": 0.3805398941040039,
+            "neighborhood": 2
+        },
+        {
+            "obj": 110,
+            "runtime": 0.8821327686309814,
+            "neighborhood": 3
+        },
+        {
+            "obj": 115,
+            "runtime": 1.4111473560333252,
+            "neighborhood": 3
+        },
+        {
+            "obj": 117,
+            "runtime": 1.7536334991455078,
+            "neighborhood": 3
+        },
+        {
+            "obj": 119,
+            "runtime": 2.093451976776123,
+            "neighborhood": 3
+        },
+        {
+            "obj": 128,
+            "runtime": 5.197365999221802,
+            "neighborhood": 5
+        },
+        {
+            "obj": 130,
+            "runtime": 11.642980337142944,
+            "neighborhood": 6
+        },
+        {
+            "obj": 131,
+            "runtime": 87.36017608642578,
+            "neighborhood": 5
+        },
+        {
+            "obj": 132,
+            "runtime": 89.28458881378174,
+            "neighborhood": 6
+        },
+        {
+            "obj": 133,
+            "runtime": 89.62620544433594,
+            "neighborhood": 3
+        },
+        {
+            "obj": 134,
+            "runtime": 271.2224290370941,
+            "neighborhood": 5
+        }
+    ],
+    "generic_5_40_3": [
+        {
+            "obj": 82,
+            "runtime": 0.00020694732666015625,
+            "neighborhood": 0
+        },
+        {
+            "obj": 100,
+            "runtime": 0.005470991134643555,
+            "neighborhood": 1
+        },
+        {
+            "obj": 106,
+            "runtime": 0.7060713768005371,
+            "neighborhood": 2
+        },
+        {
+            "obj": 112,
+            "runtime": 1.4597539901733398,
+            "neighborhood": 3
+        },
+        {
+            "obj": 115,
+            "runtime": 1.842179536819458,
+            "neighborhood": 3
+        },
+        {
+            "obj": 116,
+            "runtime": 2.218207359313965,
+            "neighborhood": 3
+        },
+        {
+            "obj": 129,
+            "runtime": 7.0215020179748535,
+            "neighborhood": 5
+        },
+        {
+            "obj": 131,
+            "runtime": 8.893892288208008,
+            "neighborhood": 6
+        },
+        {
+            "obj": 132,
+            "runtime": 10.61358380317688,
+            "neighborhood": 6
+        }
+    ],
+    "generic_5_40_4": [
+        {
+            "obj": 95,
+            "runtime": 0.00020170211791992188,
+            "neighborhood": 0
+        },
+        {
+            "obj": 97,
+            "runtime": 0.002092599868774414,
+            "neighborhood": 1
+        },
+        {
+            "obj": 101,
+            "runtime": 0.4115409851074219,
+            "neighborhood": 2
+        },
+        {
+            "obj": 103,
+            "runtime": 0.6678082942962646,
+            "neighborhood": 3
+        },
+        {
+            "obj": 117,
+            "runtime": 3.3730075359344482,
+            "neighborhood": 5
+        },
+        {
+            "obj": 118,
+            "runtime": 3.627673864364624,
+            "neighborhood": 3
+        },
+        {
+            "obj": 119,
+            "runtime": 4.81240177154541,
+            "neighborhood": 5
+        },
+        {
+            "obj": 121,
+            "runtime": 6.274296283721924,
+            "neighborhood": 6
+        },
+        {
+            "obj": 122,
+            "runtime": 6.52118444442749,
+            "neighborhood": 3
+        },
+        {
+            "obj": 123,
+            "runtime": 7.957645416259766,
+            "neighborhood": 5
+        },
+        {
+            "obj": 124,
+            "runtime": 9.238409042358398,
+            "neighborhood": 6
+        },
+        {
+            "obj": 125,
+            "runtime": 9.486984968185425,
+            "neighborhood": 3
+        },
+        {
+            "obj": 126,
+            "runtime": 2438.9344980716705,
+            "neighborhood": 5
+        },
+        {
+            "obj": 127,
+            "runtime": 3002.673849582672,
+            "neighborhood": 5
+        },
+        {
+            "obj": 128,
+            "runtime": 3069.6647412776947,
+            "neighborhood": 5
+        }
+    ],
+    "generic_5_40_5": [
+        {
+            "obj": 82,
+            "runtime": 0.00020933151245117188,
+            "neighborhood": 0
+        },
+        {
+            "obj": 90,
+            "runtime": 0.0032091140747070312,
+            "neighborhood": 1
+        },
+        {
+            "obj": 108,
+            "runtime": 0.9482283592224121,
+            "neighborhood": 2
+        },
+        {
+            "obj": 109,
+            "runtime": 1.289247989654541,
+            "neighborhood": 3
+        },
+        {
+            "obj": 110,
+            "runtime": 1.2913906574249268,
+            "neighborhood": 1
+        },
+        {
+            "obj": 115,
+            "runtime": 1.7908499240875244,
+            "neighborhood": 3
+        },
+        {
+            "obj": 116,
+            "runtime": 2.2178773880004883,
+            "neighborhood": 3
+        },
+        {
+            "obj": 117,
+            "runtime": 2.5165679454803467,
+            "neighborhood": 3
+        },
+        {
+            "obj": 123,
+            "runtime": 5.156258583068848,
+            "neighborhood": 5
+        },
+        {
+            "obj": 126,
+            "runtime": 6.398801803588867,
+            "neighborhood": 5
+        },
+        {
+            "obj": 127,
+            "runtime": 7.538344383239746,
+            "neighborhood": 6
+        },
+        {
+            "obj": 128,
+            "runtime": 7.830546855926514,
+            "neighborhood": 3
+        },
+        {
+            "obj": 130,
+            "runtime": 9.056164026260376,
+            "neighborhood": 5
+        }
+    ],
+    "generic_5_40_6": [
+        {
+            "obj": 89,
+            "runtime": 0.00021719932556152344,
+            "neighborhood": 0
+        },
+        {
+            "obj": 93,
+            "runtime": 0.0013566017150878906,
+            "neighborhood": 1
+        },
+        {
+            "obj": 103,
+            "runtime": 0.558417797088623,
+            "neighborhood": 2
+        },
+        {
+            "obj": 108,
+            "runtime": 1.1735496520996094,
+            "neighborhood": 3
+        },
+        {
+            "obj": 114,
+            "runtime": 1.5725247859954834,
+            "neighborhood": 3
+        },
+        {
+            "obj": 125,
+            "runtime": 5.224177837371826,
+            "neighborhood": 5
+        },
+        {
+            "obj": 129,
+            "runtime": 10.80021333694458,
+            "neighborhood": 6
+        },
+        {
+            "obj": 131,
+            "runtime": 11.163625240325928,
+            "neighborhood": 2
+        },
+        {
+            "obj": 132,
+            "runtime": 165.52734303474426,
+            "neighborhood": 5
+        },
+        {
+            "obj": 134,
+            "runtime": 203.8835129737854,
+            "neighborhood": 5
+        }
+    ],
+    "generic_5_40_7": [
+        {
+            "obj": 91,
+            "runtime": 0.00021004676818847656,
+            "neighborhood": 0
+        },
+        {
+            "obj": 99,
+            "runtime": 0.5462062358856201,
+            "neighborhood": 2
+        },
+        {
+            "obj": 103,
+            "runtime": 0.8885476589202881,
+            "neighborhood": 3
+        },
+        {
+            "obj": 106,
+            "runtime": 1.223494052886963,
+            "neighborhood": 3
+        },
+        {
+            "obj": 110,
+            "runtime": 1.559187889099121,
+            "neighborhood": 3
+        },
+        {
+            "obj": 112,
+            "runtime": 1.8744697570800781,
+            "neighborhood": 2
+        },
+        {
+            "obj": 114,
+            "runtime": 2.2119922637939453,
+            "neighborhood": 3
+        },
+        {
+            "obj": 120,
+            "runtime": 2.551910877227783,
+            "neighborhood": 3
+        },
+        {
+            "obj": 127,
+            "runtime": 5.210860013961792,
+            "neighborhood": 5
+        },
+        {
+            "obj": 129,
+            "runtime": 25.33387541770935,
+            "neighborhood": 2
+        },
+        {
+            "obj": 130,
+            "runtime": 906.4911689758301,
+            "neighborhood": 5
+        },
+        {
+            "obj": 131,
+            "runtime": 2894.7291996479034,
+            "neighborhood": 5
+        }
+    ],
+    "generic_5_40_8": [
+        {
+            "obj": 58,
+            "runtime": 0.00020503997802734375,
+            "neighborhood": 0
+        },
+        {
+            "obj": 100,
+            "runtime": 0.010805368423461914,
+            "neighborhood": 1
+        },
+        {
+            "obj": 102,
+            "runtime": 0.013164520263671875,
+            "neighborhood": 1
+        },
+        {
+            "obj": 108,
+            "runtime": 0.6476140022277832,
+            "neighborhood": 2
+        },
+        {
+            "obj": 112,
+            "runtime": 1.0885999202728271,
+            "neighborhood": 3
+        },
+        {
+            "obj": 115,
+            "runtime": 1.5330908298492432,
+            "neighborhood": 3
+        },
+        {
+            "obj": 118,
+            "runtime": 2.217911958694458,
+            "neighborhood": 3
+        },
+        {
+            "obj": 120,
+            "runtime": 3.6990413665771484,
+            "neighborhood": 5
+        },
+        {
+            "obj": 121,
+            "runtime": 4.151890993118286,
+            "neighborhood": 3
+        },
+        {
+            "obj": 122,
+            "runtime": 4.590367794036865,
+            "neighborhood": 3
+        },
+        {
+            "obj": 123,
+            "runtime": 10.522356986999512,
+            "neighborhood": 5
+        },
+        {
+            "obj": 126,
+            "runtime": 44.540950536727905,
+            "neighborhood": 6
+        },
+        {
+            "obj": 127,
+            "runtime": 45.054532527923584,
+            "neighborhood": 3
+        },
+        {
+            "obj": 129,
+            "runtime": 47.31724691390991,
+            "neighborhood": 6
+        }
+    ],
+    "generic_5_40_9": [
+        {
+            "obj": 50,
+            "runtime": 0.00019311904907226562,
+            "neighborhood": 0
+        },
+        {
+            "obj": 78,
+            "runtime": 0.008995294570922852,
+            "neighborhood": 1
+        },
+        {
+            "obj": 82,
+            "runtime": 0.4661264419555664,
+            "neighborhood": 2
+        },
+        {
+            "obj": 91,
+            "runtime": 0.8092474937438965,
+            "neighborhood": 3
+        },
+        {
+            "obj": 93,
+            "runtime": 1.198561668395996,
+            "neighborhood": 3
+        },
+        {
+            "obj": 95,
+            "runtime": 1.6004793643951416,
+            "neighborhood": 4
+        },
+        {
+            "obj": 96,
+            "runtime": 2.0513546466827393,
+            "neighborhood": 3
+        },
+        {
+            "obj": 97,
+            "runtime": 2.5038368701934814,
+            "neighborhood": 3
+        },
+        {
+            "obj": 104,
+            "runtime": 6.03693962097168,
+            "neighborhood": 5
+        },
+        {
+            "obj": 106,
+            "runtime": 87.15730667114258,
+            "neighborhood": 5
+        },
+        {
+            "obj": 107,
+            "runtime": 112.38404583930969,
+            "neighborhood": 5
+        }
+    ],
+    "generic_5_50_0": [
+        {
+            "obj": 101,
+            "runtime": 0.0002701282501220703,
+            "neighborhood": 0
+        },
+        {
+            "obj": 127,
+            "runtime": 0.010569572448730469,
+            "neighborhood": 1
+        },
+        {
+            "obj": 131,
+            "runtime": 1.1528587341308594,
+            "neighborhood": 2
+        },
+        {
+            "obj": 135,
+            "runtime": 1.944859266281128,
+            "neighborhood": 3
+        },
+        {
+            "obj": 136,
+            "runtime": 2.732736110687256,
+            "neighborhood": 3
+        },
+        {
+            "obj": 138,
+            "runtime": 3.956916093826294,
+            "neighborhood": 3
+        },
+        {
+            "obj": 141,
+            "runtime": 4.753739356994629,
+            "neighborhood": 3
+        },
+        {
+            "obj": 142,
+            "runtime": 5.539988040924072,
+            "neighborhood": 3
+        },
+        {
+            "obj": 143,
+            "runtime": 6.326540231704712,
+            "neighborhood": 4
+        },
+        {
+            "obj": 160,
+            "runtime": 19.91498327255249,
+            "neighborhood": 5
+        },
+        {
+            "obj": 161,
+            "runtime": 73.3606824874878,
+            "neighborhood": 5
+        },
+        {
+            "obj": 163,
+            "runtime": 377.0836184024811,
+            "neighborhood": 5
+        },
+        {
+            "obj": 165,
+            "runtime": 608.1745223999023,
+            "neighborhood": 5
+        },
+        {
+            "obj": 166,
+            "runtime": 721.0626938343048,
+            "neighborhood": 5
+        },
+        {
+            "obj": 167,
+            "runtime": 1210.1773917675018,
+            "neighborhood": 5
+        }
+    ],
+    "generic_5_50_1": [
+        {
+            "obj": 98,
+            "runtime": 0.00030493736267089844,
+            "neighborhood": 0
+        },
+        {
+            "obj": 106,
+            "runtime": 0.005043745040893555,
+            "neighborhood": 1
+        },
+        {
+            "obj": 114,
+            "runtime": 1.686722755432129,
+            "neighborhood": 2
+        },
+        {
+            "obj": 124,
+            "runtime": 3.03749418258667,
+            "neighborhood": 3
+        },
+        {
+            "obj": 125,
+            "runtime": 3.9287266731262207,
+            "neighborhood": 3
+        },
+        {
+            "obj": 131,
+            "runtime": 4.80756402015686,
+            "neighborhood": 3
+        },
+        {
+            "obj": 143,
+            "runtime": 17.333321809768677,
+            "neighborhood": 5
+        },
+        {
+            "obj": 146,
+            "runtime": 400.7989957332611,
+            "neighborhood": 5
+        }
+    ],
+    "generic_5_50_2": [
+        {
+            "obj": 73,
+            "runtime": 0.0002510547637939453,
+            "neighborhood": 0
+        },
+        {
+            "obj": 117,
+            "runtime": 0.015485286712646484,
+            "neighborhood": 1
+        },
+        {
+            "obj": 121,
+            "runtime": 0.5850059986114502,
+            "neighborhood": 2
+        },
+        {
+            "obj": 122,
+            "runtime": 0.5876772403717041,
+            "neighborhood": 1
+        },
+        {
+            "obj": 134,
+            "runtime": 1.5302245616912842,
+            "neighborhood": 3
+        },
+        {
+            "obj": 140,
+            "runtime": 2.249903917312622,
+            "neighborhood": 3
+        },
+        {
+            "obj": 143,
+            "runtime": 2.965264081954956,
+            "neighborhood": 3
+        },
+        {
+            "obj": 146,
+            "runtime": 3.681842803955078,
+            "neighborhood": 3
+        },
+        {
+            "obj": 151,
+            "runtime": 4.948748826980591,
+            "neighborhood": 3
+        },
+        {
+            "obj": 154,
+            "runtime": 5.779841661453247,
+            "neighborhood": 3
+        },
+        {
+            "obj": 158,
+            "runtime": 6.5336222648620605,
+            "neighborhood": 4
+        },
+        {
+            "obj": 164,
+            "runtime": 14.799795627593994,
+            "neighborhood": 5
+        },
+        {
+            "obj": 165,
+            "runtime": 17.468560695648193,
+            "neighborhood": 6
+        },
+        {
+            "obj": 166,
+            "runtime": 20.25647521018982,
+            "neighborhood": 6
+        },
+        {
+            "obj": 169,
+            "runtime": 39.684487104415894,
+            "neighborhood": 5
+        },
+        {
+            "obj": 170,
+            "runtime": 1027.831957578659,
+            "neighborhood": 5
+        }
+    ],
+    "generic_5_50_3": [
+        {
+            "obj": 87,
+            "runtime": 0.0002856254577636719,
+            "neighborhood": 0
+        },
+        {
+            "obj": 129,
+            "runtime": 0.019621610641479492,
+            "neighborhood": 1
+        },
+        {
+            "obj": 133,
+            "runtime": 0.8729469776153564,
+            "neighborhood": 2
+        },
+        {
+            "obj": 140,
+            "runtime": 1.7539818286895752,
+            "neighborhood": 3
+        },
+        {
+            "obj": 142,
+            "runtime": 2.6348156929016113,
+            "neighborhood": 3
+        },
+        {
+            "obj": 143,
+            "runtime": 3.5269181728363037,
+            "neighborhood": 3
+        },
+        {
+            "obj": 144,
+            "runtime": 4.407163143157959,
+            "neighborhood": 3
+        },
+        {
+            "obj": 146,
+            "runtime": 5.296966791152954,
+            "neighborhood": 3
+        },
+        {
+            "obj": 148,
+            "runtime": 6.178438425064087,
+            "neighborhood": 3
+        },
+        {
+            "obj": 151,
+            "runtime": 7.465112686157227,
+            "neighborhood": 3
+        },
+        {
+            "obj": 152,
+            "runtime": 8.351429224014282,
+            "neighborhood": 3
+        },
+        {
+            "obj": 154,
+            "runtime": 9.191112995147705,
+            "neighborhood": 2
+        },
+        {
+            "obj": 155,
+            "runtime": 10.092794179916382,
+            "neighborhood": 3
+        },
+        {
+            "obj": 157,
+            "runtime": 11.00574016571045,
+            "neighborhood": 3
+        },
+        {
+            "obj": 166,
+            "runtime": 20.80538034439087,
+            "neighborhood": 5
+        }
+    ],
+    "generic_5_50_4": [
+        {
+            "obj": 61,
+            "runtime": 0.00027823448181152344,
+            "neighborhood": 0
+        },
+        {
+            "obj": 113,
+            "runtime": 0.0204160213470459,
+            "neighborhood": 1
+        },
+        {
+            "obj": 115,
+            "runtime": 0.6736762523651123,
+            "neighborhood": 2
+        },
+        {
+            "obj": 130,
+            "runtime": 1.7421810626983643,
+            "neighborhood": 3
+        },
+        {
+            "obj": 136,
+            "runtime": 2.5282833576202393,
+            "neighborhood": 3
+        },
+        {
+            "obj": 141,
+            "runtime": 3.6891520023345947,
+            "neighborhood": 3
+        },
+        {
+            "obj": 143,
+            "runtime": 4.8484110832214355,
+            "neighborhood": 3
+        },
+        {
+            "obj": 145,
+            "runtime": 5.638147354125977,
+            "neighborhood": 3
+        },
+        {
+            "obj": 147,
+            "runtime": 6.865074634552002,
+            "neighborhood": 3
+        },
+        {
+            "obj": 149,
+            "runtime": 8.100651979446411,
+            "neighborhood": 3
+        },
+        {
+            "obj": 156,
+            "runtime": 13.17520785331726,
+            "neighborhood": 5
+        },
+        {
+            "obj": 159,
+            "runtime": 37.93342685699463,
+            "neighborhood": 6
+        },
+        {
+            "obj": 160,
+            "runtime": 49.43424940109253,
+            "neighborhood": 6
+        },
+        {
+            "obj": 162,
+            "runtime": 131.4979212284088,
+            "neighborhood": 2
+        }
+    ],
+    "generic_5_50_5": [
+        {
+            "obj": 118,
+            "runtime": 0.00028967857360839844,
+            "neighborhood": 0
+        },
+        {
+            "obj": 123,
+            "runtime": 0.0034766197204589844,
+            "neighborhood": 1
+        },
+        {
+            "obj": 131,
+            "runtime": 2.140498399734497,
+            "neighborhood": 2
+        },
+        {
+            "obj": 137,
+            "runtime": 2.944300651550293,
+            "neighborhood": 3
+        },
+        {
+            "obj": 141,
+            "runtime": 3.7559995651245117,
+            "neighborhood": 3
+        },
+        {
+            "obj": 143,
+            "runtime": 4.57434606552124,
+            "neighborhood": 3
+        },
+        {
+            "obj": 144,
+            "runtime": 5.29628849029541,
+            "neighborhood": 3
+        },
+        {
+            "obj": 157,
+            "runtime": 13.41977858543396,
+            "neighborhood": 5
+        },
+        {
+            "obj": 158,
+            "runtime": 37.690078258514404,
+            "neighborhood": 6
+        }
+    ],
+    "generic_5_50_6": [
+        {
+            "obj": 37,
+            "runtime": 0.0002727508544921875,
+            "neighborhood": 0
+        },
+        {
+            "obj": 108,
+            "runtime": 0.029865026473999023,
+            "neighborhood": 1
+        },
+        {
+            "obj": 112,
+            "runtime": 0.03415870666503906,
+            "neighborhood": 1
+        },
+        {
+            "obj": 118,
+            "runtime": 0.9983248710632324,
+            "neighborhood": 2
+        },
+        {
+            "obj": 128,
+            "runtime": 2.050147771835327,
+            "neighborhood": 3
+        },
+        {
+            "obj": 133,
+            "runtime": 3.250720739364624,
+            "neighborhood": 3
+        },
+        {
+            "obj": 136,
+            "runtime": 4.150303840637207,
+            "neighborhood": 3
+        },
+        {
+            "obj": 138,
+            "runtime": 5.06277871131897,
+            "neighborhood": 3
+        },
+        {
+            "obj": 140,
+            "runtime": 5.877620458602905,
+            "neighborhood": 3
+        },
+        {
+            "obj": 142,
+            "runtime": 6.687841415405273,
+            "neighborhood": 3
+        },
+        {
+            "obj": 143,
+            "runtime": 7.5920023918151855,
+            "neighborhood": 3
+        },
+        {
+            "obj": 145,
+            "runtime": 12.90311312675476,
+            "neighborhood": 5
+        },
+        {
+            "obj": 146,
+            "runtime": 265.97968339920044,
+            "neighborhood": 5
+        },
+        {
+            "obj": 147,
+            "runtime": 342.2157201766968,
+            "neighborhood": 5
+        },
+        {
+            "obj": 148,
+            "runtime": 353.2926151752472,
+            "neighborhood": 6
+        },
+        {
+            "obj": 149,
+            "runtime": 354.3121614456177,
+            "neighborhood": 3
+        },
+        {
+            "obj": 150,
+            "runtime": 357.922301530838,
+            "neighborhood": 5
+        }
+    ],
+    "generic_5_50_7": [
+        {
+            "obj": 99,
+            "runtime": 0.0002772808074951172,
+            "neighborhood": 0
+        },
+        {
+            "obj": 107,
+            "runtime": 0.004527568817138672,
+            "neighborhood": 1
+        },
+        {
+            "obj": 111,
+            "runtime": 0.6777386665344238,
+            "neighborhood": 2
+        },
+        {
+            "obj": 117,
+            "runtime": 1.589580774307251,
+            "neighborhood": 3
+        },
+        {
+            "obj": 119,
+            "runtime": 2.2122015953063965,
+            "neighborhood": 3
+        },
+        {
+            "obj": 126,
+            "runtime": 2.8208019733428955,
+            "neighborhood": 3
+        },
+        {
+            "obj": 127,
+            "runtime": 3.4211230278015137,
+            "neighborhood": 3
+        },
+        {
+            "obj": 131,
+            "runtime": 4.023643732070923,
+            "neighborhood": 3
+        },
+        {
+            "obj": 132,
+            "runtime": 4.625861883163452,
+            "neighborhood": 3
+        },
+        {
+            "obj": 138,
+            "runtime": 8.691769123077393,
+            "neighborhood": 5
+        },
+        {
+            "obj": 139,
+            "runtime": 11.251001596450806,
+            "neighborhood": 6
+        },
+        {
+            "obj": 140,
+            "runtime": 13.412088394165039,
+            "neighborhood": 6
+        },
+        {
+            "obj": 142,
+            "runtime": 19.94015407562256,
+            "neighborhood": 2
+        },
+        {
+            "obj": 143,
+            "runtime": 40.0328369140625,
+            "neighborhood": 6
+        },
+        {
+            "obj": 144,
+            "runtime": 205.99545311927795,
+            "neighborhood": 5
+        },
+        {
+            "obj": 145,
+            "runtime": 1049.4433197975159,
+            "neighborhood": 5
+        }
+    ],
+    "generic_5_50_8": [
+        {
+            "obj": 119,
+            "runtime": 0.00029468536376953125,
+            "neighborhood": 0
+        },
+        {
+            "obj": 129,
+            "runtime": 0.005862236022949219,
+            "neighborhood": 1
+        },
+        {
+            "obj": 133,
+            "runtime": 1.0049152374267578,
+            "neighborhood": 2
+        },
+        {
+            "obj": 140,
+            "runtime": 2.407278299331665,
+            "neighborhood": 3
+        },
+        {
+            "obj": 145,
+            "runtime": 3.1285698413848877,
+            "neighborhood": 3
+        },
+        {
+            "obj": 148,
+            "runtime": 3.763232469558716,
+            "neighborhood": 3
+        },
+        {
+            "obj": 151,
+            "runtime": 4.306213140487671,
+            "neighborhood": 3
+        },
+        {
+            "obj": 154,
+            "runtime": 4.851223468780518,
+            "neighborhood": 3
+        },
+        {
+            "obj": 157,
+            "runtime": 5.385332107543945,
+            "neighborhood": 3
+        },
+        {
+            "obj": 162,
+            "runtime": 6.16810154914856,
+            "neighborhood": 3
+        },
+        {
+            "obj": 163,
+            "runtime": 6.79212212562561,
+            "neighborhood": 3
+        },
+        {
+            "obj": 165,
+            "runtime": 7.413434028625488,
+            "neighborhood": 3
+        },
+        {
+            "obj": 166,
+            "runtime": 9.372623443603516,
+            "neighborhood": 5
+        },
+        {
+            "obj": 167,
+            "runtime": 14.62680459022522,
+            "neighborhood": 3
+        },
+        {
+            "obj": 168,
+            "runtime": 17.762294054031372,
+            "neighborhood": 6
+        }
+    ],
+    "generic_5_50_9": [
+        {
+            "obj": 24,
+            "runtime": 0.0002753734588623047,
+            "neighborhood": 0
+        },
+        {
+            "obj": 101,
+            "runtime": 0.032129764556884766,
+            "neighborhood": 1
+        },
+        {
+            "obj": 103,
+            "runtime": 0.7573204040527344,
+            "neighborhood": 2
+        },
+        {
+            "obj": 104,
+            "runtime": 0.7601718902587891,
+            "neighborhood": 1
+        },
+        {
+            "obj": 107,
+            "runtime": 1.5274810791015625,
+            "neighborhood": 3
+        },
+        {
+            "obj": 110,
+            "runtime": 2.384000062942505,
+            "neighborhood": 3
+        },
+        {
+            "obj": 113,
+            "runtime": 3.3680179119110107,
+            "neighborhood": 3
+        },
+        {
+            "obj": 116,
+            "runtime": 5.050586700439453,
+            "neighborhood": 3
+        },
+        {
+            "obj": 117,
+            "runtime": 6.29650092124939,
+            "neighborhood": 3
+        },
+        {
+            "obj": 122,
+            "runtime": 7.519702196121216,
+            "neighborhood": 3
+        },
+        {
+            "obj": 129,
+            "runtime": 15.578538417816162,
+            "neighborhood": 5
+        }
+    ]
+}

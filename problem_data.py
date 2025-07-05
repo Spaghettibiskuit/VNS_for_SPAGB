@@ -1,4 +1,4 @@
-"""Prevents crash because num_projects do not match by enforcing equality."""
+"""Contains function that returns or saves an instance of the problem."""
 
 import json
 import random as rd
@@ -40,8 +40,12 @@ def generate_projects_and_students_data(
     max_project_preference: int = 3,
     # random seed
     seed: int | None = None,
-) -> tuple[pd.DataFrame, pd.DataFrame]:
-    """Return random projects and students data in one tuple."""
+) -> tuple[pd.DataFrame, pd.DataFrame] | None:
+    """Returns or saves an instance of the problem.
+
+    Calls random_projects_df and random_students_df and returns both of
+    their returns or saves them seperately in as in the CSV format.
+    """
     if seed != None:
         rd.seed(seed)
     instance_tuple = tuple(

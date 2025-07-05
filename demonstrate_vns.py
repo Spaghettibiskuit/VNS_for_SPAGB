@@ -1,3 +1,5 @@
+"""Contains a function that demonstrates VNS on a specified or random instance."""
+
 import json
 from pathlib import Path
 
@@ -9,6 +11,7 @@ from vns_on_student_assignment import VariableNeighborhoodSearch
 
 
 def report_current_solution(vns_instance: VariableNeighborhoodSearch):
+    """Prints the incumbent solution of VNS."""
     for project in vns_instance.projects:
         print(f"\nThese are the groups in the project {project.name}")
         for group in project.groups:
@@ -32,6 +35,31 @@ def demonstrate_vns(
     seed_vns_run: int | None,
     iterations: int,
 ):
+    """Demonstrates VNS on a specific or random instance.
+
+    First it prints the problem data and the initial solution.
+    During optimization with VNS it prints out updates on the
+    solution process every iteration in the loop of
+    run_general_vns_best_improvement of VariableNeighborhoodSearch.
+    At the end it prints the final solution.
+
+    Args:
+        num_projects: The number of projects in the problem.
+        num_students: The number of students in the problem.
+        instance_number: Specifies the exact instance among
+            the instances with matching num_projects and
+            num_students. Only necessary when a specific
+            instance should be solved.
+        seed_instance_generation: The random seed with which
+            a random instance will be generated.
+        seed_vns_run: random seed passed to
+            run_general_vns_best_improvement method of
+            VariableNeighborhoodSearch.
+        iterations: number of iterations in main loop of
+            run_general_vns_best_improvement of
+            VariableNeighborhoodSearch before optimization
+            stops and final results are printed.
+    """
     if instance_number != None:
         if not 0 <= instance_number <= 9:
             raise ValueError("Only instance numbers from 0 to 9 are valid!")

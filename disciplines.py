@@ -1,4 +1,4 @@
-"""Contains a list of 100 business disciplines"""
+"""Contains a list of 100 business disciplines."""
 
 BUSINESS_DISCIPLINES = [
     "Accounting",

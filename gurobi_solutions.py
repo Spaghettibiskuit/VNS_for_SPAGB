@@ -9,6 +9,13 @@ from settings import BenchmarkSettingsGurobi
 
 
 class SolutionsRecorder:
+    """Collects and returns Gurobi's intermediate and final solutions.
+
+    Attributes:
+        model: problem to be optimized
+        solutions_with_runtime: solutions recorded in callback.
+        time_limit: Limit on time spent optimizing.
+    """
 
     def __init__(self, model, time_limit):
         self.model: gp.Model = model
@@ -26,6 +33,7 @@ class SolutionsRecorder:
             )
 
     def solutions_with_bound(self):
+        """Returns intermediate and final solutions."""
         self.solutions_with_runtime.clear()
         self.model.Params.TimeLimit = self.time_limit
         self.model.optimize(self._record_solutions)
@@ -35,7 +43,23 @@ class SolutionsRecorder:
         return self.solutions_with_runtime
 
 
-def get_gurobi_model(projects: pd.DataFrame, students: pd.DataFrame, reward_bilateral: int, penalty_unassignment: int):
+def get_gurobi_model(
+    projects: pd.DataFrame, students: pd.DataFrame, reward_bilateral: int, penalty_unassignment: int
+) -> gp.Model:
+    """Returns Gurobi model.
+
+    Args:
+        projects: The project names with each project's guidelines, whishes
+            and penalties regarding the number of groups and group sizes
+        students: The project preferences for all projects and the partner
+            preferences i.e., the students a student wants to work with
+            the most for all students in the problem.
+        reward_bilateral: The fixed reward for every occurence in the solution
+            of two students who have specified each other as partner
+            preferences being in the same group.
+        penalty_unassignment: The fixed penalty for every student in the solution
+            who is not assigned to a group.
+    """
     model = gp.Model()
 
     project_ids = range(len(projects))
@@ -235,8 +259,34 @@ def benchmark_gurobi(
     penalty_unassignment: int,
     filename: str,
     time_limit: int,
-):
+) -> None:
+    """Saves benchmarks of Gurobi in designated JSON.
 
+    Loads one instance after another. For every problem instance:
+    Initializes an instance of SolutionsRecorder, which keeps
+    track of intermediate and final results.
+
+    Args:
+        project_quantities: Only instances with a number of projects
+            that matches one of the numbers will be benchmarked.
+        student_quantities: Only instances with a number of students
+            that matches one of the numbers will be benchmarked.
+        instances_per_dimension: How many instances for each
+            combination of number of projects and number of students
+            will be benchmark. SHOULD NOT EXCEED THE NUMBER OF
+            INSTANCES EXISTENT PER COMBINATION.
+        reward_bilateral: The fixed reward for every occurence in the solution
+            of two students who have specified each other as partner
+            preferences being in the same group.
+        penalty_unassignment: The fixed penalty for every student in the solution
+            who is not assigned to a group.
+        filename: The name of the JSON in which the results
+            of the benchmark run are supposed to be saved.
+        time_limit: Limit on time spent optimizing one instance.
+
+    Raises:
+        ValueError: Already a file at path of filename.
+    """
     solution_and_bound_developments = {}
     folder_projects = Path("instances_projects")
     folder_students = Path("instances_students")

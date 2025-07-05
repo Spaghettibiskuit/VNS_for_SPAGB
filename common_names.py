@@ -1,4 +1,4 @@
-"""The 100 most common girls names, boys names and last names each."""
+"""The 100 most common girls, boys and last names each."""
 
 GIRLS_NAMES = [
     "Mary",

@@ -1,4 +1,4 @@
-"""Main file of VNS implementation for a student assignment problem."""
+"""Contains the class which controls the entire VNS solving process."""
 
 import itertools as it
 import random as rd
@@ -14,7 +14,47 @@ from student import Student
 
 
 class VariableNeighborhoodSearch:
-    """Applies VNS on a student assignment problem."""
+    """Solves solutions for instances of the SPAGP.
+
+    SPAGP := Student-Project-Allocation with Group Building Problem
+
+    Capable of solving instances, but also checking solutions for
+    their validity and checking whether the objective has been
+    calculated correctly.
+
+    Atrributes:
+        projects_info: The names of the projects with each project's
+            guidelines, whishes and penalties regarding the number of
+            groups and group sizes.
+        students_info: The project preferences for all projects and the
+            partner preferences i.e., the students a student wants to
+            work with the most for all students in the problem instance.
+        reward_bilateral_interest_collaboration: The fixed reward for every
+            occurrence in the solution of two students who have specified
+            each other as partner preferences being in the same group.
+        penalty_student_not_assigned: The fixed penalty for every student
+            in the solution who is not assigned to a group.
+        projects: All instances of Project in the problem instance.
+        students: All instances of Student in the problem instance.
+        time_data_loaded: The point in time when all data was loaded.
+        num_students: The number of students in the problem instance.
+        unassigned_students: The students who are not assigned to a
+            group at any point in time.
+        bilateral_pairs: A set of tuples with two student IDS belonging
+            to two students who specified each other as partner
+            preferences i.e., one of the students they want to work
+            with the most.
+        objective_value: The objective value of the solution at any
+            point in time.
+        best_objective_value: The objective value of the best solution
+            found thus far at any point in time.
+        move_reversals: Moves of students made during a try to improve
+            the best_objective_value which have to be reversed if the
+            try fails.
+        combinations_student_ids_by_dimension: combinations of student IDs
+            with different numbers of IDs per combination which are used
+            during local search.
+    """
 
     def __init__(
         self,
@@ -23,6 +63,21 @@ class VariableNeighborhoodSearch:
         reward_bilateral_interest_collaboration: int = 2,
         penalty_student_not_assigned: int = 3,
     ):
+        """Initializes the instance with the data of the problem instance.
+
+        Args:
+            projects_info: The names of the projects with each project's
+                guidelines, whishes and penalties regarding the number of
+                groups and group sizes.
+            students_info: The project preferences for all projects and the
+                partner preferences i.e., the students a student wants to
+                work with the most for all students in the problem instance.
+            reward_bilateral_interest_collaboration: The fixed reward for every
+                occurence in the solution of two students who have specified
+                each other as partner preferences being in the same group.
+            penalty_student_not_assigned: The fixed penalty for every student
+                in the solution who is not assigned to a group.
+        """
         self.projects_info, self.students_info = projects_info, students_info
         self.reward_bilateral_interest_collaboration = reward_bilateral_interest_collaboration
         self.penalty_student_not_assigned = penalty_student_not_assigned
@@ -31,14 +86,14 @@ class VariableNeighborhoodSearch:
         self.time_data_loaded = t.time()
         self.num_students = len(self.students)
         self.unassigned_students: list[Student] = []
-        self.bilateral_pairs = self.get_bilateral_pairs()
+        self.bilateral_pairs = self._get_bilateral_pairs()
         self._initial_solution()
         self.objective_value = self.current_objective_value()
         self.best_objective_value = self.objective_value
         self.move_reversals = []
         self.combinations_student_ids_by_dimension = {1: list(it.combinations(range(self.num_students), 1))}
 
-    def get_bilateral_pairs(self) -> set[tuple[int, int]]:
+    def _get_bilateral_pairs(self) -> set[tuple[int, int]]:
         favorite_partners_students = self.students_info["fav_partners"].tolist()
         return {
             (student_id, partner_id)
@@ -60,6 +115,66 @@ class VariableNeighborhoodSearch:
         time_limit: int = 300,
         seed: int | None = None,
     ):
+        """Solves or tests the General VNS solution process.
+
+        Performs an heuristic problem-solving algorithm based on the
+        philosophy of the General Variable Neighborhood Search.
+
+        As long as its main loop does not break, the algorithm continuously tries
+        to improve the incumbent solution based on a different
+        defined neighborhoods.
+
+        In each neighborhood the solution is first pertubated and then this pertubated
+        solution is improved with Variable Neighborhood Descent (VND). Pertubation is
+        done in two ways. The first way is to randomly move students. This means changing
+        the group a student is assigned to, unassign him, or assign him to any group if
+        he was unassigned before. This way is pertubation is called "shake".
+        The second way is to found or dissolve a group.
+
+        The neighborhoods are numbered from 1-6. If no improvement is found in one
+        neighborhood, the neighborhood with the next biggest number is tried in the
+        next iteration in the loop. If no improvement is found in the neighborhood
+        with the biggest number, neighborhood with the smallest number is tried again
+        and so forth. If an improvement is found in any neighborhood, the neighborhood
+        with the smallest number is visited next.
+
+        Args:
+            max_neighborhood: The biggest neighborhood by number that is visited.
+            assignment bias: How much more likely it is for an unassigned student
+                to be moved during the shake compared to an assigned student.
+            unassignment_probability: Probability that an assigned student that is
+                moved during the shake is unassigned instead of randomly moved into
+                another group.
+            min_neigborhood: The smallest neighborhood by number that is visited.
+            testing: Set to True if it should be checked after every shake, every
+                founding or dissolving of a group and every VND if the solution is
+                valid and the objective is calculated correctly. If anything goes
+                wrong, an error report is returned.
+            benchmarking: Set to True if every solution that improves upon the best
+                found before should be saved in a dictionary in a list of dictionaries
+                which is returned once the time limit is reached.
+            demonstrating: Set to True if information on the solution process should
+                be printed in the terminal.
+            iteration_limit: The number of iterations before solving stops if
+                benchmarking is not set to True
+            time_limit: The time after which the main loop breaks if benchmarking is
+                set to True
+            seed: The random seed.
+
+        Returns:
+            If testing == True: If after any shake, founding or dissolving of a group
+            or VND either the objective is not correctly calculated or the solution
+            is not valid an error report is returned detailing what went wrong and at
+            what point of the solution process.
+
+            if benchmarking == True: List of dictionaries with solutions which improved
+            on the best found solution before. Each dictionary includes the objective
+            value, runtime until the solution was found and the neighborhood in which it
+            was found. Neighborhood 0 is the initial solution.
+
+        Raises:
+            ValueError: unassignment_probability is not between 0 and 1.
+        """
         if seed != None:
             rd.seed(seed)
         if not 0 <= unassignment_probability <= 1:
@@ -181,7 +296,13 @@ class VariableNeighborhoodSearch:
         if benchmarking:
             return best_solutions
 
-    def check_solution(self):
+    def check_solution(self) -> dict:
+        """Returns any errors in the solution process.
+
+        If the solution is invalid it is specified why. If the objective
+        value calculated with deltas deviates from the one obtained by
+        complete recalculation, both are specified.
+        """
         errors_validity = self._check_validity()
         error_objective_value = self._check_objective_value()
         return errors_validity | error_objective_value
@@ -440,7 +561,7 @@ class VariableNeighborhoodSearch:
         destinations.append(self.unassigned_students)
 
         if max_to_move > (highest_saved_dimension := max(self.combinations_student_ids_by_dimension.keys())):
-            for num_in_combination in range(highest_saved_dimension, max_to_move + 1):
+            for num_in_combination in range(highest_saved_dimension + 1, max_to_move + 1):
                 self.combinations_student_ids_by_dimension[num_in_combination] = list(
                     it.combinations(range(self.num_students), num_in_combination)
                 )
@@ -895,7 +1016,14 @@ class VariableNeighborhoodSearch:
             )
         return departures_specifications
 
-    def current_objective_value(self):
+    def current_objective_value(self) -> int:
+        """Calculates the current objective value.
+
+        During solving the objective value is only calculated by
+        deltas of moves. This complete calculation is used for
+        evaluating the initial solution and checking whether the
+        calculation by delta went wrong.
+        """
         return (
             self._sum_preferences()
             + self._sum_join_rewards()

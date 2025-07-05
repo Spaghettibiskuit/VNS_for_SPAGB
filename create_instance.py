@@ -1,3 +1,5 @@
+"""Was used for creating the instances."""
+
 from pathlib import Path
 
 import problem_data
