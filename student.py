@@ -4,7 +4,7 @@
 class Student:
     """A student who seeks assignment to a project.
 
-    Atrributes:
+    Attributes:
         student_id: His/her ID
         name: His/her name
         fav_partners: IDs of students he/she wants to work with.

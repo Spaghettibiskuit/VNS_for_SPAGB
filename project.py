@@ -33,7 +33,7 @@ class Project:
         penalty_extra_group: int,
         penalty_deviation_from_ideal_group_size: int,
     ):
-        """Intializes the project:
+        """Initializes the project:
 
         Args:
             project_id: ID of the project.

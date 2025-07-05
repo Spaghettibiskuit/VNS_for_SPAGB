@@ -22,7 +22,7 @@ class VariableNeighborhoodSearch:
     their validity and checking whether the objective has been
     calculated correctly.
 
-    Atrributes:
+    Attributes:
         projects_info: The names of the projects with each project's
             guidelines, whishes and penalties regarding the number of
             groups and group sizes.
@@ -73,7 +73,7 @@ class VariableNeighborhoodSearch:
                 partner preferences i.e., the students a student wants to
                 work with the most for all students in the problem instance.
             reward_bilateral_interest_collaboration: The fixed reward for every
-                occurence in the solution of two students who have specified
+                occurrence in the solution of two students who have specified
                 each other as partner preferences being in the same group.
             penalty_student_not_assigned: The fixed penalty for every student
                 in the solution who is not assigned to a group.
@@ -124,11 +124,11 @@ class VariableNeighborhoodSearch:
         to improve the incumbent solution based on a different
         defined neighborhoods.
 
-        In each neighborhood the solution is first pertubated and then this pertubated
-        solution is improved with Variable Neighborhood Descent (VND). Pertubation is
+        In each neighborhood the solution is first perturbed and then this perturbed
+        solution is improved with Variable Neighborhood Descent (VND). Perturbation is
         done in two ways. The first way is to randomly move students. This means changing
         the group a student is assigned to, unassign him, or assign him to any group if
-        he was unassigned before. This way is pertubation is called "shake".
+        he was unassigned before. This way of perturbation is called "shake".
         The second way is to found or dissolve a group.
 
         The neighborhoods are numbered from 1-6. If no improvement is found in one
@@ -145,7 +145,7 @@ class VariableNeighborhoodSearch:
             unassignment_probability: Probability that an assigned student that is
                 moved during the shake is unassigned instead of randomly moved into
                 another group.
-            min_neigborhood: The smallest neighborhood by number that is visited.
+            min_neighborhood: The smallest neighborhood by number that is visited.
             testing: Set to True if it should be checked after every shake, every
                 founding or dissolving of a group and every VND if the solution is
                 valid and the objective is calculated correctly. If anything goes

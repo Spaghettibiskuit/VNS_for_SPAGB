@@ -1,3 +1,5 @@
+"""Used to benchmark Gurobi."""
+
 import json
 from pathlib import Path
 
@@ -54,7 +56,7 @@ def get_gurobi_model(
         students: The project preferences for all projects and the partner
             preferences i.e., the students a student wants to work with
             the most for all students in the problem.
-        reward_bilateral: The fixed reward for every occurence in the solution
+        reward_bilateral: The fixed reward for every occurrence in the solution
             of two students who have specified each other as partner
             preferences being in the same group.
         penalty_unassignment: The fixed penalty for every student in the solution
@@ -229,7 +231,7 @@ def get_gurobi_model(
             )
             for (first_student_id, second_student_id) in mutual_pairs
         ),
-        name="ensure_correct_inidicator_different_group_1",
+        name="ensure_correct_indicator_different_group_1",
     )
     model.update()
 
@@ -244,7 +246,7 @@ def get_gurobi_model(
             )
             for (first_student_id, second_student_id) in mutual_pairs
         ),
-        name="ensure_correct_inidicator_different_group_2",
+        name="ensure_correct_indicator_different_group_2",
     )
     model.update()
 
@@ -275,7 +277,7 @@ def benchmark_gurobi(
             combination of number of projects and number of students
             will be benchmark. SHOULD NOT EXCEED THE NUMBER OF
             INSTANCES EXISTENT PER COMBINATION.
-        reward_bilateral: The fixed reward for every occurence in the solution
+        reward_bilateral: The fixed reward for every occurrence in the solution
             of two students who have specified each other as partner
             preferences being in the same group.
         penalty_unassignment: The fixed penalty for every student in the solution
@@ -325,7 +327,7 @@ if __name__ == "__main__":
     benchmark_gurobi(
         project_quantities=settings.project_quantities,
         student_quantities=settings.student_quantities,
-        instances_per_dimension=settings.instances_per_dimesion,
+        instances_per_dimension=settings.instances_per_dimension,
         reward_bilateral=settings.reward_bilateral,
         penalty_unassignment=settings.penalty_unassignment,
         filename=settings.filename,

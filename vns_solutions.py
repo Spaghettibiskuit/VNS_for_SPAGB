@@ -98,7 +98,7 @@ def benchmark_vns(
                 with error_log_path.open("a", encoding="utf-8") as f:
                     f.write("; ".join(error_description_elements) + "\n")
 
-            print(f"Done with student quantitiy {student_quantity}!")
+            print(f"Done with student quantity {student_quantity}!")
         print(f"Done with project quantity {project_quantity}!")
 
 

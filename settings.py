@@ -1,7 +1,7 @@
 """Contains classes which store settings.
 
 Central place to save and change settings for running any
-code whithin the folder.
+code within the folder.
 """
 
 
@@ -62,7 +62,7 @@ class BenchmarkSettingsGurobi:
         "Initializes settings for benchmarking Gurobi"
         self.project_quantities = [3, 4, 5]
         self.student_quantities = [30, 40, 50]
-        self.instances_per_dimesion = 10
+        self.instances_per_dimension = 10
         self.reward_bilateral = 2
         self.penalty_unassignment = 3
         self.filename = "gurobi_benchmarks_verbose.json"

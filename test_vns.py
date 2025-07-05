@@ -1,4 +1,4 @@
-"""Contains the function for testing the correctness of the VNS optimization."""
+"""Contains the function for testing the correctness of the VNS solving."""
 
 from pathlib import Path
 
@@ -41,7 +41,7 @@ def test_vns(
         max_num_students: The minimum number of students.
         step_num_students: The step in terms of numbers of students
             as the number of students per instance is increased.
-        iteration_limit: The number of iterations performed whithin
+        iteration_limit: The number of iterations performed within
             the run_general_vns_best_improvement method of
             VariableNeighborhoodSearch per instance.
         starting_random_seed: The first random seed passed to the
