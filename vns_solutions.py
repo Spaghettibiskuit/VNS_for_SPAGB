@@ -24,20 +24,20 @@ def benchmark_vns(
     Loads one instance after another, initializes an instance
     of VariableNeighborhoodSearch with each one of them and
     solves each one with the run_general_vns_best_improvement
-    method with benchmarking=True.
+    method with benchmarking == True.
 
     Args:
         filename_results: The name of the JSON in which the results
             of the benchmark run are supposed to be saved.
         filename_error_logs: The name of the text file in which any
-            errors found after optimizing an instance are saved.
-        project_quantities: Only instances with a number of projects
-            that matches one of the numbers will be benchmarked.
-        student_quantities: Only instances with a number of students
-            that matches one of the numbers will be benchmarked.
+            errors found after solving an instance are saved.
+        project_quantities: Only instances where the number of projects
+            matches one of the numbers will be benchmarked.
+        student_quantities: Only instances where the number of students
+            matches one of the numbers will be benchmarked.
         instances_per_dimension: How many instances for each
             combination of number of projects and number of students
-            will be benchmark. SHOULD NOT EXCEED THE NUMBER OF
+            will be benchmarked. SHOULD NOT EXCEED THE NUMBER OF
             INSTANCES EXISTENT PER COMBINATION.
         time_limit: How long each instance should be solved.
         seed: Random seed passed to the run_general_vns_best_improvement

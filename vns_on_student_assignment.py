@@ -14,12 +14,12 @@ from student import Student
 
 
 class VariableNeighborhoodSearch:
-    """Solves solutions for instances of the SPAGP.
+    """Solves instances of the SPAGP.
 
     SPAGP := Student-Project-Allocation with Group Building Problem
 
-    Capable of solving instances, but also checking solutions for
-    their validity and checking whether the objective has been
+    Capable of solving instances, but also checking its own solutions
+    for validity and whether the objective has been
     calculated correctly.
 
     Attributes:
@@ -134,7 +134,7 @@ class VariableNeighborhoodSearch:
         The neighborhoods are numbered from 1-6. If no improvement is found in one
         neighborhood, the neighborhood with the next biggest number is tried in the
         next iteration in the loop. If no improvement is found in the neighborhood
-        with the biggest number, neighborhood with the smallest number is tried again
+        with the biggest number, the neighborhood with the smallest number is tried again
         and so forth. If an improvement is found in any neighborhood, the neighborhood
         with the smallest number is visited next.
 
@@ -167,7 +167,7 @@ class VariableNeighborhoodSearch:
             is not valid an error report is returned detailing what went wrong and at
             what point of the solution process.
 
-            if benchmarking == True: List of dictionaries with solutions which improved
+            If benchmarking == True: List of dictionaries with solutions which improved
             on the best found solution before. Each dictionary includes the objective
             value, runtime until the solution was found and the neighborhood in which it
             was found. Neighborhood 0 is the initial solution.

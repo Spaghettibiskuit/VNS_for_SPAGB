@@ -21,15 +21,15 @@ def test_vns(
 ) -> None:
     """Tests whether miscalculations or invalid solutions occur.
 
-    Lets reproducible instances be generated and lets them be solved by the
-    run_general_vns_best_improvement method of VariableNeighborhoodSearch
+    Lets instances be generated in a reproducible way and lets them be solved by
+    the run_general_vns_best_improvement method of VariableNeighborhoodSearch
     in vns_on_student_assignment in testing mode (testing=True). In
     testing mode it is checked after every founding or dissolving of a
     group, shake or VND whether the objective value is still correct and
     whether the solution is valid. If not, run_general_vns_best_improvement
     stops and returns an error report detailing what went wrong, as well as
     when and where it happened. The error report is then saved as one line of
-    a designated text file. This way, any bugs are reproducible and can be
+    a designated text file. This way, any found bugs are reproducible and can be
     located more easily.
 
     Args:
@@ -38,7 +38,7 @@ def test_vns(
         step_num_projects: The step in terms of numbers of projects
             as the number of projects per instance is increased.
         min_num_students: The minimum number of students.
-        max_num_students: The minimum number of students.
+        max_num_students: The maximum number of students.
         step_num_students: The step in terms of numbers of students
             as the number of students per instance is increased.
         iteration_limit: The number of iterations performed within
@@ -47,11 +47,11 @@ def test_vns(
         starting_random_seed: The first random seed passed to the
             function which generates the instances as well as the
             run_general_vns_best_improvement method of
-            VariableNeighborhoodSearch. After instances of with all
-            possible numbers of students and numbers of projects
-            defined by the respective arguments, the random seed
-            is increased and the process is repeated indefinitely
-            if no errors occur.
+            VariableNeighborhoodSearch. After one instance for all
+            possible combinations of numbers of students and numbers
+            of projects defined by the respective arguments ran for the
+            specified number of iterations, the random seed
+            is increased.
         line_limit: The number of error reports in the designated text
             file after which the loop breaks. Each error report is on one line.
         filename: The name of the text file in which the error reports ought

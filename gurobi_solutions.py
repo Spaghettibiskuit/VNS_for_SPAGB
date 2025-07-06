@@ -269,13 +269,13 @@ def benchmark_gurobi(
     track of intermediate and final results.
 
     Args:
-        project_quantities: Only instances with a number of projects
-            that matches one of the numbers will be benchmarked.
-        student_quantities: Only instances with a number of students
-            that matches one of the numbers will be benchmarked.
+        project_quantities: Only instances where the number of projects
+            matches one of the numbers will be benchmarked.
+        student_quantities: Only instances where the number of students
+            matches one of the numbers will be benchmarked.
         instances_per_dimension: How many instances for each
             combination of number of projects and number of students
-            will be benchmark. SHOULD NOT EXCEED THE NUMBER OF
+            will be benchmarked. SHOULD NOT EXCEED THE NUMBER OF
             INSTANCES EXISTENT PER COMBINATION.
         reward_bilateral: The fixed reward for every occurrence in the solution
             of two students who have specified each other as partner

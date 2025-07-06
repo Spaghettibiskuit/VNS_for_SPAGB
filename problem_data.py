@@ -44,7 +44,7 @@ def generate_projects_and_students_data(
     """Returns or saves an instance of the problem.
 
     Calls random_projects_df and random_students_df and returns both of
-    their returns or saves them separately in as in the CSV format.
+    their returns or saves them separately in the CSV format.
     """
     if seed != None:
         rd.seed(seed)

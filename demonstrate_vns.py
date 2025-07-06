@@ -38,7 +38,7 @@ def demonstrate_vns(
     """Demonstrates VNS on a specific or random instance.
 
     First it prints the problem data and the initial solution.
-    During optimization with VNS it prints out updates on the
+    During solving with VNS it prints out updates on the
     solution process every iteration in the loop of
     run_general_vns_best_improvement of VariableNeighborhoodSearch.
     At the end it prints the final solution.
@@ -57,7 +57,7 @@ def demonstrate_vns(
             VariableNeighborhoodSearch.
         iterations: number of iterations in main loop of
             run_general_vns_best_improvement of
-            VariableNeighborhoodSearch before optimization
+            VariableNeighborhoodSearch before solving
             stops and final results are printed.
     """
     if instance_number != None:

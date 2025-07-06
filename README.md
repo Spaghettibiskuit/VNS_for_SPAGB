@@ -1,6 +1,6 @@
 # Variable Neighborhood Search for the Student-Project-Allocation with Group Building Problem
 
-In this problem, project allocation and group building happens simultaneously. Students specify their preference values for every project that is being offered and specify a fixed number of students they want to work with the most. Those offering the projects specify guidelines, whishes and penalties regarding the number of groups and group sizes in their specific project. There is also a fixed reward for every occurrence in the solution of two students who have specified each other as partner preferences being in the same group (a bilateral pair). Lastly, there is a fixed penalty for every student in the solution who is not assigned to a group.
+In this problem, project allocation and group building happens simultaneously. Students specify their preference value for every project that is being offered and specify a fixed number of students they want to work with the most. Those offering the projects specify guidelines, whishes and penalties regarding the number of groups and group sizes in their specific project. There is also a fixed reward for every occurrence in the solution of two students who have specified each other as partner preferences being in the same group (a bilateral pair). Lastly, there is a fixed penalty for every student in the solution who is not assigned to a group.
 
 For more details on the problem, check out gurobi_solutions.ipynb where the problem is modeled as an MILP.
 
@@ -16,7 +16,7 @@ demonstrate_vns: Run it for a small demonstration of VNS in the terminal.
 
 The script gurobi_solutions is used to benchmark Gurobi on problem instances. For benchmarking results check out any gurobi_benchmarks_foo.json file.
 
-To see how my VNS implementation compared to Gurobi, check out the notebook benchmark_analysis.
+To see how my VNS implementation performed compared to Gurobi, check out the notebook benchmark_analysis.
 
 The instances always consist of two parts. The input from the projects (found in instances_projects) and the input from the students (found in instances_students).
 

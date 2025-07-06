@@ -1,7 +1,7 @@
 """Contains classes which store settings.
 
 Central place to save and change settings for running any
-code within the folder.
+scripts within the folder.
 """
 
 
@@ -52,7 +52,7 @@ class TestSettings:
         self.iteration_limit = 100
         self.starting_random_seed = 0
         self.line_limit = 1000
-        self.filename = "error_log_3.txt"
+        self.filename = "error_log_1.txt"
 
 
 class BenchmarkSettingsGurobi:

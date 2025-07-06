@@ -203,7 +203,7 @@ def random_students_df(
 
     Returns:
         The project preferences for all projects and the partner preferences
-        i.e., the students a student wants to work with the most for all
+        i.e., the students a student wants to work with the most, for all
         students in the problem instance. Project preferences and partner preferences
         are influenced by each other to a specifiable degree. Otherwise values
         are random within bounds set by the arguments. THE INDEX POSITION IN THE
